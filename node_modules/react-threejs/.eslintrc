@@ -1,0 +1,35 @@
+{
+  "extends": ["standard", "standard-react"],
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "mocha": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "valid-jsdoc": 0,
+    "eol-last": 1,
+    "indent": 1,
+    "semi": 0,
+    "strict": [1, "global"],
+    "comma-dangle": [1, "always-multiline"],
+    "array-bracket-spacing": [1, "never"],
+    "object-curly-spacing": [1, "always"],
+    "space-infix-ops": 1,
+    "space-unary-ops": 0,
+    "space-in-parens": 0,
+    "space-before-function-paren": 1,
+    "padded-blocks": 1,
+    "no-console": 0,
+    "no-unused-vars": 1,
+    "no-floating-decimal": 1,
+    "no-multiple-empty-lines": [1, { max: 2 }],
+    "jsx-quotes": 0,
+    "react/prop-types": 1,
+    "react/self-closing-comp": 1,
+    'react/jsx-uses-react': 2,
+    'react/jsx-uses-vars': 2
+  }
+}
