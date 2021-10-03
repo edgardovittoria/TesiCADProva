@@ -5,8 +5,9 @@ import { faCube, faCircle, faToolbox, faFileImport, faFileExport} from '@fortawe
 import 'react-pro-sidebar/dist/css/styles.css';
 import {useDispatch} from "react-redux";
 import {Cube} from "./canvas/components/cube";
-import {addComponents} from "../store/canvasSlice";
+import {addComponent} from "../store/canvasSlice";
 import {Sfera} from "./canvas/components/sfera";
+import {Keen} from "./canvas/components/Keen";
 
 interface SideBarProps {
 }
@@ -26,11 +27,11 @@ export const SideBar: React.FC<SideBarProps> = () => {
                 <SubMenu key={1} title="Components" icon={<FontAwesomeIcon icon={faToolbox}/>}>
                     <MenuItem icon={<FontAwesomeIcon icon={faCube}/>} onClick={() => {
                         const cube = <Cube color="red" x={1} y={1} z={1} position={[0,0,0]}/>;
-                        dispatch(addComponents(cube));
+                        dispatch(addComponent(cube));
                     }}>Cube</MenuItem>
                     <MenuItem icon={<FontAwesomeIcon icon={faCircle} />} onClick={() => {
-                        const sphere = <Sfera radius={1} widthSegments={6} heightSegments={6} color="yellow"/>
-                        dispatch(addComponents(sphere))
+                        const sphere = <Keen dispatch={dispatch}/>
+                        dispatch(addComponent(sphere))
                     }}>Sphere</MenuItem>
                 </SubMenu>
                 <MenuItem icon={<FontAwesomeIcon icon={faFileImport} />}>Import</MenuItem>
