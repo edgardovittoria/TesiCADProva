@@ -29,12 +29,12 @@ export const SideBar: React.FC<SideBarProps> = ({orbit}) => {
                 <SubMenu key={1} title="Components" icon={<FontAwesomeIcon icon={faToolbox}/>}>
                     <MenuItem icon={<FontAwesomeIcon icon={faCube}/>} onClick={() => {
                         const cube = <Cube color="red" x={1} y={1} z={1}/>;
-                        const element = <Component key={1} dispatch={dispatch} orbit={orbit} child={cube} position={[0,0,0]}/>
+                        const element = <Component keyComponent={1} dispatch={dispatch} orbit={orbit} child={cube} position={[0,0,0]}/>
                         dispatch(addComponent(element));
                     }}>Cube</MenuItem>
                     <MenuItem icon={<FontAwesomeIcon icon={faCircle} />} onClick={() => {
                         const sphere = <Sfera radius={1} widthSegments={6} heightSegments={6} color="yellow"/>
-                        const element = <Component key={2} dispatch={dispatch} orbit={orbit} child={sphere} position={[0,0,0]}/>
+                        const element = <Component keyComponent={2} dispatch={dispatch} orbit={orbit} child={sphere} position={[0,0,0]}/>
                         dispatch(addComponent(element))
                     }}>Sphere</MenuItem>
                 </SubMenu>

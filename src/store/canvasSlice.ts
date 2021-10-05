@@ -23,12 +23,11 @@ export const CanvasSlice = createSlice({
             })
         },
         updatePosition(state: CanvasState, action: PayloadAction<Vector3>){
-            let selectedComponent = state.components.filter(component => (component.props.key === state.selectedComponent))[0];
+            let selectedComponent = state.components.filter(component => (component.props.keyComponent === state.selectedComponent))[0];
             selectedComponent.props.position = action.payload
         },
         selectComponent(state: CanvasState, action: PayloadAction<number>){
-            console.log(action.payload)
-            //state.selectedComponent = action.payload
+            state.selectedComponent = action.payload
         }
     },
     extraReducers: {
