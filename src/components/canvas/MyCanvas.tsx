@@ -1,17 +1,15 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {canvasStateSelector} from "../../store/canvasSlice";
 import {Controls} from "react-three-gui";
-import {Keen} from "./components/Keen";
 
 
 interface MyCanvasProps {
 }
 
-export const MyCanvas: React.FC<MyCanvasProps> = () => {
+export const MyCanvas: React.FC<MyCanvasProps> = ({children}) => {
 
     const components = useSelector(canvasStateSelector).components;
-    const dispatch = useDispatch();
 
     return(
 
@@ -20,12 +18,11 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                 <Controls.Canvas style={{width: "100%", height:"100%"}}
                         camera={{position:[0,50,0], fov: 20, far:1000, near:0.1}}
                 >
-
                         <ambientLight/>
                         <pointLight position={[20, 20, 20]} />
                         {components}
                         <gridHelper scale={[2.88,1,2.95]}/>
-                        {/*<SolarSystem solarSystemFigli={solarSystemFigli}/>*/}
+                        {children}
                 </Controls.Canvas>
             <Controls/>
             </Controls.Provider>

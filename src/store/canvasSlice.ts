@@ -3,12 +3,14 @@ import {Vector3} from "@react-three/fiber";
 
 export type CanvasState = {
     components: JSX.Element[],
+    selectedComponent: number
 }
 
 export const CanvasSlice = createSlice({
     name: 'canvas',
     initialState: {
         components: [],
+        selectedComponent: -1
     } as CanvasState,
     reducers: {
         //qui vanno inserite le azioni
@@ -21,10 +23,13 @@ export const CanvasSlice = createSlice({
             })
         },
         updatePosition(state: CanvasState, action: PayloadAction<Vector3>){
-            state.components.map(component => {
-                component.props.position = action.payload;
-            })
+            let selectedComponent = state.components.filter(component => (component.props.key === state.selectedComponent))[0];
+            selectedComponent.props.position = action.payload
         },
+        selectComponent(state: CanvasState, action: PayloadAction<number>){
+            console.log(action.payload)
+            //state.selectedComponent = action.payload
+        }
     },
     extraReducers: {
         //qui inseriamo i metodi : PENDING, FULLFILLED, REJECT utili per la gestione delle richieste asincrone
@@ -34,7 +39,7 @@ export const CanvasSlice = createSlice({
 
 export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
-    addComponent, removeComponent, updatePosition
+    addComponent, removeComponent, updatePosition, selectComponent
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas
