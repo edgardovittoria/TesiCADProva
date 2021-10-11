@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {useControl} from "react-three-gui";
 import * as THREE from "three";
-import {componentProps} from "../../../domain/ComponentProps";
 
 type CubeProps = {
     color: string,

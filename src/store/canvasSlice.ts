@@ -4,7 +4,8 @@ import {Vector3} from "@react-three/fiber";
 export type CanvasState = {
     components: JSX.Element[],
     selectedComponent: number,
-    numberOfGeneratedKey: number
+    numberOfGeneratedKey: number,
+    isLoading: boolean
 }
 
 export const CanvasSlice = createSlice({
@@ -12,7 +13,8 @@ export const CanvasSlice = createSlice({
     initialState: {
         components: [],
         selectedComponent: -1,
-        numberOfGeneratedKey: 0
+        numberOfGeneratedKey: 0,
+        isLoading: false
     } as CanvasState,
     reducers: {
         //qui vanno inserite le azioni
@@ -25,8 +27,10 @@ export const CanvasSlice = createSlice({
             })
         },
         updatePosition(state: CanvasState, action: PayloadAction<Vector3>){
-            let selectedComponent = state.components.filter(component => (component.props.keyComponent === state.selectedComponent))[0];
+            state.isLoading = true;
+            let selectedComponent = state.components.filter(component => component.props.keyComponent === state.selectedComponent)[0];
             selectedComponent.props.position = action.payload
+            state.isLoading = false
         },
         selectComponent(state: CanvasState, action: PayloadAction<number>){
             state.selectedComponent = action.payload
