@@ -3,9 +3,11 @@ import { Action,
     configureStore,
     ThunkAction } from '@reduxjs/toolkit';
 import {CanvasSlice} from "./canvasSlice";
+import {ToolbarTransformationSlice} from "./toolbarTransformationSlice";
 
 const rootReducer = combineReducers({
-    canvas: CanvasSlice.reducer
+    canvas: CanvasSlice.reducer,
+    toolbarTransformation: ToolbarTransformationSlice.reducer
 });
 
 export const store = configureStore({

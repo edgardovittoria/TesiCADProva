@@ -1,0 +1,32 @@
+#toolbar {
+    position: absolute;
+    left: 10px;
+    top: 70px;
+    width: 32px;
+    background: #eee;
+    text-align: center;
+}
+
+.Panel {
+    color: #888;
+    user-select: none;
+}
+
+#toolbar button, #toolbar input {
+    height: 32px;
+}
+button.selected {
+    background-color: #fff;
+}
+
+button {
+    color: #555;
+    background-color: #ddd;
+    border: 0px;
+    margin: 0px;
+    padding: 5px 8px;
+    text-transform: uppercase;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+}

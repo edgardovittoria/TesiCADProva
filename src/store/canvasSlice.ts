@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {Vector3} from "@react-three/fiber";
+import {Euler, Vector3} from "@react-three/fiber";
 
 export type CanvasState = {
     components: JSX.Element[],
@@ -32,6 +32,19 @@ export const CanvasSlice = createSlice({
             selectedComponent.props.position = action.payload
             state.isLoading = false
         },
+        updateRotation(state: CanvasState, action: PayloadAction<Euler>){
+            state.isLoading = true;
+            let selectedComponent = state.components.filter(component => component.props.keyComponent === state.selectedComponent)[0];
+            selectedComponent.props.rotation = action.payload
+            state.isLoading = false
+        },
+        updateScale(state: CanvasState, action: PayloadAction<Vector3>){
+            state.isLoading = true;
+            let selectedComponent = state.components.filter(component => component.props.keyComponent === state.selectedComponent)[0];
+            selectedComponent.props.scale = action.payload
+            state.isLoading = false
+        },
+
         selectComponent(state: CanvasState, action: PayloadAction<number>){
             state.selectedComponent = action.payload
         },
@@ -47,7 +60,7 @@ export const CanvasSlice = createSlice({
 
 export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
-    addComponent, removeComponent, updatePosition, selectComponent, incrementNumberOfGeneratedKey
+    addComponent, removeComponent, updatePosition, updateRotation, updateScale, selectComponent, incrementNumberOfGeneratedKey
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas

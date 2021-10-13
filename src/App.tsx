@@ -7,6 +7,7 @@ import {Provider} from "react-redux";
 import {store} from "./store/store";
 import {MyNavBar} from "./components/navBar/navBar"
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {ToolBar} from "./components/toolBar/toolBar";
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
             <div className="row" style={{margin:"0px"}}>
                 <div className="column" style={{width: "75%", padding:"0px", float:"right"}}>
                     <MyCanvas children={orbitControl}/>
+                    <ToolBar/>
                 </div>
                 <div className="column" style={{width: "25%", padding:"0px", float:"right"}}>
                     <SideBar orbit={orbit}/>

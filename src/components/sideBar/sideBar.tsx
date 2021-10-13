@@ -11,6 +11,8 @@ import {Component} from "../canvas/components/Component";
 import "./css/outliner.css"
 import {Outliner} from "./components/outliner";
 import {Position} from "./components/position";
+import {Rotation} from "./components/rotation";
+import {Scale} from "./components/scale";
 
 
 interface SideBarProps {
@@ -25,7 +27,12 @@ export const SideBar: React.FC<SideBarProps> = ({orbit}) => {
     return(
         <ProSidebar style={{height: "100vh", width:"100%", backgroundColor: "#212529", padding:"20px"}}>
                 <Outliner canvasState={canvasState} />
-                {(canvasState.selectedComponent !== -1)&& <Position canvasState={canvasState}/>}
+            {(canvasState.selectedComponent !== -1)&&
+            <div>
+                <Position canvasState={canvasState}/>
+                <Rotation canvasState={canvasState}/>
+                <Scale canvasState={canvasState}/>
+            </div>}
         </ProSidebar>
     )
 
