@@ -22,7 +22,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({orbit}) => {
         return newKey;
     }
 
-    return(
+    return (
         <>
             <Navbar bg="dark" variant="dark">
                 <Container>
@@ -34,18 +34,22 @@ export const MyNavBar: React.FC<NavBarProps> = ({orbit}) => {
                         >
                             <Nav.Link onClick={() => {
                                 const cube = <Cube color="red" x={1} y={1} z={1}/>;
-                                const element = <Component name="Cube" keyComponent={getNewKey()} orbit={orbit} child={cube} position={[0,0,0]} rotation={[0,0,0]} scale={[1,1,1]}/>
+                                const element = <Component name="Cube" keyComponent={getNewKey()} orbit={orbit}
+                                                           child={cube} position={[0, 0, 0]} rotation={[0, 0, 0]}
+                                                           scale={[1, 1, 1]} />
                                 dispatch(addComponent(element));
                             }}>
-                                <FontAwesomeIcon icon={faCube} style={{marginRight:"5px"}}/>
+                                <FontAwesomeIcon icon={faCube} style={{marginRight: "5px"}}/>
                                 Cube
                             </Nav.Link>
                             <Nav.Link onClick={() => {
                                 const sphere = <Sfera radius={1} widthSegments={6} heightSegments={6} color="yellow"/>
-                                const element = <Component name="Sphere" keyComponent={getNewKey()} orbit={orbit} child={sphere} position={[0,0,0]} rotation={[0,0,0]} scale={[1,1,1]}/>
+                                const element = <Component name="Sphere" keyComponent={getNewKey()} orbit={orbit}
+                                                           child={sphere} position={[0, 0, 0]} rotation={[0, 0, 0]}
+                                                           scale={[1, 1, 1]}/>
                                 dispatch(addComponent(element))
                             }}>
-                                <FontAwesomeIcon icon={faCircle} style={{marginRight:"5px"}}/>
+                                <FontAwesomeIcon icon={faCircle} style={{marginRight: "5px"}}/>
                                 Sphere
                             </Nav.Link>
                         </NavDropdown>

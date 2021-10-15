@@ -10,7 +10,7 @@ export const Outliner: React.FC<OutlinerProps> = ({canvasState}) => {
 
     const [optionActive, setOptionActive] = useState("");
     useEffect(() => {
-        setOptionActive(canvasState.selectedComponent.toString())
+        setOptionActive(canvasState.selectedComponent?.props.keyComponent.toString())
     }, [canvasState.selectedComponent]);
 
     const dispatch = useDispatch();

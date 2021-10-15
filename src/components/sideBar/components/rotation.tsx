@@ -1,7 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {CanvasState, updatePosition, updateRotation} from "../../../store/canvasSlice";
 import {useDispatch} from "react-redux";
-import "../css/position.css";
 
 interface RotationProps {
     canvasState: CanvasState
@@ -22,11 +21,11 @@ function InputElement(props: any){
 
     function onChangeInputValueRotation (e: ChangeEvent<HTMLInputElement>){
         if(props.axisName === "x"){
-            dispatch(updateRotation([parseInt(e.target.value),props.y, props.z]))
+            dispatch(updateRotation([parseFloat(e.target.value),props.y, props.z]))
         }else if(props.axisName === "y"){
-            dispatch(updateRotation([props.x,parseInt(e.target.value),props.z]))
+            dispatch(updateRotation([props.x,parseFloat(e.target.value),props.z]))
         }else{
-            dispatch(updateRotation([props.x,props.y,parseInt(e.target.value)]))
+            dispatch(updateRotation([props.x,props.y,parseFloat(e.target.value)]))
         }
     }
 
@@ -34,6 +33,7 @@ function InputElement(props: any){
         <input type="number"
                id={props.id}
                style={{cursor: "ns-resize", backgroundColor: "transparent", width: "50px"}}
+               step="0.1"
                className="Number"
                autoComplete="off"
                value={getValue()}
@@ -45,20 +45,16 @@ function InputElement(props: any){
 }
 
 export const Rotation: React.FC<RotationProps> = ({canvasState}) => {
-    let selectedComponent: JSX.Element = <div/>
-    if(canvasState.selectedComponent !== -1){
-        selectedComponent = canvasState.components.filter(component => component.props.keyComponent === canvasState.selectedComponent)[0];
-    }
-    const [x,setX] = useState(selectedComponent.props.rotation[0]);
-    const [y,setY] = useState(selectedComponent.props.rotation[1]);
-    const [z,setZ] = useState(selectedComponent.props.rotation[2]);
+    const [x,setX] = useState(canvasState.selectedComponent?.props.rotation[0]);
+    const [y,setY] = useState(canvasState.selectedComponent?.props.rotation[1]);
+    const [z,setZ] = useState(canvasState.selectedComponent?.props.rotation[2]);
     useEffect(() => {
-        if(canvasState.selectedComponent !== -1){
-            setX(selectedComponent.props.rotation[0])
-            setY(selectedComponent.props.rotation[1])
-            setZ(selectedComponent.props.rotation[2])
+        if(canvasState.selectedComponent !== null){
+            setX(canvasState.selectedComponent?.props.rotation[0])
+            setY(canvasState.selectedComponent?.props.rotation[1])
+            setZ(canvasState.selectedComponent?.props.rotation[2])
         }
-    }, [canvasState.selectedComponent, selectedComponent.props.rotation]);
+    }, [canvasState.selectedComponent?.props.rotation]);
 
     return(
         <>
