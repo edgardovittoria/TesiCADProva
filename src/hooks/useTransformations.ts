@@ -16,15 +16,15 @@ export const useTransformations = (
     }
 
     const dispatch = useDispatch();
-    const canvasState = useSelector(canvasStateSelector);
     const toolbarTransformationState = useSelector(toolbarTransformationStateSelector);
+    const canvasState = useSelector(canvasStateSelector);
 
     useEffect(() => {
         if (transformation.current) {
-            const controls: Object3DNode<any, any> = transformation.current
-            controls.showX = (controls.object.userData.key === canvasState.selectedComponent)
-            controls.showY = (controls.object.userData.key === canvasState.selectedComponent)
-            controls.showZ = (controls.object.userData.key === canvasState.selectedComponent)
+            const controls: Object3DNode<any, any> = transformation.current            
+            controls.showX = (controls.object.userData.selected)
+            controls.showY = (controls.object.userData.selected)
+            controls.showZ = (controls.object.userData.selected)
             controls.setMode(getActiveTransformationType(toolbarTransformationState))
             const callback = (event: any) => {
                 (orbit.current !== null) && ((orbit.current as Object3DNode<any, any>).enabled = !event.value)
@@ -43,5 +43,5 @@ export const useTransformations = (
             return () => controls.removeEventListener("dragging-changed", callback)
 
         }
-    },[toolbarTransformationState.transformation, canvasState.selectedComponent])
+    },[toolbarTransformationState.transformation, canvasState.components])
 }

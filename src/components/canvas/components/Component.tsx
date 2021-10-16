@@ -14,17 +14,17 @@ interface ComponentProps {
     scale: Vector3,
     child: JSX.Element,
     keyComponent: number,
-    box3?: Box3 | null
+    box3?: Box3 | null,
+    isSelected?: boolean
 }
 
 export const Component: React.FC<ComponentProps> = (
-    {orbit, child, position, rotation, scale, keyComponent, box3}) => {
+    {orbit, child, position, rotation, scale, keyComponent, box3, isSelected=false}) => {
     const transformation = useRef(null)
     useTransformations(transformation, orbit);
     const dispatch = useDispatch();
     const canvasState = useSelector(canvasStateSelector);
     const meshRef = useRef(null);
-
 
     useEffect(() => {
         if(canvasState.components.length !== 0){
@@ -35,12 +35,11 @@ export const Component: React.FC<ComponentProps> = (
 
 
     useEffect(() => {
-        let selectedComponent = canvasState.components.filter(component => component.props.keyComponent === canvasState.selectedComponent)[0];
-        if (selectedComponent !== undefined) {
-            //console.log(box3)
-            console.log(box3?.intersectsBox(selectedComponent.props.box3))
-        }
-    }, [canvasState.selectedComponent]);
+        // let selectedComponent = canvasState.components.filter(component => component.props.keyComponent === canvasState.selectedComponent)[0];
+        canvasState.components.map(component => {
+            return (component.props.keyComponent !== keyComponent) && console.log(box3?.intersectsBox(component.props.box3))
+        })
+    }, [position, rotation, scale]);
 
     return (
         <>
@@ -49,7 +48,7 @@ export const Component: React.FC<ComponentProps> = (
                                parent={undefined} modelViewMatrix={undefined} normalMatrix={undefined}
                                matrixWorld={undefined} matrixAutoUpdate={undefined} matrixWorldNeedsUpdate={undefined}
                                castShadow={undefined} receiveShadow={undefined} frustumCulled={undefined}
-                               renderOrder={undefined} animations={undefined} userData={{key: keyComponent}}
+                               renderOrder={undefined} animations={undefined} userData={{key: keyComponent, selected: isSelected}}
                                customDepthMaterial={undefined} customDistanceMaterial={undefined} isObject3D={undefined}
                                onBeforeRender={undefined} onAfterRender={undefined} applyMatrix4={undefined}
                                applyQuaternion={undefined} setRotationFromAxisAngle={undefined}

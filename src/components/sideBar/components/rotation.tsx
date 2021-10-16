@@ -45,16 +45,18 @@ function InputElement(props: any){
 }
 
 export const Rotation: React.FC<RotationProps> = ({canvasState}) => {
-    const [x,setX] = useState(canvasState.selectedComponent?.props.rotation[0]);
-    const [y,setY] = useState(canvasState.selectedComponent?.props.rotation[1]);
-    const [z,setZ] = useState(canvasState.selectedComponent?.props.rotation[2]);
+    let selectedComponent = canvasState.components.filter(component => component.props.isSelected)[0]
+
+    const [x,setX] = useState(selectedComponent?.props.rotation[0]);
+    const [y,setY] = useState(selectedComponent?.props.rotation[1]);
+    const [z,setZ] = useState(selectedComponent?.props.rotation[2]);
     useEffect(() => {
-        if(canvasState.selectedComponent !== null){
-            setX(canvasState.selectedComponent?.props.rotation[0])
-            setY(canvasState.selectedComponent?.props.rotation[1])
-            setZ(canvasState.selectedComponent?.props.rotation[2])
+        if(selectedComponent !== undefined){
+            setX(selectedComponent?.props.rotation[0])
+            setY(selectedComponent?.props.rotation[1])
+            setZ(selectedComponent?.props.rotation[2])
         }
-    }, [canvasState.selectedComponent?.props.rotation]);
+    }, [selectedComponent?.props.rotation]);
 
     return(
         <>

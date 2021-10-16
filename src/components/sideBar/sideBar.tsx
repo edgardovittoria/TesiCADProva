@@ -29,7 +29,7 @@ export const SideBar: React.FC<SideBarProps> = ({orbit}) => {
     return(
         <ProSidebar style={{height: "100vh", width:"100%", backgroundColor: "#212529", padding:"20px"}}>
                 <Outliner canvasState={canvasState} />
-            {(canvasState.selectedComponent !== null)&&
+            {(canvasState.components.filter(component => component.props.isSelected) !== undefined)&&
             <div>
                 <Position canvasState={canvasState}/>
                 <Rotation canvasState={canvasState}/>

@@ -45,16 +45,18 @@ function InputElement(props: any){
 }
 
 export const Position: React.FC<PositionProps> = ({canvasState}) => {
-    const [x,setX] = useState(canvasState.selectedComponent?.props.position[0]);
-    const [y,setY] = useState(canvasState.selectedComponent?.props.position[1]);
-    const [z,setZ] = useState(canvasState.selectedComponent?.props.position[2]);
+    let selectedComponent = canvasState.components.filter(component => component.props.isSelected)[0]
+
+    const [x,setX] = useState(selectedComponent?.props.position[0]);
+    const [y,setY] = useState(selectedComponent?.props.position[1]);
+    const [z,setZ] = useState(selectedComponent?.props.position[2]);
     useEffect(() => {
-        if(canvasState.selectedComponent !== null){
-            setX(canvasState.selectedComponent?.props.position[0])
-            setY(canvasState.selectedComponent?.props.position[1])
-            setZ(canvasState.selectedComponent?.props.position[2])
+        if(selectedComponent !== undefined){
+            setX(selectedComponent?.props.position[0])
+            setY(selectedComponent?.props.position[1])
+            setZ(selectedComponent?.props.position[2])
         }
-    }, [canvasState.selectedComponent?.props.position]);
+    }, [selectedComponent?.props.position]);
 
     return(
         <>

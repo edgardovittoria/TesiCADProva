@@ -45,16 +45,18 @@ function InputElement(props: any){
 }
 
 export const Scale: React.FC<ScaleProps> = ({canvasState}) => {
-    const [x,setX] = useState(canvasState.selectedComponent?.props.scale[0]);
-    const [y,setY] = useState(canvasState.selectedComponent?.props.scale[1]);
-    const [z,setZ] = useState(canvasState.selectedComponent?.props.scale[2]);
+    let selectedComponent = canvasState.components.filter(component => component.props.isSelected)[0]
+
+    const [x,setX] = useState(selectedComponent?.props.scale[0]);
+    const [y,setY] = useState(selectedComponent?.props.scale[1]);
+    const [z,setZ] = useState(selectedComponent?.props.scale[2]);
     useEffect(() => {
-        if(canvasState.selectedComponent !== null){
-            setX(canvasState.selectedComponent?.props.scale[0])
-            setY(canvasState.selectedComponent?.props.scale[1])
-            setZ(canvasState.selectedComponent?.props.scale[2])
+        if(selectedComponent !== undefined){
+            setX(selectedComponent?.props.scale[0])
+            setY(selectedComponent?.props.scale[1])
+            setZ(selectedComponent?.props.scale[2])
         }
-    }, [canvasState.selectedComponent?.props.scale]);
+    }, [selectedComponent?.props.scale]);
 
     return(
         <>

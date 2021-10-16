@@ -4,7 +4,6 @@ import {Box3, Mesh} from "three";
 
 export type CanvasState = {
     components: JSX.Element[],
-    selectedComponent: JSX.Element | null,
     numberOfGeneratedKey: number,
     isLoading: boolean
 }
@@ -13,7 +12,6 @@ export const CanvasSlice = createSlice({
     name: 'canvas',
     initialState: {
         components: [],
-        selectedComponent: null,
         numberOfGeneratedKey: 0,
         isLoading: false
     } as CanvasState,
@@ -29,33 +27,37 @@ export const CanvasSlice = createSlice({
         },
         updatePosition(state: CanvasState, action: PayloadAction<Vector3>){
             state.isLoading = true;
-            let selectedComponent = state.components.filter(component => component.props.keyComponent === state.selectedComponent)[0];
+            let selectedComponent = state.components.filter(component => component.props.isSelected)[0];
             selectedComponent.props.position = action.payload
             state.isLoading = false
         },
         updateRotation(state: CanvasState, action: PayloadAction<Euler>){
             state.isLoading = true;
-            let selectedComponent = state.components.filter(component => component.props.keyComponent === state.selectedComponent)[0];
+            let selectedComponent = state.components.filter(component => component.props.isSelected)[0];
             selectedComponent.props.rotation = action.payload
             state.isLoading = false
         },
         updateScale(state: CanvasState, action: PayloadAction<Vector3>){
             state.isLoading = true;
-            let selectedComponent = state.components.filter(component => component.props.keyComponent === state.selectedComponent)[0];
+            let selectedComponent = state.components.filter(component => component.props.isSelected)[0];
             selectedComponent.props.scale = action.payload
             state.isLoading = false
         },
         updateBox3(state: CanvasState, action: PayloadAction<Mesh | null>){
             let meshRef = action.payload
-            if(meshRef !== null && state.selectedComponent !== null){
+            let selectedComponent = state.components.filter(component => component.props.isSelected)[0]
+            if(meshRef !== null && selectedComponent !== undefined){
                 (meshRef as Mesh).geometry.computeBoundingBox();
-                state.selectedComponent.props.box3 = (meshRef as Mesh).geometry.boundingBox;
-                state.selectedComponent.props.box3?.applyMatrix4((meshRef as Mesh).matrixWorld);
+                selectedComponent.props.box3 = (meshRef as Mesh).geometry.boundingBox;
+                selectedComponent.props.box3?.applyMatrix4((meshRef as Mesh).matrixWorld);
             }
         },
         selectComponent(state: CanvasState, action: PayloadAction<number>){
-            let selectedComponent = current(state.components.filter(component => component.props.keyComponent === action.payload)[0]);
-            state.selectedComponent = selectedComponent;
+            //let selectedComponent = current(state.components.filter(component => component.props.keyComponent === action.payload)[0]);
+            // state.selectedComponent = selectedComponent;
+            state.components.map(component => {
+                return (component.props.keyComponent === action.payload)? component.props.isSelected = true : component.props.isSelected = false    
+            })
         },
         incrementNumberOfGeneratedKey(state: CanvasState){
             state.numberOfGeneratedKey++;
