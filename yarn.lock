@@ -2520,7 +2520,7 @@
   dependencies:
     "@types/jest" "*"
 
-"@types/three@^0.132.2":
+"@types/three@^0.132.2", "@types/three@>= 0.125.0":
   "integrity" "sha512-DpaP0sObpHvKX8zdfCqyTK526N8lQ86Qstp6MnQJ3jNYie7Bv9AMRTALuoIH8dgVZ62z9twuNvEarWHXOZwmSw=="
   "resolved" "https://registry.npmjs.org/@types/three/-/three-0.132.2.tgz"
   "version" "0.132.2"
@@ -14168,6 +14168,11 @@
   "resolved" "https://registry.npmjs.org/text-table/-/text-table-0.2.0.tgz"
   "version" "0.2.0"
 
+"three-csg-ts@^3.1.9":
+  "integrity" "sha512-Qke0+07AKDfeiRjh46sOF2iiilSMcKnfgHjuArdMB4poZs3X0FQLHGFIEBbGrv3ejrkHASW9o5pLRfFFQhk9hg=="
+  "resolved" "https://registry.npmjs.org/three-csg-ts/-/three-csg-ts-3.1.9.tgz"
+  "version" "3.1.9"
+
 "three-mesh-bvh@^0.4.1":
   "integrity" "sha512-4CO1dU73hQRwGgeOL05CnsKkIa0LgNCH6S8t66D9nvSiyK9wDzrSqzGVd8e+eUytFoliYHc/lwoW0uamrmXo5w=="
   "resolved" "https://registry.npmjs.org/three-mesh-bvh/-/three-mesh-bvh-0.4.3.tgz"
@@ -14189,7 +14194,7 @@
     "potpack" "^1.0.1"
     "zstddec" "^0.0.2"
 
-"three@*", "three@>= 0.123.0", "three@>=0.103.0", "three@>=0.126", "three@>=0.128.0":
+"three@*", "three@>= 0.123.0", "three@>= 0.125.0", "three@>=0.103.0", "three@>=0.126", "three@>=0.128.0":
   "integrity" "sha512-0wcR7LxxkXMn6Gi58gEs3QvY8WpTVXA31L2VOvpjm4ZPYFRHCZC13UqynheFoS5OXDYgtBneN0dhbaNBE8iLhQ=="
   "resolved" "https://registry.npmjs.org/three/-/three-0.132.2.tgz"
   "version" "0.132.2"
