@@ -1,6 +1,7 @@
 import {createSlice, current, PayloadAction} from '@reduxjs/toolkit';
 import {Euler, Vector3} from "@react-three/fiber";
 import {Box3, Mesh} from "three";
+import { MutableRefObject } from 'react';
 
 export type CanvasState = {
     components: JSX.Element[],
@@ -61,6 +62,10 @@ export const CanvasSlice = createSlice({
         },
         incrementNumberOfGeneratedKey(state: CanvasState){
             state.numberOfGeneratedKey++;
+        },
+        setMeshRefComponent(state: CanvasState, action: PayloadAction<{key: number, meshRef: Mesh | null}>){
+            let component = state.components.filter(component => component.props.keyComponent === action.payload.key)[0]
+            component.props.meshRef = action.payload.meshRef
         }
     },
     extraReducers: {
@@ -71,7 +76,7 @@ export const CanvasSlice = createSlice({
 
 export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
-    addComponent, removeComponent, updatePosition, updateRotation, updateScale, updateBox3, selectComponent, incrementNumberOfGeneratedKey
+    addComponent, removeComponent, updatePosition, updateRotation, updateScale, updateBox3, selectComponent, setMeshRefComponent, incrementNumberOfGeneratedKey
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas

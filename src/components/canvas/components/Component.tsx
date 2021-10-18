@@ -1,10 +1,11 @@
-import React, {useEffect, useRef} from 'react';
+import React, {MutableRefObject, useEffect, useRef} from 'react';
 import {Euler, Vector3} from "@react-three/fiber";
 import {TransformControls} from "@react-three/drei";
-import {canvasStateSelector, selectComponent, updateBox3} from "../../../store/canvasSlice";
+import {canvasStateSelector, selectComponent, setMeshRefComponent, updateBox3} from "../../../store/canvasSlice";
 import {useTransformations} from "../../../hooks/useTransformations";
 import {useDispatch, useSelector} from "react-redux";
 import {Box3, Mesh} from "three";
+import { CSG } from 'three-csg-ts';
 
 interface ComponentProps {
     name: string
@@ -15,21 +16,27 @@ interface ComponentProps {
     child: JSX.Element,
     keyComponent: number,
     box3?: Box3 | null,
-    isSelected?: boolean
+    isSelected?: boolean,
+    meshRef? : Mesh
 }
 
 export const Component: React.FC<ComponentProps> = (
-    {orbit, child, position, rotation, scale, keyComponent, box3, isSelected=false}) => {
+    {orbit, child, position, rotation, scale, keyComponent, box3, isSelected=false, meshRef=null}) => {
     const transformation = useRef(null)
     useTransformations(transformation, orbit);
     const dispatch = useDispatch();
     const canvasState = useSelector(canvasStateSelector);
-    const meshRef = useRef(null);
-
+    const meshRefComponent = useRef(null);
+    
+    
     useEffect(() => {
         if(canvasState.components.length !== 0){
             dispatch(selectComponent(keyComponent));
-            dispatch(updateBox3(meshRef.current));
+            if(meshRefComponent){
+                dispatch(updateBox3(meshRefComponent.current))
+                dispatch(setMeshRefComponent({key: keyComponent, meshRef: meshRefComponent.current}))
+            }
+           
         }
     }, []);
 
@@ -37,7 +44,12 @@ export const Component: React.FC<ComponentProps> = (
     useEffect(() => {
         // let selectedComponent = canvasState.components.filter(component => component.props.keyComponent === canvasState.selectedComponent)[0];
         canvasState.components.map(component => {
-            return (component.props.keyComponent !== keyComponent) && console.log(box3?.intersectsBox(component.props.box3))
+            let newMesh : Mesh | null
+            if(component.props.keyComponent !== keyComponent && box3?.intersectsBox(component.props.box3) && meshRef){
+                newMesh = CSG.subtract(component.props.meshRef, meshRef)
+                dispatch(setMeshRefComponent({key: component.props.keyComponent, meshRef: newMesh}))
+            } 
+           return null;
         })
     }, [position, rotation, scale]);
 
@@ -65,7 +77,7 @@ export const Component: React.FC<ComponentProps> = (
                                updateWorldMatrix={undefined} toJSON={undefined} clone={undefined} copy={undefined}
                                addEventListener={undefined} hasEventListener={undefined} removeEventListener={undefined}
                                dispatchEvent={undefined} updateMatrixWorld={undefined} visible>
-                <mesh onClick={() => dispatch(selectComponent(keyComponent))} ref={meshRef}>
+                <mesh onClick={() => dispatch(selectComponent(keyComponent))} ref={meshRefComponent}>
                     {child}
                 </mesh>
             </TransformControls>
