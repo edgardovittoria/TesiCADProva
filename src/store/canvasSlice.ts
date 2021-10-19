@@ -2,6 +2,7 @@ import {createSlice, current, PayloadAction} from '@reduxjs/toolkit';
 import {Euler, Vector3} from "@react-three/fiber";
 import {Box3, Mesh} from "three";
 import { MutableRefObject } from 'react';
+import { useSelector } from 'react-redux';
 
 export type CanvasState = {
     components: JSX.Element[],
@@ -28,25 +29,25 @@ export const CanvasSlice = createSlice({
         },
         updatePosition(state: CanvasState, action: PayloadAction<Vector3>){
             state.isLoading = true;
-            let selectedComponent = state.components.filter(component => component.props.isSelected)[0];
+            let selectedComponent = selectedComponentSelector(state)
             selectedComponent.props.position = action.payload
             state.isLoading = false
         },
         updateRotation(state: CanvasState, action: PayloadAction<Euler>){
             state.isLoading = true;
-            let selectedComponent = state.components.filter(component => component.props.isSelected)[0];
+            let selectedComponent = selectedComponentSelector(state)
             selectedComponent.props.rotation = action.payload
             state.isLoading = false
         },
         updateScale(state: CanvasState, action: PayloadAction<Vector3>){
             state.isLoading = true;
-            let selectedComponent = state.components.filter(component => component.props.isSelected)[0];
+            let selectedComponent = selectedComponentSelector(state)
             selectedComponent.props.scale = action.payload
             state.isLoading = false
         },
         updateBox3(state: CanvasState, action: PayloadAction<Mesh | null>){
             let meshRef = action.payload
-            let selectedComponent = state.components.filter(component => component.props.isSelected)[0]
+            let selectedComponent = selectedComponentSelector(state)
             if(meshRef !== null && selectedComponent !== undefined){
                 (meshRef as Mesh).geometry.computeBoundingBox();
                 selectedComponent.props.box3 = (meshRef as Mesh).geometry.boundingBox;
@@ -64,7 +65,7 @@ export const CanvasSlice = createSlice({
             state.numberOfGeneratedKey++;
         },
         setMeshRefComponent(state: CanvasState, action: PayloadAction<{key: number, meshRef: Mesh | null}>){
-            let component = state.components.filter(component => component.props.keyComponent === action.payload.key)[0]
+            let component = selectedComponentSelector(state)
             component.props.meshRef = action.payload.meshRef
         }
     },
@@ -79,4 +80,5 @@ export const {
     addComponent, removeComponent, updatePosition, updateRotation, updateScale, updateBox3, selectComponent, setMeshRefComponent, incrementNumberOfGeneratedKey
 } = CanvasSlice.actions
 
-export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas
+export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas;
+export const selectedComponentSelector = (canvas:CanvasState) => canvas.components.filter(component => component.props.isSelected)[0]
