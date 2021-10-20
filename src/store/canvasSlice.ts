@@ -79,6 +79,6 @@ export const {
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas;
-export const selectedComponentSelector = (state: { canvas: CanvasState }) => state.canvas.components.filter(component => component.props.isSelected)[0]
+export const selectedComponentSelector = (state: { canvas: CanvasState }) => findSelectedComponent(state.canvas)
 
 const findSelectedComponent = (canvas: CanvasState) => canvas.components.filter(component => component.props.isSelected)[0]
