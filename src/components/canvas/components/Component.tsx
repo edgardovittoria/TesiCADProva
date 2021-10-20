@@ -1,7 +1,7 @@
-import React, { Children, MutableRefObject, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Euler, Vector3 } from "@react-three/fiber";
 import { TransformControls } from "@react-three/drei";
-import { addComponent, canvasStateSelector, selectComponent, selectedComponentSelector, setMeshRefComponent, updateBox3 } from "../../../store/canvasSlice";
+import { canvasStateSelector, selectComponent, setMeshRefComponent, updateBox3 } from "../../../store/canvasSlice";
 import { useTransformations } from "../../../hooks/useTransformations";
 import { useDispatch, useSelector } from "react-redux";
 import { Box3, Mesh } from "three";

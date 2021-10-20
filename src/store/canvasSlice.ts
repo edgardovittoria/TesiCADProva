@@ -1,8 +1,6 @@
-import {createSlice, current, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Euler, Vector3} from "@react-three/fiber";
-import {Box3, Mesh} from "three";
-import { MutableRefObject } from 'react';
-import { useSelector } from 'react-redux';
+import {Mesh} from "three";
 
 export type CanvasState = {
     components: JSX.Element[],

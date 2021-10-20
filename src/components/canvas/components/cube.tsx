@@ -1,7 +1,4 @@
-import React, {MutableRefObject, useEffect, useRef} from 'react';
-import {useControl} from "react-three-gui";
-import * as THREE from "three";
-import {BoxGeometry} from "three";
+import React, {} from 'react';
 
 type CubeProps = {
     color: string,

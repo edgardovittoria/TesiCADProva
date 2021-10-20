@@ -1,5 +1,4 @@
 import React, {useEffect} from "react";
-import {useControl} from "react-three-gui";
 import {Object3DNode} from "@react-three/fiber";
 import {canvasStateSelector, updateBox3, updatePosition, updateRotation, updateScale} from "../store/canvasSlice";
 import {useDispatch, useSelector} from "react-redux";
