@@ -27,25 +27,25 @@ export const CanvasSlice = createSlice({
         },
         updatePosition(state: CanvasState, action: PayloadAction<Vector3>){
             state.isLoading = true;
-            let selectedComponent = selectedComponentSelector(state)
+            let selectedComponent = findSelectedComponent(state)
             selectedComponent.props.position = action.payload
             state.isLoading = false
         },
         updateRotation(state: CanvasState, action: PayloadAction<Euler>){
             state.isLoading = true;
-            let selectedComponent = selectedComponentSelector(state)
+            let selectedComponent = findSelectedComponent(state)
             selectedComponent.props.rotation = action.payload
             state.isLoading = false
         },
         updateScale(state: CanvasState, action: PayloadAction<Vector3>){
             state.isLoading = true;
-            let selectedComponent = selectedComponentSelector(state)
+            let selectedComponent = findSelectedComponent(state)
             selectedComponent.props.scale = action.payload
             state.isLoading = false
         },
         updateBox3(state: CanvasState, action: PayloadAction<Mesh | null>){
             let meshRef = action.payload
-            let selectedComponent = selectedComponentSelector(state)
+            let selectedComponent = findSelectedComponent(state)
             if(meshRef !== null && selectedComponent !== undefined){
                 (meshRef as Mesh).geometry.computeBoundingBox();
                 selectedComponent.props.box3 = (meshRef as Mesh).geometry.boundingBox;
@@ -63,7 +63,7 @@ export const CanvasSlice = createSlice({
             state.numberOfGeneratedKey++;
         },
         setMeshRefComponent(state: CanvasState, action: PayloadAction<{key: number, meshRef: Mesh | null}>){
-            let component = selectedComponentSelector(state)
+            let component = findSelectedComponent(state)
             component.props.meshRef = action.payload.meshRef
         }
     },
@@ -79,4 +79,6 @@ export const {
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas;
-export const selectedComponentSelector = (canvas:CanvasState) => canvas.components.filter(component => component.props.isSelected)[0]
+export const selectedComponentSelector = (state: { canvas: CanvasState }) => state.canvas.components.filter(component => component.props.isSelected)[0]
+
+const findSelectedComponent = (canvas: CanvasState) => canvas.components.filter(component => component.props.isSelected)[0]
