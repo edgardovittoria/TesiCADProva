@@ -5,11 +5,10 @@ import {
     canvasStateSelector, incrementNumberOfGeneratedKey,
     selectComponent,
     setMeshRefComponent,
-    updateBox3
 } from "../../../store/canvasSlice";
 import * as THREE from "three";
 import {ComponentEntity} from "../../../model/ComponentEntity";
-import {Color} from "@react-three/fiber";
+import {Color, MeshProps} from "@react-three/fiber";
 import {Dispatch} from "@reduxjs/toolkit";
 
 type CubeProps = {
@@ -17,6 +16,7 @@ type CubeProps = {
     width: number,
     height: number
     depth: number
+    clickHandler: Function
 }
 
 export const getNewKey = (canvasState: CanvasState , dispatch: Dispatch) => {
@@ -31,6 +31,7 @@ export function getCube(canvasState: CanvasState, dispatch: Dispatch){
     let material = new THREE.MeshBasicMaterial();
     material.color = new THREE.Color('red')
     boxGeometry.computeBoundingBox()
+    let mesh = new THREE.Mesh(boxGeometry, material)
     const component: ComponentEntity = {
         type: 'CUBE',
         name: 'CUBE',
@@ -39,32 +40,18 @@ export function getCube(canvasState: CanvasState, dispatch: Dispatch){
         position: [0,0,0],
         rotation: [0,0,0],
         scale: [1,1,1],
-        componentDetails: {
-            propsGeometry: boxGeometry,
-            propsMaterial: material
-        },
+        mesh: mesh as unknown as MeshProps,
         isSelected: false
     }
     return component
 }
 
 export const Cube: React.FC<CubeProps> = (
-    {color, width, height, depth}
+    {color, width, height, depth, clickHandler}
 ) => {
-    const dispatch = useDispatch();
-
-
-
-    useEffect(() => {
-        //dispatch(addComponent(component))
-        //dispatch(selectComponent(1));
-        //dispatch(updateBox3(meshRefComponent.current))
-        //dispatch(setMeshRefComponent({key: 1, meshRef: meshRefComponent.current}))
-    }, []);
-
 
     return(
-        <mesh>
+        <mesh onClick={() => clickHandler()}>
             <boxGeometry args={[width, height, depth]} />
             <meshBasicMaterial color={color}/>
         </mesh>

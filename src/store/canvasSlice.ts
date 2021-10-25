@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Euler, Vector3} from "@react-three/fiber";
-import {Mesh} from "three";
+import {Box3, BufferGeometry, Mesh} from "three";
 import {ComponentEntity} from "../model/ComponentEntity";
 import {type} from "os";
 
@@ -45,14 +45,9 @@ export const CanvasSlice = createSlice({
             selectedComponent.scale = action.payload
             state.isLoading = false
         },
-        updateBox3(state: CanvasState, action: PayloadAction<Mesh | null>){
-            /*let meshRef = action.payload
-            let selectedComponent = findSelectedComponent(state)
-            if(meshRef !== null && selectedComponent !== undefined){
-                (meshRef as Mesh).geometry.computeBoundingBox();
-                selectedComponent.box3 = (meshRef as Mesh).geometry.boundingBox;
-                selectedComponent.box3?.applyMatrix4((meshRef as Mesh).matrixWorld);
-            }*/
+        updateComponent(state: CanvasState, action: PayloadAction<ComponentEntity>){
+            let targetComponent = findComponentByKey(state, action.payload.keyComponent)
+            targetComponent = action.payload;
         },
         selectComponent(state: CanvasState, action: PayloadAction<number>){
             state.components.map(component => {
@@ -80,7 +75,7 @@ export const CanvasSlice = createSlice({
 export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
     addComponent, removeComponent, updatePosition, updateRotation,
-    updateScale, updateBox3, selectComponent, setMeshRefComponent, incrementNumberOfGeneratedKey,
+    updateScale, updateComponent, selectComponent, setMeshRefComponent, incrementNumberOfGeneratedKey,
     subtractionComponent
 } = CanvasSlice.actions
 

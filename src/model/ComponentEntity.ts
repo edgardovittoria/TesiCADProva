@@ -1,5 +1,6 @@
-import {Box3} from "three";
+import {Box3, Mesh} from "three";
 import {ComponentDetails} from "./ComponentDetails";
+import {MeshProps} from "@react-three/fiber";
 
 export type ComponentEntity = {
     name: string
@@ -8,7 +9,7 @@ export type ComponentEntity = {
     position: [number, number, number]
     rotation: [number, number, number]
     scale: [number, number, number]
-    componentDetails: ComponentDetails
+    mesh: MeshProps
     keyComponent: number
     isSelected: boolean
 }

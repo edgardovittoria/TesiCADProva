@@ -6,7 +6,6 @@ import {
     selectComponent, selectedComponentSelector,
     setMeshRefComponent,
     subtractionComponent,
-    updateBox3
 } from "../../../store/canvasSlice";
 import {useTransformations} from "../../../hooks/useTransformations";
 import {useDispatch, useSelector} from "react-redux";
@@ -14,9 +13,7 @@ import {Box3, Mesh} from "three";
 import {ComponentEntity} from "../../../model/ComponentEntity";
 
 interface ComponentProps {
-
     orbit: React.MutableRefObject<null>,
-
 }
 
 export const Component: React.FC<ComponentProps> = (
@@ -40,22 +37,29 @@ export const Component: React.FC<ComponentProps> = (
     }, []);
 
 
-    /*useEffect(() => {
+    useEffect(() => {
 
         canvasState.components.map(component => {
             let newMesh: Mesh | null
-            if (component.keyComponent !== componentEntity.keyComponent && componentEntity.box3?.intersectsBox(component.box3 as Box3)) {
-                newMesh = CSG.subtract((component.props.children as JSX.Element).props.meshRef, (children as JSX.Element).props.meshRef)
+            console.log(componentEntity)
+            //console.log('chiave non selezionato',component.keyComponent)
+            //console.log('chiave selezionato',componentEntity.props.entity.keyComponent)
+            //if (component.keyComponent !== componentEntity.props.entity.keyComponent && componentEntity.props.entity.mesh.geometry.boundingBox?.intersectsBox(component.mesh.geometry.boundingBox)) {
+                //console.log('intersezione',componentEntity.props.entity.mesh.geometry.boundingBox?.intersectsBox(component.mesh.geometry.boundingBox))
+                //console.log('bb selezionato',componentEntity.props.entity.mesh.geometry.boundingBox)
+                //console.log('bb',component.mesh.geometry.boundingBox)
+
+                /*newMesh = CSG.subtract((component.props.children as JSX.Element).props.meshRef, (children as JSX.Element).props.meshRef)
                 let newMeshJSX = <primitive object={newMesh}/>
                 let newComponet = <Component name="newComponet" orbit={orbit} position={component.props.position}
                                              rotation={component.props.rotation} scale={component.props.scale}
                                              keyComponent={getNewKey(canvasState, dispatch)} children={newMeshJSX}/>
-                dispatch(subtractionComponent({keyComponentToSubstitute: component.props.keyComponent, newComponent: newComponet}))
-                console.log('intersezione')
-            }
-            return null;
+                dispatch(subtractionComponent({keyComponentToSubstitute: component.props.keyComponent, newComponent: newComponet}))*/
+                //console.log('intersezione')
+            //}
+            //return null;
         })
-    }, [componentEntity.position, componentEntity.rotation, componentEntity.scale]);*/
+    }, [componentEntity.props.entity.position, componentEntity.props.entity.rotation, componentEntity.props.entity.scale]);
 
     return (
         <>
@@ -85,7 +89,7 @@ export const Component: React.FC<ComponentProps> = (
                                addEventListener={undefined} hasEventListener={undefined} removeEventListener={undefined}
                                dispatchEvent={undefined} updateMatrixWorld={undefined} visible>
 
-                {children as JSX.Element}
+                {componentEntity}
 
             </TransformControls>
 

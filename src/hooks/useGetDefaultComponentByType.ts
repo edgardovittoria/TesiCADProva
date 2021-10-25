@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {CanvasState, canvasStateSelector, incrementNumberOfGeneratedKey} from "../store/canvasSlice";
 import * as THREE from 'three';
 import {Vector3} from "three";
+import {getCube} from "../components/canvas/components/cube";
 
 
 
@@ -23,48 +24,10 @@ export const useGetDefaultComponentByType = (type: string) => {
 
     switch (type) {
         case 'CUBE' :
-            let boxGeometry = new THREE.BoxGeometry()
-            let material = new THREE.MeshBasicMaterial();
-            material.color = new THREE.Color('red')
-            boxGeometry.computeBoundingBox()
-            const component: ComponentEntity = {
-                type: type,
-                name: type,
-                keyComponent: getNewKey(),
-                orbitEnabled: true,
-                position: [0,0,0],
-                rotation: [0,0,0],
-                scale: [1,1,1],
-                componentDetails: {
-                    propsGeometry: boxGeometry,
-                    propsMaterial: material
-                },
-                isSelected: false
-            }
-
-            return component;
+            return getCube(canvasState, dispatch);
 
         default:
-            let boxGeometryDef = new THREE.BoxGeometry()
-            let materialDef = new THREE.MeshBasicMaterial();
-            materialDef.color = new THREE.Color('red')
-            boxGeometryDef.computeBoundingBox()
-            const componentDefault: ComponentEntity = {
-                type: type,
-                name: type,
-                keyComponent: getNewKey(),
-                orbitEnabled: true,
-                position: [0,0,0],
-                rotation: [0,0,0],
-                scale: [1,1,1],
-                componentDetails: {
-                    propsGeometry: boxGeometryDef,
-                    propsMaterial: materialDef
-                },
-                isSelected: false
-            }
-
-            return componentDefault;
+            return getCube(canvasState, dispatch);
 
     }
 }

@@ -1,6 +1,7 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {CanvasState, updatePosition, updateRotation} from "../../../store/canvasSlice";
-import {useDispatch} from "react-redux";
+import {CanvasState, selectedComponentSelector, updatePosition, updateRotation} from "../../../store/canvasSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {manageTransformation, updateBoundingBox} from "../../../hooks/useTransformations";
 
 interface RotationProps {
     canvasState: CanvasState
@@ -9,6 +10,7 @@ interface RotationProps {
 
 function InputElement(props: any){
     const dispatch = useDispatch()
+    const selectedComponent = useSelector(selectedComponentSelector)
     function getValue(): number{
         if(props.axisName === "x"){
             return props.x
@@ -21,11 +23,26 @@ function InputElement(props: any){
 
     function onChangeInputValueRotation (e: ChangeEvent<HTMLInputElement>){
         if(props.axisName === "x"){
-            dispatch(updateRotation([parseFloat(e.target.value),props.y, props.z]))
+            manageTransformation(
+                'rotate',
+                [parseFloat(e.target.value),props.y, props.z],
+                dispatch
+            )
+            updateBoundingBox(selectedComponent, dispatch)
         }else if(props.axisName === "y"){
-            dispatch(updateRotation([props.x,parseFloat(e.target.value),props.z]))
+            manageTransformation(
+                'rotate',
+                [props.x,parseFloat(e.target.value),props.z],
+                dispatch
+            )
+            updateBoundingBox(selectedComponent, dispatch)
         }else{
-            dispatch(updateRotation([props.x,props.y,parseFloat(e.target.value)]))
+            manageTransformation(
+                'rotate',
+                [props.x,props.y,parseFloat(e.target.value)],
+                dispatch
+            )
+            updateBoundingBox(selectedComponent, dispatch)
         }
     }
 

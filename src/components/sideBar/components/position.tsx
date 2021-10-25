@@ -1,7 +1,8 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {CanvasState, selectComponent, updatePosition} from "../../../store/canvasSlice";
-import {useDispatch} from "react-redux";
+import {CanvasState, selectComponent, selectedComponentSelector, updatePosition} from "../../../store/canvasSlice";
+import {useDispatch, useSelector} from "react-redux";
 import {ComponentEntity} from "../../../model/ComponentEntity";
+import {manageTransformation, updateBoundingBox} from "../../../hooks/useTransformations";
 
 interface PositionProps {
     canvasState: CanvasState
@@ -10,6 +11,7 @@ interface PositionProps {
 
 function InputElement(props: any){
     const dispatch = useDispatch()
+    const selectedComponent = useSelector(selectedComponentSelector)
     function getValue(): number{
         if(props.axisName === "x"){
             return props.x
@@ -22,11 +24,26 @@ function InputElement(props: any){
 
     function onChangeInputValue (e: ChangeEvent<HTMLInputElement>){
         if(props.axisName === "x"){
-            dispatch(updatePosition([parseFloat(e.target.value),props.y, props.z]))
+            manageTransformation(
+                'translate',
+                [parseFloat(e.target.value),props.y, props.z],
+                dispatch
+            )
+            updateBoundingBox(selectedComponent, dispatch)
         }else if(props.axisName === "y"){
-            dispatch(updatePosition([props.x,parseFloat(e.target.value),props.z]))
+            manageTransformation(
+                'translate',
+                [props.x,parseFloat(e.target.value),props.z],
+                dispatch
+            )
+            updateBoundingBox(selectedComponent, dispatch)
         }else{
-            dispatch(updatePosition([props.x,props.y,parseFloat(e.target.value)]))
+            manageTransformation(
+                'translate',
+                [props.x,props.y,parseFloat(e.target.value)],
+                dispatch
+            )
+            updateBoundingBox(selectedComponent, dispatch)
         }
     }
 
@@ -53,8 +70,6 @@ export const Position: React.FC<PositionProps> = ({canvasState}) => {
     const [z,setZ] = useState(0);
     useEffect(() => {
         if(selectedComponent !== undefined){
-            //console.log(selectedComponent)
-            console.log(selectedComponent)
             position = selectedComponent?.position as [number, number, number]
              setX(position[0])
              setY(position[1])
