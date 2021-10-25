@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {MutableRefObject, useRef} from 'react';
 import {Provider, ReactReduxContext, useSelector} from "react-redux";
 import {canvasStateSelector} from "../../store/canvasSlice";
-import {Canvas} from "@react-three/fiber";
+import {Canvas, Euler, Vector3} from "@react-three/fiber";
+import {Component} from "./components/Component";
+import {FactoryComponent} from "../factory/FactoryComponent";
 
 
 interface MyCanvasProps {
@@ -16,15 +18,24 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({children}) => {
                 <ReactReduxContext.Consumer>
                     {({store}) => (
                         <>
-                            <Canvas style={{width: "100%", height: "100%"}}
+                            <Canvas id="myCanvas" style={{width: "100%", height: "100%"}}
                                              camera={{position: [0, 50, 0], fov: 20, far: 1000, near: 0.1}}
                             >
                                 <Provider store={store}>
                                     <ambientLight/>
                                     <pointLight position={[0, 50, 0]}/>
-                                    {canvasState.components}
+                                    {canvasState.components.map(component => {
+                                        let element = <FactoryComponent entity={component}/>
+                                        return(
+                                            <Component
+                                                key={component.keyComponent}
+                                                children={element}
+                                                orbit={children as React.MutableRefObject<null>}
+                                            />
+                                        )
+                                    })}
                                     <gridHelper scale={[2.88, 1, 2.95]}/>
-                                    {children}
+                                    {(children as React.MutableRefObject<null>).current}
                                 </Provider>
                             </Canvas>
                         </>

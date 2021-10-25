@@ -1,6 +1,7 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {CanvasState, updatePosition} from "../../../store/canvasSlice";
+import {CanvasState, selectComponent, updatePosition} from "../../../store/canvasSlice";
 import {useDispatch} from "react-redux";
+import {ComponentEntity} from "../../../model/ComponentEntity";
 
 interface PositionProps {
     canvasState: CanvasState
@@ -45,18 +46,21 @@ function InputElement(props: any){
 }
 
 export const Position: React.FC<PositionProps> = ({canvasState}) => {
-    let selectedComponent = canvasState.components.filter(component => component.props.isSelected)[0]
-
-    const [x,setX] = useState(selectedComponent?.props.position[0]);
-    const [y,setY] = useState(selectedComponent?.props.position[1]);
-    const [z,setZ] = useState(selectedComponent?.props.position[2]);
+    let selectedComponent: ComponentEntity = canvasState.components.filter(component => component.isSelected)[0]
+    let position: [number, number, number] = [0,0,0];
+    const [x,setX] = useState(0);
+    const [y,setY] = useState(0);
+    const [z,setZ] = useState(0);
     useEffect(() => {
         if(selectedComponent !== undefined){
-            setX(selectedComponent?.props.position[0])
-            setY(selectedComponent?.props.position[1])
-            setZ(selectedComponent?.props.position[2])
+            //console.log(selectedComponent)
+            console.log(selectedComponent)
+            position = selectedComponent?.position as [number, number, number]
+             setX(position[0])
+             setY(position[1])
+             setZ(position[2])
         }
-    }, [selectedComponent?.props.position]);
+    }, [canvasState.components]);
 
     return(
         <>

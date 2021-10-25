@@ -18,10 +18,10 @@ function App() {
     return (
         <Provider store={store}>
                 {/**/}
-            <MyNavBar orbit={orbit}/>
+            <MyNavBar/>
             <div className="row" style={{margin:"0px"}}>
                 <div className="column" style={{width: "75%", padding:"0px", float:"right"}}>
-                    <MyCanvas children={orbitControl}/>
+                    <MyCanvas children={orbit}/>
                     <ToolBar/>
                 </div>
                 <div className="column" style={{width: "25%", padding:"0px", float:"right"}}>

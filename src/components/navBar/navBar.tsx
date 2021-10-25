@@ -2,26 +2,36 @@ import React from 'react';
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { faCircle, faCube } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Cube } from "../canvas/components/cube";
+import {Cube, getCube} from "../canvas/components/cube";
 import { Component } from "../canvas/components/Component";
-import { addComponent, canvasStateSelector, incrementNumberOfGeneratedKey } from "../../store/canvasSlice";
+import {addComponent, CanvasState, canvasStateSelector, incrementNumberOfGeneratedKey} from "../../store/canvasSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Sfera } from "../canvas/components/sfera";
+import {Dispatch} from "@reduxjs/toolkit";
+import {ComponentDetails} from "../../model/ComponentDetails";
+import {
+    BoxGeometryProps,
+    BufferGeometryProps,
+    Euler,
+    MeshBasicMaterialProps,
+    MeshProps,
+    Vector3
+} from "@react-three/fiber";
+import {ComponentEntity} from "../../model/ComponentEntity";
+import {BufferGeometry, Material} from "three";
+import {Geometry} from "three/examples/jsm/deprecated/Geometry";
+import {useGetDefaultComponentByType} from "../../hooks/useGetDefaultComponentByType";
+import * as THREE from "three";
+
 
 interface NavBarProps {
-    orbit: React.MutableRefObject<null>
+
 }
 
-export const MyNavBar: React.FC<NavBarProps> = ({ orbit }) => {
+
+export const MyNavBar: React.FC<NavBarProps> = ({  }) => {
     const dispatch = useDispatch();
     const canvasState = useSelector(canvasStateSelector);
-
-    const getNewKey = () => {
-        const newKey = canvasState.numberOfGeneratedKey + 1;
-        dispatch(incrementNumberOfGeneratedKey())
-        return newKey;
-    }
-
     return (
         <>
             <Navbar bg="dark" variant="dark">
@@ -33,22 +43,15 @@ export const MyNavBar: React.FC<NavBarProps> = ({ orbit }) => {
                             menuVariant="dark"
                         >
                             <Nav.Link onClick={() => {
-                                const cube = <Cube color="red" x={1} y={1} z={1} />;
-                                const element = <Component name="Cube" keyComponent={getNewKey()} orbit={orbit}
-                                    children={cube}
-                                    position={[0, 0, 0]} rotation={[0, 0, 0]}
-                                    scale={[1, 1, 1]} />
-                                dispatch(addComponent(element));
+                                let cube = getCube(canvasState, dispatch);
+                                dispatch(addComponent(cube))
                             }}>
                                 <FontAwesomeIcon icon={faCube} style={{ marginRight: "5px" }} />
                                 Cube
                             </Nav.Link>
                             <Nav.Link onClick={() => {
-                                const sphere = <Sfera radius={1} widthSegments={6} heightSegments={6} color="yellow" />
-                                const element = <Component name="Sphere" keyComponent={getNewKey()} orbit={orbit}
-                                    children={sphere} position={[0, 0, 0]} rotation={[0, 0, 0]}
-                                    scale={[1, 1, 1]} />
-                                dispatch(addComponent(element))
+
+
                             }}>
                                 <FontAwesomeIcon icon={faCircle} style={{ marginRight: "5px" }} />
                                 Sphere

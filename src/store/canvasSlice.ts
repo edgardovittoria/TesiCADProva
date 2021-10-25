@@ -1,9 +1,11 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Euler, Vector3} from "@react-three/fiber";
 import {Mesh} from "three";
+import {ComponentEntity} from "../model/ComponentEntity";
+import {type} from "os";
 
 export type CanvasState = {
-    components: JSX.Element[],
+    components: ComponentEntity[],
     numberOfGeneratedKey: number,
     isLoading: boolean
 }
@@ -17,54 +19,56 @@ export const CanvasSlice = createSlice({
     } as CanvasState,
     reducers: {
         //qui vanno inserite le azioni
-        addComponent(state: CanvasState, action: PayloadAction<JSX.Element>){
+        addComponent(state: CanvasState, action: PayloadAction<ComponentEntity>){
             state.components.push(action.payload);
         },
-        removeComponent(state: CanvasState, action: PayloadAction<JSX.Element>){
+        removeComponent(state: CanvasState, action: PayloadAction<ComponentEntity>){
             state.components = state.components.filter(component => {
                 return component !== action.payload;
             })
         },
-        updatePosition(state: CanvasState, action: PayloadAction<Vector3>){
+        updatePosition(state: CanvasState, action: PayloadAction<[number,number,number]>){
             state.isLoading = true;
             let selectedComponent = findSelectedComponent(state)
-            selectedComponent.props.position = action.payload
+            selectedComponent.position = action.payload
             state.isLoading = false
         },
-        updateRotation(state: CanvasState, action: PayloadAction<Euler>){
+        updateRotation(state: CanvasState, action: PayloadAction<[number,number,number]>){
             state.isLoading = true;
             let selectedComponent = findSelectedComponent(state)
-            selectedComponent.props.rotation = action.payload
+            selectedComponent.rotation = action.payload
             state.isLoading = false
         },
-        updateScale(state: CanvasState, action: PayloadAction<Vector3>){
+        updateScale(state: CanvasState, action: PayloadAction<[number,number,number]>){
             state.isLoading = true;
             let selectedComponent = findSelectedComponent(state)
-            selectedComponent.props.scale = action.payload
+            selectedComponent.scale = action.payload
             state.isLoading = false
         },
         updateBox3(state: CanvasState, action: PayloadAction<Mesh | null>){
-            let meshRef = action.payload
+            /*let meshRef = action.payload
             let selectedComponent = findSelectedComponent(state)
             if(meshRef !== null && selectedComponent !== undefined){
                 (meshRef as Mesh).geometry.computeBoundingBox();
-                selectedComponent.props.box3 = (meshRef as Mesh).geometry.boundingBox;
-                selectedComponent.props.box3?.applyMatrix4((meshRef as Mesh).matrixWorld);
-            }
+                selectedComponent.box3 = (meshRef as Mesh).geometry.boundingBox;
+                selectedComponent.box3?.applyMatrix4((meshRef as Mesh).matrixWorld);
+            }*/
         },
         selectComponent(state: CanvasState, action: PayloadAction<number>){
-            //let selectedComponent = current(state.components.filter(component => component.props.keyComponent === action.payload)[0]);
-            // state.selectedComponent = selectedComponent;
             state.components.map(component => {
-                return (component.props.keyComponent === action.payload)? component.props.isSelected = true : component.props.isSelected = false    
+                (component.keyComponent === action.payload)? component.isSelected = true : component.isSelected = false
             })
         },
         incrementNumberOfGeneratedKey(state: CanvasState){
             state.numberOfGeneratedKey++;
         },
         setMeshRefComponent(state: CanvasState, action: PayloadAction<{key: number, meshRef: Mesh | null}>){
-            let component = findSelectedComponent(state)
-            component.props.meshRef = action.payload.meshRef
+            let component = findSelectedComponent(state);
+            //component.props.children.props.meshRef = action.payload.meshRef
+        },
+        subtractionComponent(state: CanvasState, action: PayloadAction<{keyComponentToSubstitute: number, newComponent: ComponentEntity}>){
+            state.components = state.components.filter(component => component.keyComponent !== action.payload.keyComponentToSubstitute)
+            state.components.push(action.payload.newComponent);
         }
     },
     extraReducers: {
@@ -75,10 +79,13 @@ export const CanvasSlice = createSlice({
 
 export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
-    addComponent, removeComponent, updatePosition, updateRotation, updateScale, updateBox3, selectComponent, setMeshRefComponent, incrementNumberOfGeneratedKey
+    addComponent, removeComponent, updatePosition, updateRotation,
+    updateScale, updateBox3, selectComponent, setMeshRefComponent, incrementNumberOfGeneratedKey,
+    subtractionComponent
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas;
 export const selectedComponentSelector = (state: { canvas: CanvasState }) => findSelectedComponent(state.canvas)
 
-const findSelectedComponent = (canvas: CanvasState) => canvas.components.filter(component => component.props.isSelected)[0]
+const findSelectedComponent = (canvas: CanvasState) => canvas.components.filter(component => component.isSelected)[0]
+const findComponentByKey = (canvas: CanvasState, key: number) => canvas.components.filter(component => component.keyComponent === key)[0]

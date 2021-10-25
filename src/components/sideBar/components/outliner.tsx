@@ -10,9 +10,9 @@ export const Outliner: React.FC<OutlinerProps> = ({ canvasState }) => {
 
     const [optionActive, setOptionActive] = useState("");
     useEffect(() => {
-        let selectedComponent = canvasState.components.filter(component => component.props.isSelected)[0]
+        let selectedComponent = canvasState.components.filter(component => component.isSelected)[0]
         if (selectedComponent !== undefined) {
-            setOptionActive(selectedComponent.props.keyComponent.toString())
+            setOptionActive(selectedComponent.keyComponent.toString())
         }
     }, [canvasState.components]);
 
@@ -28,13 +28,14 @@ export const Outliner: React.FC<OutlinerProps> = ({ canvasState }) => {
                 {canvasState.components.map(component => {
                     return (
                         <div
-                            className={(component.props.isSelected) ? "option active" : "option"}
+                            key={component.keyComponent}
+                            className={(component.isSelected) ? "option active" : "option"}
                             onClick={() => {
-                                dispatch(selectComponent(component.props.keyComponent))
+                                dispatch(selectComponent(component.keyComponent))
                             }}>
                             <span className="opener" />
                             <span className="type Mesh" />
-                            {component.props.name + component.props.keyComponent}
+                            {component.name + component.keyComponent}
                         </div>
                     )
                 })}

@@ -12,9 +12,9 @@ export const ToolBar: React.FC<ToolBarProps> = ({}) => {
     return(
         <>
             <div id="toolbar" className="Panel">
-                {toolbarTransformationState.transformation.map(transformation => {
+                {toolbarTransformationState.transformation.map((transformation, index) => {
                     return(
-                        <button className={(transformation.active) ? "Button selected" : "Button"} onClick={() => dispatch(setTransformationActive(transformation.type))}>
+                        <button key={index} className={(transformation.active) ? "Button selected" : "Button"} onClick={() => dispatch(setTransformationActive(transformation.type))}>
                             {transformation.type}
                         </button>
                     )
