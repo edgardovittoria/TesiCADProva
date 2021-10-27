@@ -4,18 +4,18 @@ import {
     addComponent, CanvasState,
     canvasStateSelector, incrementNumberOfGeneratedKey,
     selectComponent,
-    setMeshRefComponent,
 } from "../../../store/canvasSlice";
 import * as THREE from "three";
-import {ComponentEntity} from "../../../model/ComponentEntity";
+import {ComponentEntity, CubeEntity} from "../../../model/ComponentEntity";
 import {Color, MeshProps} from "@react-three/fiber";
 import {Dispatch} from "@reduxjs/toolkit";
 
-type CubeProps = {
+export type CubeProps = {
     color: Color,
     width: number,
     height: number
     depth: number
+    meshRef: MutableRefObject<null>
     clickHandler: Function
 }
 
@@ -27,12 +27,7 @@ export const getNewKey = (canvasState: CanvasState , dispatch: Dispatch) => {
 
 
 export function getCube(canvasState: CanvasState, dispatch: Dispatch){
-    let boxGeometry = new THREE.BoxGeometry()
-    let material = new THREE.MeshBasicMaterial();
-    material.color = new THREE.Color('red')
-    boxGeometry.computeBoundingBox()
-    let mesh = new THREE.Mesh(boxGeometry, material)
-    const component: ComponentEntity = {
+    const component: CubeEntity = {
         type: 'CUBE',
         name: 'CUBE',
         keyComponent: getNewKey(canvasState, dispatch),
@@ -40,20 +35,25 @@ export function getCube(canvasState: CanvasState, dispatch: Dispatch){
         position: [0,0,0],
         rotation: [0,0,0],
         scale: [1,1,1],
-        mesh: mesh as unknown as MeshProps,
+        box3Min: undefined,
+        box3Max: undefined,
+        width: 1,
+        depth: 1,
+        height: 1,
+        color: 'red',
         isSelected: false
     }
     return component
 }
 
-export const Cube: React.FC<CubeProps> = (
-    {color, width, height, depth, clickHandler}
+export const Cube = (
+    cubeProps: CubeProps
 ) => {
 
     return(
-        <mesh onClick={() => clickHandler()}>
-            <boxGeometry args={[width, height, depth]} />
-            <meshBasicMaterial color={color}/>
+        <mesh ref={cubeProps.meshRef} onClick={() => cubeProps.clickHandler()}>
+            <boxGeometry args={[cubeProps.width, cubeProps.height, cubeProps.depth]} />
+            <meshBasicMaterial color={cubeProps.color}/>
         </mesh>
     )
 }

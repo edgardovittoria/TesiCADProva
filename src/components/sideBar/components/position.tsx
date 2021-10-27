@@ -2,7 +2,7 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import {CanvasState, selectComponent, selectedComponentSelector, updatePosition} from "../../../store/canvasSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {ComponentEntity} from "../../../model/ComponentEntity";
-import {manageTransformation, updateBoundingBox} from "../../../hooks/useTransformations";
+import {manageTransformation} from "../../../hooks/useTransformations";
 
 interface PositionProps {
     canvasState: CanvasState
@@ -29,21 +29,21 @@ function InputElement(props: any){
                 [parseFloat(e.target.value),props.y, props.z],
                 dispatch
             )
-            updateBoundingBox(selectedComponent, dispatch)
+            
         }else if(props.axisName === "y"){
             manageTransformation(
                 'translate',
                 [props.x,parseFloat(e.target.value),props.z],
                 dispatch
             )
-            updateBoundingBox(selectedComponent, dispatch)
+            
         }else{
             manageTransformation(
                 'translate',
                 [props.x,props.y,parseFloat(e.target.value)],
                 dispatch
             )
-            updateBoundingBox(selectedComponent, dispatch)
+            
         }
     }
 

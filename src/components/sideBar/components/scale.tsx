@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {CanvasState, selectedComponentSelector, updateScale} from "../../../store/canvasSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {manageTransformation, updateBoundingBox} from "../../../hooks/useTransformations";
+import {manageTransformation} from "../../../hooks/useTransformations";
 
 interface ScaleProps {
     canvasState: CanvasState
@@ -29,21 +29,21 @@ function InputElement(props: any) {
                 [parseFloat(e.target.value), props.y, props.z],
                 dispatch
             )
-            updateBoundingBox(selectedComponent, dispatch)
+            
         } else if (props.axisName === "y") {
             manageTransformation(
                 'scale',
                 [props.x, parseFloat(e.target.value), props.z],
                 dispatch
             )
-            updateBoundingBox(selectedComponent, dispatch)
+            
         } else {
             manageTransformation(
                 'scale',
                 [props.x, props.y, parseFloat(e.target.value)],
                 dispatch
             )
-            updateBoundingBox(selectedComponent, dispatch)
+            
         }
     }
 

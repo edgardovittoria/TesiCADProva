@@ -45,9 +45,10 @@ export const CanvasSlice = createSlice({
             selectedComponent.scale = action.payload
             state.isLoading = false
         },
-        updateComponent(state: CanvasState, action: PayloadAction<ComponentEntity>){
-            let targetComponent = findComponentByKey(state, action.payload.keyComponent)
-            targetComponent = action.payload;
+        updateBox3(state: CanvasState, action: PayloadAction<{key: number ,box3: Box3}>){
+            let component = findComponentByKey(state, action.payload.key)
+            component.box3Min = [action.payload.box3.min.x, action.payload.box3.min.y, action.payload.box3.min.z]
+            component.box3Max = [action.payload.box3.max.x, action.payload.box3.max.y, action.payload.box3.max.z]
         },
         selectComponent(state: CanvasState, action: PayloadAction<number>){
             state.components.map(component => {
@@ -56,10 +57,6 @@ export const CanvasSlice = createSlice({
         },
         incrementNumberOfGeneratedKey(state: CanvasState){
             state.numberOfGeneratedKey++;
-        },
-        setMeshRefComponent(state: CanvasState, action: PayloadAction<{key: number, meshRef: Mesh | null}>){
-            let component = findSelectedComponent(state);
-            //component.props.children.props.meshRef = action.payload.meshRef
         },
         subtractionComponent(state: CanvasState, action: PayloadAction<{keyComponentToSubstitute: number, newComponent: ComponentEntity}>){
             state.components = state.components.filter(component => component.keyComponent !== action.payload.keyComponentToSubstitute)
@@ -75,7 +72,7 @@ export const CanvasSlice = createSlice({
 export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
     addComponent, removeComponent, updatePosition, updateRotation,
-    updateScale, updateComponent, selectComponent, setMeshRefComponent, incrementNumberOfGeneratedKey,
+    updateScale, updateBox3, selectComponent, incrementNumberOfGeneratedKey,
     subtractionComponent
 } = CanvasSlice.actions
 

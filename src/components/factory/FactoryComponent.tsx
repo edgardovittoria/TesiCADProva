@@ -1,44 +1,30 @@
-import React from 'react';
-import {ComponentEntity} from "../../model/ComponentEntity";
-import {Cube} from "../canvas/components/cube";
-import {BoxGeometryProps, MeshBasicMaterialProps} from "@react-three/fiber";
+import React, { MutableRefObject } from 'react';
+import { ComponentEntity, CubeEntity } from "../../model/ComponentEntity";
+import { Cube, CubeProps } from "../canvas/components/cube";
+import { BoxGeometryProps, MeshBasicMaterialProps } from "@react-three/fiber";
 import * as THREE from 'three';
-import {useDispatch} from "react-redux";
-import {selectComponent} from "../../store/canvasSlice";
-import {Color} from "three";
 
-interface FactoryComponentProps {
-    entity: ComponentEntity
-}
-
-type ComponentRepresentations = {
-    storeRepresentation: ComponentEntity
-    jsxRepresentation: JSX.Element
-}
-
-export const FactoryComponent: React.FC<FactoryComponentProps> = ({entity}) => {
-    const dispatch = useDispatch();
+import { selectComponent } from "../../store/canvasSlice";
+import { Color } from "three";
+import { Dispatch } from '@reduxjs/toolkit';
 
 
-        switch (entity.type) {
-            case "CUBE" :
 
-                let color = ((entity.mesh.material as MeshBasicMaterialProps).color) ? (entity.mesh.material as MeshBasicMaterialProps).color : new THREE.Color('red');
-                let boxGeometry = (entity.mesh.geometry as BoxGeometryProps)
-                if(boxGeometry.parameters !== undefined){
-                    let width = boxGeometry.parameters.width as number
-                    let height = boxGeometry.parameters.height as number
-                    let depth = boxGeometry.parameters.depth as number
+export const FactoryComponent = (entity: ComponentEntity , dispatch: Dispatch, meshRef: MutableRefObject<null>) => {
 
-                    return(
-                        <Cube color={color as Color} width={width} height={height} depth={depth} clickHandler={() => dispatch(selectComponent(entity.keyComponent))}/>
-                    )
-                }else{
-                    return null
-                }
-            default: return null
 
-        }
+    switch (entity.type) {
+        case "CUBE":
+            let cubeEntity = entity as CubeEntity
+
+            let cubeProps : CubeProps = {color: cubeEntity.color, width: cubeEntity.width, height: cubeEntity.height, depth: cubeEntity.depth, clickHandler: () => dispatch(selectComponent(cubeEntity.keyComponent)), meshRef: meshRef}
+            return (
+                Cube(cubeProps)
+            )
+
+        default: return null
+
+    }
 
 
 

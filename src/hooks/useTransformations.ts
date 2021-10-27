@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {Object3DNode} from "@react-three/fiber";
 import {
     canvasStateSelector,
-    selectComponent, selectedComponentSelector, updateComponent,
+    selectComponent, selectedComponentSelector,
     updatePosition,
     updateRotation,
     updateScale
@@ -30,7 +30,6 @@ export const useTransformations = (
 
 
     useEffect(() => {
-
         if (transformation.current && selectedComponent) {
             const controls: Object3DNode<any, any> = transformation.current
             if(controls.object.userData.key === selectedComponent.keyComponent){
@@ -52,22 +51,20 @@ export const useTransformations = (
                         [controls.worldPosition.x, controls.worldPosition.y, controls.worldPosition.z],
                         dispatch
                     )
-                    updateBoundingBox(selectedComponent, dispatch)
-
+                    
                 }else if(controls.getMode() === 'rotate'){
                     manageTransformation(
                         controls.getMode(),
                         [controls.worldQuaternion.x, controls.worldQuaternion.y, controls.worldQuaternion.z],
                         dispatch
                     )
-                    updateBoundingBox(selectedComponent, dispatch)
+                    
                 }else{
                     manageTransformation(
                         controls.getMode(),
                         [controls.worldScale.x, controls.worldScale.y, controls.worldScale.z],
                         dispatch
                     )
-                    updateBoundingBox(selectedComponent, dispatch)
                 }
             }
             controls.addEventListener("dragging-changed", callback)
@@ -75,7 +72,9 @@ export const useTransformations = (
 
         }
     },[toolbarTransformationState.transformation, canvasState.components])
+
 }
+
 
 export function manageTransformation(
     transformation: string,
@@ -94,8 +93,4 @@ export function manageTransformation(
     }
 }
 
-export function updateBoundingBox(selectedComponent: ComponentEntity, dispatch: Dispatch){
-    selectedComponent.mesh.geometry?.boundingBox?.applyMatrix4(selectedComponent.mesh.matrixWorld as Matrix4)
-    console.log(selectedComponent)
-    dispatch(updateComponent(selectedComponent))
-}
+

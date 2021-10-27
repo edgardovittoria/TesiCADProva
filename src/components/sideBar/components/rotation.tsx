@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {CanvasState, selectedComponentSelector, updatePosition, updateRotation} from "../../../store/canvasSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {manageTransformation, updateBoundingBox} from "../../../hooks/useTransformations";
+import {manageTransformation} from "../../../hooks/useTransformations";
 
 interface RotationProps {
     canvasState: CanvasState
@@ -28,21 +28,21 @@ function InputElement(props: any){
                 [parseFloat(e.target.value),props.y, props.z],
                 dispatch
             )
-            updateBoundingBox(selectedComponent, dispatch)
+            
         }else if(props.axisName === "y"){
             manageTransformation(
                 'rotate',
                 [props.x,parseFloat(e.target.value),props.z],
                 dispatch
             )
-            updateBoundingBox(selectedComponent, dispatch)
+            
         }else{
             manageTransformation(
                 'rotate',
                 [props.x,props.y,parseFloat(e.target.value)],
                 dispatch
             )
-            updateBoundingBox(selectedComponent, dispatch)
+            
         }
     }
 

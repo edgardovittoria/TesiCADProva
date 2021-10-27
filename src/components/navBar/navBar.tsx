@@ -8,7 +8,6 @@ import {addComponent, CanvasState, canvasStateSelector, incrementNumberOfGenerat
 import { useDispatch, useSelector } from "react-redux";
 import { Sfera } from "../canvas/components/sfera";
 import {Dispatch} from "@reduxjs/toolkit";
-import {ComponentDetails} from "../../model/ComponentDetails";
 import {
     BoxGeometryProps,
     BufferGeometryProps,
