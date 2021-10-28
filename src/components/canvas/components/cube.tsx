@@ -26,7 +26,7 @@ export const getNewKey = (canvasState: CanvasState , dispatch: Dispatch) => {
 }
 
 
-export function getCube(canvasState: CanvasState, dispatch: Dispatch){
+export function getDefaultCube(canvasState: CanvasState, dispatch: Dispatch){
     const component: CubeEntity = {
         type: 'CUBE',
         name: 'CUBE',

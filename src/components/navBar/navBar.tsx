@@ -2,33 +2,16 @@ import React from 'react';
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { faCircle, faCube } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {Cube, getCube} from "../canvas/components/cube";
-import { Component } from "../canvas/components/Component";
-import {addComponent, CanvasState, canvasStateSelector, incrementNumberOfGeneratedKey} from "../../store/canvasSlice";
+import {getDefaultCube} from "../canvas/components/cube";
+import {addComponent, canvasStateSelector} from "../../store/canvasSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Sfera } from "../canvas/components/sfera";
-import {Dispatch} from "@reduxjs/toolkit";
-import {
-    BoxGeometryProps,
-    BufferGeometryProps,
-    Euler,
-    MeshBasicMaterialProps,
-    MeshProps,
-    Vector3
-} from "@react-three/fiber";
-import {ComponentEntity} from "../../model/ComponentEntity";
-import {BufferGeometry, Material} from "three";
-import {Geometry} from "three/examples/jsm/deprecated/Geometry";
-import {useGetDefaultComponentByType} from "../../hooks/useGetDefaultComponentByType";
-import * as THREE from "three";
 
 
 interface NavBarProps {
-
 }
 
 
-export const MyNavBar: React.FC<NavBarProps> = ({  }) => {
+export const MyNavBar: React.FC<NavBarProps> = () => {
     const dispatch = useDispatch();
     const canvasState = useSelector(canvasStateSelector);
     return (
@@ -42,7 +25,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({  }) => {
                             menuVariant="dark"
                         >
                             <Nav.Link onClick={() => {
-                                let cube = getCube(canvasState, dispatch);
+                                let cube = getDefaultCube(canvasState, dispatch);
                                 dispatch(addComponent(cube))
                             }}>
                                 <FontAwesomeIcon icon={faCube} style={{ marginRight: "5px" }} />

@@ -1,17 +1,15 @@
 import React, { useEffect, useRef } from 'react';
-import { BoxGeometryProps, BufferGeometryProps, Euler, MeshProps, Object3DNode} from "@react-three/fiber";
-import { TransformControls, TransformControlsProps } from "@react-three/drei";
+import { Object3DNode} from "@react-three/fiber";
+import { TransformControls } from "@react-three/drei";
 import {
     canvasStateSelector,
-    selectComponent, selectedComponentSelector,
-    subtractionComponent,
-    updateBox3,
+    selectComponent, updateBox3,
 } from "../../../store/canvasSlice";
 import { useTransformations } from "../../../hooks/useTransformations";
 import { useDispatch, useSelector } from "react-redux";
-import * as THREE from "three"
 import { ComponentEntity } from "../../../model/ComponentEntity";
 import { FactoryComponent } from '../../factory/FactoryComponent';
+import { useDetectComponentsCollision } from '../../../hooks/useDetectComponentsCollision';
 
 interface ComponentProps {
     orbit: React.MutableRefObject<null>,
@@ -30,6 +28,7 @@ export const Component: React.FC<ComponentProps> = (
 
     const transformation = useRef(null)
     useTransformations(transformation, orbit);
+    useDetectComponentsCollision(componentEntity, canvasState)
 
 
     useEffect(() => {
@@ -43,17 +42,7 @@ export const Component: React.FC<ComponentProps> = (
             let mesh = meshRef.current as Object3DNode<any,any>
             mesh.geometry.computeBoundingBox()
             mesh.geometry.boundingBox.applyMatrix4(mesh.matrixWorld)
-            console.log(mesh)
             dispatch(updateBox3({key: componentEntity.keyComponent, box3: mesh.geometry.boundingBox}))
-
-            canvasState.components.filter(component => component.keyComponent !== componentEntity.keyComponent).map(component => {
-                if(component.box3Min !== undefined && component.box3Max !== undefined){
-                let box3 = new THREE.Box3(new THREE.Vector3(component.box3Min[0], component.box3Min[1], component.box3Min[2]), 
-                                        new THREE.Vector3(component.box3Max[0], component.box3Max[1], component.box3Max[2]))
-                
-                console.log(box3.intersectsBox(mesh.geometry.boundingBox))
-                }
-            })
         }
     },[componentEntity.position, componentEntity.rotation, componentEntity.scale])
 
