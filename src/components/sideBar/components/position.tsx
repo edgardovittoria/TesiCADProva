@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {CanvasState, selectComponent, selectedComponentSelector, updatePosition} from "../../../store/canvasSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {CanvasState} from "../../../store/canvasSlice";
+import {useDispatch} from "react-redux";
 import {ComponentEntity} from "../../../model/ComponentEntity";
 import {manageTransformation} from "../../../hooks/useTransformations";
 
@@ -11,7 +11,6 @@ interface PositionProps {
 
 function InputElement(props: any){
     const dispatch = useDispatch()
-    const selectedComponent = useSelector(selectedComponentSelector)
     function getValue(): number{
         if(props.axisName === "x"){
             return props.x

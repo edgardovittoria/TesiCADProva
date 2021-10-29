@@ -17,3 +17,8 @@ export type CubeEntity = {
     depth: number,
     height: number
 } & ComponentEntity
+
+
+export type CompositeEntity = {
+    elementKeys : {componentToSubtract: ComponentEntity, componentThatSubtract: ComponentEntity}
+} & ComponentEntity

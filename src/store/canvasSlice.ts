@@ -1,8 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {Euler, Vector3} from "@react-three/fiber";
-import {Box3, BufferGeometry, Mesh} from "three";
+import {Box3} from "three";
 import {ComponentEntity} from "../model/ComponentEntity";
-import {type} from "os";
 
 export type CanvasState = {
     components: ComponentEntity[],
@@ -24,7 +22,7 @@ export const CanvasSlice = createSlice({
         },
         removeComponent(state: CanvasState, action: PayloadAction<ComponentEntity>){
             state.components = state.components.filter(component => {
-                return component !== action.payload;
+                return component.keyComponent !== action.payload.keyComponent;
             })
         },
         updatePosition(state: CanvasState, action: PayloadAction<[number,number,number]>){
@@ -55,8 +53,8 @@ export const CanvasSlice = createSlice({
                 (component.keyComponent === action.payload)? component.isSelected = true : component.isSelected = false
             })
         },
-        incrementNumberOfGeneratedKey(state: CanvasState){
-            state.numberOfGeneratedKey++;
+        incrementNumberOfGeneratedKey(state: CanvasState, action: PayloadAction<number>){
+            state.numberOfGeneratedKey += action.payload;
         },
         subtractionComponent(state: CanvasState, action: PayloadAction<{keyComponentToSubstitute: number, newComponent: ComponentEntity}>){
             state.components = state.components.filter(component => component.keyComponent !== action.payload.keyComponentToSubstitute)

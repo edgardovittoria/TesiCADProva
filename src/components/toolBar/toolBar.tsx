@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import "./toolbar.css";
 import {useDispatch, useSelector} from "react-redux";
 import {setTransformationActive, toolbarTransformationStateSelector} from "../../store/toolbarTransformationSlice";
@@ -6,7 +6,7 @@ import {setTransformationActive, toolbarTransformationStateSelector} from "../..
 interface ToolBarProps {
 }
 
-export const ToolBar: React.FC<ToolBarProps> = ({}) => {
+export const ToolBar: React.FC<ToolBarProps> = () => {
     const toolbarTransformationState = useSelector(toolbarTransformationStateSelector);
     const dispatch = useDispatch();
     return(

@@ -1,7 +1,7 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
-import {CanvasState, selectedComponentSelector, updateScale} from "../../../store/canvasSlice";
-import {useDispatch, useSelector} from "react-redux";
-import {manageTransformation} from "../../../hooks/useTransformations";
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { CanvasState } from "../../../store/canvasSlice";
+import { useDispatch } from "react-redux";
+import { manageTransformation } from "../../../hooks/useTransformations";
 
 interface ScaleProps {
     canvasState: CanvasState
@@ -10,7 +10,6 @@ interface ScaleProps {
 
 function InputElement(props: any) {
     const dispatch = useDispatch()
-    const selectedComponent = useSelector(selectedComponentSelector)
 
     function getValue(): number {
         if (props.axisName === "x") {
@@ -29,40 +28,40 @@ function InputElement(props: any) {
                 [parseFloat(e.target.value), props.y, props.z],
                 dispatch
             )
-            
+
         } else if (props.axisName === "y") {
             manageTransformation(
                 'scale',
                 [props.x, parseFloat(e.target.value), props.z],
                 dispatch
             )
-            
+
         } else {
             manageTransformation(
                 'scale',
                 [props.x, props.y, parseFloat(e.target.value)],
                 dispatch
             )
-            
+
         }
     }
 
     return (
         <input type="number"
-               id={props.id}
-               style={{cursor: "ns-resize", backgroundColor: "transparent", width: "50px"}}
-               step="0.1"
-               className="Number"
-               autoComplete="off"
-               value={getValue()}
-               onChange={(e) => {
-                   onChangeInputValue(e);
-               }}
+            id={props.id}
+            style={{ cursor: "ns-resize", backgroundColor: "transparent", width: "50px" }}
+            step="0.1"
+            className="Number"
+            autoComplete="off"
+            value={getValue()}
+            onChange={(e) => {
+                onChangeInputValue(e);
+            }}
         />
     )
 }
 
-export const Scale: React.FC<ScaleProps> = ({canvasState}) => {
+export const Scale: React.FC<ScaleProps> = ({ canvasState }) => {
     let selectedComponent = canvasState.components.filter(component => component.isSelected)[0]
     let scale: [number, number, number] = [1, 1, 1]
     const [x, setX] = useState(1);
@@ -80,10 +79,10 @@ export const Scale: React.FC<ScaleProps> = ({canvasState}) => {
     return (
         <>
             <div className="Row">
-                <span className="Text" style={{cursor: "default", display: "inline-block", width: "90px"}}>Scale</span>
-                <InputElement id="scaleX" axisName="x" x={x} y={y} z={z}/>
-                <InputElement id="scaleY" axisName="y" x={x} y={y} z={z}/>
-                <InputElement id="scaleZ" axisName="z" x={x} y={y} z={z}/>
+                <span className="Text" style={{ cursor: "default", display: "inline-block", width: "90px" }}>Scale</span>
+                <InputElement id="scaleX" axisName="x" x={x} y={y} z={z} />
+                <InputElement id="scaleY" axisName="y" x={x} y={y} z={z} />
+                <InputElement id="scaleZ" axisName="z" x={x} y={y} z={z} />
             </div>
 
         </>

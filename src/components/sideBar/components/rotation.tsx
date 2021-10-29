@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {CanvasState, selectedComponentSelector, updatePosition, updateRotation} from "../../../store/canvasSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {CanvasState} from "../../../store/canvasSlice";
+import {useDispatch} from "react-redux";
 import {manageTransformation} from "../../../hooks/useTransformations";
 
 interface RotationProps {
@@ -10,7 +10,6 @@ interface RotationProps {
 
 function InputElement(props: any){
     const dispatch = useDispatch()
-    const selectedComponent = useSelector(selectedComponentSelector)
     function getValue(): number{
         if(props.axisName === "x"){
             return props.x

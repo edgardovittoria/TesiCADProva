@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Object3DNode} from "@react-three/fiber";
+import { Object3DNode } from "@react-three/fiber";
 import { TransformControls } from "@react-three/drei";
 import {
     canvasStateSelector,
@@ -10,21 +10,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { ComponentEntity } from "../../../model/ComponentEntity";
 import { FactoryComponent } from '../../factory/FactoryComponent';
 import { useDetectComponentsCollision } from '../../../hooks/useDetectComponentsCollision';
+import { Mesh } from 'three';
 
 interface ComponentProps {
     orbit: React.MutableRefObject<null>,
+    componentEntity: ComponentEntity
 }
 
 export const Component: React.FC<ComponentProps> = (
     {
-        children, orbit
+        children, orbit, componentEntity
     }) => {
 
     const dispatch = useDispatch();
-    const meshRef = useRef(null)
     const canvasState = useSelector(canvasStateSelector);
-
-    const componentEntity = children as ComponentEntity;
+    const meshRef = useRef(null)
 
     const transformation = useRef(null)
     useTransformations(transformation, orbit);
@@ -39,14 +39,21 @@ export const Component: React.FC<ComponentProps> = (
 
     useEffect(() => {
         if (meshRef.current) {
-            let mesh = meshRef.current as Object3DNode<any,any>
+            let mesh = meshRef.current as Mesh
+            mesh.position.set(componentEntity.position[0], componentEntity.position[1], componentEntity.position[2])
+            mesh.rotation.set(componentEntity.rotation[0], componentEntity.rotation[1], componentEntity.rotation[2])
+            mesh.scale.set(componentEntity.scale[0], componentEntity.scale[1], componentEntity.scale[2])
+            mesh.updateMatrix()
             mesh.geometry.computeBoundingBox()
-            mesh.geometry.boundingBox.applyMatrix4(mesh.matrixWorld)
-            dispatch(updateBox3({key: componentEntity.keyComponent, box3: mesh.geometry.boundingBox}))
+            mesh.geometry.boundingBox?.applyMatrix4(mesh.matrix)
+            if (mesh.geometry.boundingBox) {
+                dispatch(updateBox3({ key: componentEntity.keyComponent, box3: mesh.geometry.boundingBox }))
+            }
+            console.log(meshRef.current)
         }
-    },[componentEntity.position, componentEntity.rotation, componentEntity.scale])
+    }, [componentEntity.position, componentEntity.rotation, componentEntity.scale])
 
-    
+
     return (
         <>
             <TransformControls ref={transformation} position={componentEntity.position}
@@ -57,7 +64,7 @@ export const Component: React.FC<ComponentProps> = (
                 matrixWorld={undefined} matrixAutoUpdate={undefined} matrixWorldNeedsUpdate={undefined}
                 castShadow={undefined} receiveShadow={undefined} frustumCulled={undefined}
                 renderOrder={undefined} animations={undefined}
-                userData={{ key: componentEntity.keyComponent}}
+                userData={{ key: componentEntity.keyComponent }}
                 customDepthMaterial={undefined} customDistanceMaterial={undefined} isObject3D={undefined}
                 onBeforeRender={undefined} onAfterRender={undefined} applyMatrix4={undefined}
                 applyQuaternion={undefined} setRotationFromAxisAngle={undefined}
@@ -75,7 +82,7 @@ export const Component: React.FC<ComponentProps> = (
                 addEventListener={undefined} hasEventListener={undefined} removeEventListener={undefined}
                 dispatchEvent={undefined} updateMatrixWorld={undefined} visible>
 
-                {FactoryComponent(componentEntity, dispatch, meshRef) as JSX.Element}
+                <primitive ref={meshRef} object={children as Mesh} />
 
             </TransformControls>
 
