@@ -5,7 +5,6 @@ import {ComponentEntity} from "../model/ComponentEntity";
 export type CanvasState = {
     components: ComponentEntity[],
     numberOfGeneratedKey: number,
-    isLoading: boolean
 }
 
 export const CanvasSlice = createSlice({
@@ -13,7 +12,6 @@ export const CanvasSlice = createSlice({
     initialState: {
         components: [],
         numberOfGeneratedKey: 0,
-        isLoading: false
     } as CanvasState,
     reducers: {
         //qui vanno inserite le azioni
@@ -26,22 +24,16 @@ export const CanvasSlice = createSlice({
             })
         },
         updatePosition(state: CanvasState, action: PayloadAction<[number,number,number]>){
-            state.isLoading = true;
             let selectedComponent = findSelectedComponent(state)
             selectedComponent.position = action.payload
-            state.isLoading = false
         },
         updateRotation(state: CanvasState, action: PayloadAction<[number,number,number]>){
-            state.isLoading = true;
             let selectedComponent = findSelectedComponent(state)
             selectedComponent.rotation = action.payload
-            state.isLoading = false
         },
         updateScale(state: CanvasState, action: PayloadAction<[number,number,number]>){
-            state.isLoading = true;
             let selectedComponent = findSelectedComponent(state)
             selectedComponent.scale = action.payload
-            state.isLoading = false
         },
         updateBox3(state: CanvasState, action: PayloadAction<{key: number ,box3: Box3}>){
             let component = findComponentByKey(state, action.payload.key)

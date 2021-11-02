@@ -13,10 +13,10 @@ import "./css/transformation.css"
 
 
 interface SideBarProps {
-    orbit: React.MutableRefObject<null>
+
 }
 
-export const SideBar: React.FC<SideBarProps> = ({orbit}) => {
+export const SideBar: React.FC<SideBarProps> = () => {
 
     const canvasState = useSelector(canvasStateSelector);
 

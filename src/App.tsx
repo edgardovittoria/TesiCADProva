@@ -11,8 +11,6 @@ import {ToolBar} from "./components/toolBar/toolBar";
 
 function App() {
 
-    const orbit = useRef(null);
-    const orbitControl = <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined} removeEventListener={undefined} dispatchEvent={undefined}  />
 
 
     return (
@@ -21,11 +19,11 @@ function App() {
             <MyNavBar/>
             <div className="row" style={{margin:"0px"}}>
                 <div className="column" style={{width: "75%", padding:"0px", float:"right"}}>
-                    <MyCanvas children={orbit}/>
+                    <MyCanvas/>
                     <ToolBar/>
                 </div>
                 <div className="column" style={{width: "25%", padding:"0px", float:"right"}}>
-                    <SideBar orbit={orbit}/>
+                    <SideBar/>
                 </div>
 
             </div>

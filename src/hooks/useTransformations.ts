@@ -29,15 +29,6 @@ export const useTransformations = (
     useEffect(() => {
         if (transformation.current && selectedComponent) {
             const controls: Object3DNode<any, any> = transformation.current
-            if (controls.object.userData.key === selectedComponent.keyComponent) {
-                controls.showX = true
-                controls.showY = true
-                controls.showZ = true
-            } else {
-                controls.showX = false
-                controls.showY = false
-                controls.showZ = false
-            }
 
             controls.setMode(getActiveTransformationType(toolbarTransformationState))
             const callback = (event: any) => {
