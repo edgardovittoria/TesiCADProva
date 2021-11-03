@@ -1,27 +1,17 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import { Dispatch } from "redux";
 import { thereIsCollisionBetween } from "../auxiliaryFunctionsUsingThreeDirectly/ThereIsCollisionBetween";
 import { GetNewKey } from "../components/canvas/components/cube";
 import { ComponentEntity, CompositeEntity } from "../model/ComponentEntity";
-import { addComponent, CanvasState, removeComponent } from "../store/canvasSlice";
+import {addComponent, CanvasState, removeComponent, selectComponent} from "../store/canvasSlice";
+import {modalStateSelector, openModal} from "../store/modalSlice";
 
 
 export const useDetectComponentsCollision = (componentEntity: ComponentEntity, canvasState: CanvasState) => {
     let dispatch = useDispatch()
-    const makeSubtraction = (componentToSubtract : ComponentEntity, componentThatSubtract: ComponentEntity, canvasState: CanvasState, dispatch: Dispatch) => {
-        let newKeys = GetNewKey(canvasState, dispatch, 2)
-        let subtractEntity : CompositeEntity = {
-            ...componentToSubtract,
-            elementKeys: {componentToSubtract: {...componentToSubtract, keyComponent:newKeys[0]}, componentThatSubtract: {...componentThatSubtract, keyComponent:newKeys[1]}},
-            type: "SUBTRACTION",
-            box3Max: undefined,
-            box3Min: undefined
-        }
-    
-        dispatch(removeComponent(componentToSubtract))
-        dispatch(addComponent(subtractEntity))
-    }
+    let modal = useSelector(modalStateSelector).modals.filter(modal => modal.name === "BINARY_OP")[0]
+    const [elementsForOperation, setElementsForOperation] = useState<ComponentEntity[]>([]);
 
 
     useEffect(() => {
@@ -33,8 +23,58 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
         collisionTotalResults.map(([componentEntityKey, componentKey]) => {
             let componentEntity = canvasState.components.filter(component => component.keyComponent === componentEntityKey)[0];
             let component = canvasState.components.filter(element => element.keyComponent === componentKey)[0];
-            makeSubtraction(component, componentEntity, canvasState, dispatch)
+            setElementsForOperation([component, componentEntity])
+            dispatch(openModal('BINARY_OP'))
         })
     }, [componentEntity.box3Max, componentEntity.box3Min])
+
+    useEffect(() => {
+        if(modal.previousOpen && !modal.currentOpen && componentEntity.isSelected){
+            makeBinaryOperation(modal.lastValue, elementsForOperation[0], elementsForOperation[1], canvasState, dispatch)
+        }
+    }, [modal.previousOpen, modal.currentOpen]);
+
+
+}
+
+const makeBinaryOperation = (operation: string, elementA: ComponentEntity, elementB: ComponentEntity, canvasState: CanvasState, dispatch: Dispatch) => {
+
+    switch (operation) {
+        case "SUBTRACTION" :
+            let newKeysSub = GetNewKey(canvasState, dispatch, 2)
+            let subtractEntity : CompositeEntity = {
+                ...elementA,
+                elementKeys: {elementA: {...elementA, keyComponent:newKeysSub[0]}, elementB: {...elementB, keyComponent:newKeysSub[1]}},
+                type: "SUBTRACTION",
+            }
+            dispatch(removeComponent(elementA))
+            dispatch(addComponent(subtractEntity))
+            break;
+
+        case "INTERSECTION" :
+            let newKeysInt = GetNewKey(canvasState, dispatch, 2)
+            let intersectionEntity : CompositeEntity = {
+                ...elementA,
+                //position: [(elementA.position[0]+elementB.position[0])/2, (elementA.position[1]+elementB.position[1])/2, (elementA.position[2]+elementB.position[2])/2],
+                elementKeys: {elementA: {...elementA, keyComponent:newKeysInt[0]}, elementB: {...elementB, keyComponent:newKeysInt[1]}},
+                type: "INTERSECTION",
+            }
+            dispatch(removeComponent(elementA))
+            dispatch(removeComponent(elementB))
+            dispatch(addComponent(intersectionEntity))
+            break;
+
+        case "UNION" :
+            let newKeys = GetNewKey(canvasState, dispatch, 2)
+            let unionEntity : CompositeEntity = {
+                ...elementA,
+                //position: [(elementA.position[0]+elementB.position[0])/2, (elementA.position[1]+elementB.position[1])/2, (elementA.position[2]+elementB.position[2])/2],
+                elementKeys: {elementA: {...elementA, keyComponent:newKeys[0]}, elementB: {...elementB, keyComponent:newKeys[1]}},
+                type: "UNION",
+            }
+            dispatch(removeComponent(elementA))
+            dispatch(removeComponent(elementB))
+            dispatch(addComponent(unionEntity))
+    }
 
 }

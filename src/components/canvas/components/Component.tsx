@@ -1,16 +1,17 @@
-import React, { MutableRefObject, useEffect, useRef } from 'react';
-import { TransformControls } from "@react-three/drei";
+import React, {MutableRefObject, useEffect, useRef} from 'react';
+import {TransformControls} from "@react-three/drei";
 import {
     canvasStateSelector,
     selectComponent,
-    updateBox3,
+    updateBox3, updatePosition,
 } from "../../../store/canvasSlice";
-import { useTransformations } from "../../../hooks/useTransformations";
-import { useDispatch, useSelector } from "react-redux";
-import { ComponentEntity } from "../../../model/ComponentEntity";
-import { useDetectComponentsCollision } from '../../../hooks/useDetectComponentsCollision';
-import { Mesh } from 'three';
-import { FactoryComponent2 } from "../../factory/FactoryComponent2";
+import {useTransformations} from "../../../hooks/useTransformations";
+import {useDispatch, useSelector} from "react-redux";
+import {ComponentEntity} from "../../../model/ComponentEntity";
+import {useDetectComponentsCollision} from '../../../hooks/useDetectComponentsCollision';
+import {Mesh} from 'three';
+import {FactoryComponent} from "../../factory/FactoryComponent";
+import {Object3DNode} from "@react-three/fiber";
 
 interface ComponentProps {
     orbit: MutableRefObject<null>
@@ -32,22 +33,20 @@ export const Component: React.FC<ComponentProps> = (
 
 
     useTransformations(transformation, orbit);
-    //useDetectComponentsCollision(componentEntity, canvasState)
-
+    useDetectComponentsCollision(componentEntity, canvasState)
 
     useEffect(() => {
         if (meshRef.current) {
             let mesh = meshRef.current as Mesh
-            /*mesh.position.set(componentEntity.position[0], componentEntity.position[1], componentEntity.position[2])
+            mesh.position.set(componentEntity.position[0], componentEntity.position[1], componentEntity.position[2])
             mesh.rotation.set(componentEntity.rotation[0], componentEntity.rotation[1], componentEntity.rotation[2])
             mesh.scale.set(componentEntity.scale[0], componentEntity.scale[1], componentEntity.scale[2])
-            mesh.updateMatrix()*/
+            mesh.updateMatrix()
             mesh.geometry.computeBoundingBox()
             mesh.geometry.boundingBox?.applyMatrix4(mesh.matrix)
             if (mesh.geometry.boundingBox) {
-                dispatch(updateBox3({ key: componentEntity.keyComponent, box3: mesh.geometry.boundingBox }))
+                dispatch(updateBox3({key: componentEntity.keyComponent, box3: mesh.geometry.boundingBox}))
             }
-            //console.log(meshRef.current)
         }
     }, [componentEntity.position, componentEntity.rotation, componentEntity.scale])
 
@@ -68,7 +67,7 @@ export const Component: React.FC<ComponentProps> = (
                 matrixWorldNeedsUpdate={undefined}
                 castShadow={undefined} receiveShadow={undefined} frustumCulled={undefined}
                 renderOrder={undefined} animations={undefined}
-                userData={{ key: componentEntity.keyComponent }}
+                userData={{key: componentEntity.keyComponent}}
                 customDepthMaterial={undefined} customDistanceMaterial={undefined}
                 isObject3D={undefined}
                 onBeforeRender={undefined} onAfterRender={undefined}
@@ -95,17 +94,22 @@ export const Component: React.FC<ComponentProps> = (
                 dispatchEvent={undefined} updateMatrixWorld={undefined} visible>
                 <primitive
                     ref={meshRef}
-                    object={FactoryComponent2(componentEntity)}
+                    object={FactoryComponent(componentEntity)}
                 />
 
             </TransformControls> :
-
-            <primitive
-                ref={meshRef}
-                object={FactoryComponent2(componentEntity)}
-                position={componentEntity.position}
+            <group
+                key={componentEntity.keyComponent}
                 onClick={() => dispatch(selectComponent(componentEntity.keyComponent))}
-            />
+            >
+                <primitive
+                    ref={meshRef}
+                    object={FactoryComponent(componentEntity)}
+                    position={componentEntity.position}
+                    scale={componentEntity.scale}
+                    rotation={componentEntity.rotation}
+                />
+            </group>
 
     )
 

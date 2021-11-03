@@ -20,5 +20,5 @@ export type CubeEntity = {
 
 
 export type CompositeEntity = {
-    elementKeys : {componentToSubtract: ComponentEntity, componentThatSubtract: ComponentEntity}
+    elementKeys : {elementA: ComponentEntity, elementB: ComponentEntity}
 } & ComponentEntity
