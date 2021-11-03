@@ -24,8 +24,8 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
         collisionTotalResults.map(([componentEntityKey, componentKey]) => {
             let componentEntity = canvasState.components.filter(component => component.keyComponent === componentEntityKey)[0];
             let component = canvasState.components.filter(element => element.keyComponent === componentKey)[0];
-            setElementsForOperation([component, componentEntity])
-            dispatch(openModal('BINARY_OP'))
+            setElementsForOperation([component, componentEntity]);
+            (componentEntity.previousPosition[0] === componentEntity.position[0])? alert("È già presente un componente nell'origine. Spostalo!") : dispatch(openModal('BINARY_OP'))
         })
     }, [componentEntity.box3Max, componentEntity.box3Min])
 
