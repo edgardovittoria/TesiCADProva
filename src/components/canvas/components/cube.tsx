@@ -50,7 +50,7 @@ export const Cube = (
     cubeProps: CubeProps
 ) => {
     let color = new THREE.MeshBasicMaterial()
-    color.color.set("red")
+    color.color.set(cubeProps.color)
     let mesh = new THREE.Mesh(new THREE.BoxGeometry(cubeProps.width, cubeProps.height, cubeProps.depth), color)
 
     return(

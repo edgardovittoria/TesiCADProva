@@ -5578,6 +5578,11 @@
   "resolved" "https://registry.npmjs.org/dotenv/-/dotenv-8.2.0.tgz"
   "version" "8.2.0"
 
+"draco3d@^1.4.1":
+  "integrity" "sha512-D7IipIMa04k0rhEPU8SJZVcpXP3JOPaLR+nai0a9+OltsnkLMmVmpAEe1DXXOEf6eSIvKqTAEPLdZZ8G+bC/8w=="
+  "resolved" "https://registry.npmjs.org/draco3d/-/draco3d-1.4.3.tgz"
+  "version" "1.4.3"
+
 "drei@^2.2.21":
   "integrity" "sha512-ue0fmH0VfyYUeHyyEggSsIvYQrSY3mUdW4MDiTxn69hQ08S52Z1bAHsBsE7o7TQD8cBQu+oGCRGXf7HBOUYgng=="
   "resolved" "https://registry.npmjs.org/drei/-/drei-2.2.21.tgz"
@@ -14179,14 +14184,15 @@
   "version" "0.4.3"
 
 "three-stdlib@^2.4.2":
-  "integrity" "sha512-kGd03DzKBTtIZPDIw4VnmEnmiuQbgfUSZo6wuR8DtzUwwhTiqcCefZFVcsmn7Y73Z1cllxxPgV6bV6w+p/axcA=="
-  "resolved" "https://registry.npmjs.org/three-stdlib/-/three-stdlib-2.4.2.tgz"
-  "version" "2.4.2"
+  "integrity" "sha512-9Yba7LbwvKSqk09Pu+HHSnOTAhCWcLsIV9r2p0mcerVaqUpL1uKY4BSTzbWkhh4mMA/s/etlW0fYdL3pW/pPjg=="
+  "resolved" "https://registry.npmjs.org/three-stdlib/-/three-stdlib-2.5.5.tgz"
+  "version" "2.5.5"
   dependencies:
     "@babel/runtime" "^7.14.6"
     "@webgpu/glslang" "^0.0.15"
     "@webxr-input-profiles/motion-controllers" "^1.0.0"
     "chevrotain" "^9.0.2"
+    "draco3d" "^1.4.1"
     "fflate" "^0.6.9"
     "ktx-parse" "^0.2.1"
     "mmd-parser" "^1.0.4"

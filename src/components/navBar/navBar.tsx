@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {getDefaultCube} from "../canvas/components/cube";
 import {addComponent, canvasStateSelector} from "../../store/canvasSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { getDefaultSphere } from '../canvas/components/sphere';
 
 
 interface NavBarProps {
@@ -32,7 +33,8 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
                                 Cube
                             </Nav.Link>
                             <Nav.Link onClick={() => {
-
+                                let sphere = getDefaultSphere(canvasState, dispatch);
+                                dispatch(addComponent(sphere))
 
                             }}>
                                 <FontAwesomeIcon icon={faCircle} style={{ marginRight: "5px" }} />

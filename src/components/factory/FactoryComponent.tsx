@@ -1,8 +1,9 @@
-import {ComponentEntity, CompositeEntity, CubeEntity} from "../../model/ComponentEntity";
+import {ComponentEntity, CompositeEntity, CubeEntity, SphereEntity} from "../../model/ComponentEntity";
 import {Cube, CubeProps} from "../canvas/components/cube";
 import {Mesh} from 'three'
 import {CSG} from 'three-csg-ts';
 import {emptyObject} from "../emptyObject";
+import { Sphere, SphereProps } from "../canvas/components/sphere";
 
 
 export const FactoryComponent = (entity: ComponentEntity) => {
@@ -16,6 +17,14 @@ export const FactoryComponent = (entity: ComponentEntity) => {
             return (
                 Cube(cubeProps)
             )
+        
+            case "SPHERE":
+                let sphereEntity = entity as SphereEntity
+    
+                let sphereProps: SphereProps = { radius: sphereEntity.radius, color: sphereEntity.color, heightSegments: sphereEntity.heightSegments, widthSegments: sphereEntity.widthSegments }
+                return (
+                    Sphere(sphereProps)
+                )    
 
         case "SUBTRACTION":
             let [elementASUB, elementBSUB] = getOperationElements(entity)

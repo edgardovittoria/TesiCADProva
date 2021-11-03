@@ -19,6 +19,12 @@ export type CubeEntity = {
 } & ComponentEntity
 
 
+export type SphereEntity = {
+    radius: number,
+    widthSegments: number,
+    heightSegments: number
+} & ComponentEntity
+
 export type CompositeEntity = {
     elementKeys : {elementA: ComponentEntity, elementB: ComponentEntity}
 } & ComponentEntity
