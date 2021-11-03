@@ -5,7 +5,7 @@ import { updateTypePredicateNodeWithModifier } from "typescript";
 import { thereIsCollisionBetween } from "../auxiliaryFunctionsUsingThreeDirectly/ThereIsCollisionBetween";
 import { GetNewKey } from "../components/canvas/components/cube";
 import { ComponentEntity, CompositeEntity } from "../model/ComponentEntity";
-import {addComponent, CanvasState, removeComponent, selectComponent} from "../store/canvasSlice";
+import {addComponent, CanvasState, removeComponent, selectComponent, updatePosition, updateRotation, updateScale} from "../store/canvasSlice";
 import {modalStateSelector, openModal} from "../store/modalSlice";
 
 
@@ -31,6 +31,7 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
 
     useEffect(() => {
         if(modal.previousOpen && !modal.currentOpen && componentEntity.isSelected){
+            console.log("bynary")
             makeBinaryOperation(modal.lastValue, elementsForOperation[0], elementsForOperation[1], canvasState, dispatch)
         }
     }, [modal.previousOpen, modal.currentOpen]);
@@ -42,7 +43,7 @@ const makeBinaryOperation = (operation: string, elementA: ComponentEntity, eleme
 
     switch (operation) {
         case "SUBTRACTION" :
-            let newKeysSub = GetNewKey(canvasState, dispatch, 3)
+            let newKeysSub = GetNewKey(canvasState, dispatch, 4)
             let subtractEntity : CompositeEntity = {
                 ...elementA,
                 elementKeys: {elementA: {...elementA, keyComponent:newKeysSub[0]}, elementB: {...elementB, keyComponent:newKeysSub[1]}},
@@ -52,7 +53,11 @@ const makeBinaryOperation = (operation: string, elementA: ComponentEntity, eleme
                 geometryUvVertices: undefined,
                 keyComponent: newKeysSub[2]
             }
+            console.log(elementB)
+            let elementBCopy : ComponentEntity = {...elementB, keyComponent: newKeysSub[3],position: elementB.previousPosition, rotation: elementB.previousRotation, scale: elementB.previousScale, box3Max: undefined, box3Min: undefined, isSelected: false}
             dispatch(removeComponent(elementA))
+            dispatch(removeComponent(elementB))
+            dispatch(addComponent(elementBCopy))
             dispatch(addComponent(subtractEntity))
             break;
 

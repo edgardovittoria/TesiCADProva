@@ -25,14 +25,17 @@ export const CanvasSlice = createSlice({
         },
         updatePosition(state: CanvasState, action: PayloadAction<[number,number,number]>){
             let selectedComponent = findSelectedComponent(state)
+            selectedComponent.previousPosition = selectedComponent.position
             selectedComponent.position = action.payload
         },
         updateRotation(state: CanvasState, action: PayloadAction<[number,number,number]>){
             let selectedComponent = findSelectedComponent(state)
+            selectedComponent.previousRotation = selectedComponent.rotation
             selectedComponent.rotation = action.payload
         },
         updateScale(state: CanvasState, action: PayloadAction<[number,number,number]>){
             let selectedComponent = findSelectedComponent(state)
+            selectedComponent.previousScale = selectedComponent.scale
             selectedComponent.scale = action.payload
         },
         updateBox3(state: CanvasState, action: PayloadAction<{key: number ,box3: Box3}>){
@@ -61,10 +64,7 @@ export const CanvasSlice = createSlice({
         incrementNumberOfGeneratedKey(state: CanvasState, action: PayloadAction<number>){
             state.numberOfGeneratedKey += action.payload;
         },
-        subtractionComponent(state: CanvasState, action: PayloadAction<{keyComponentToSubstitute: number, newComponent: ComponentEntity}>){
-            state.components = state.components.filter(component => component.keyComponent !== action.payload.keyComponentToSubstitute)
-            state.components.push(action.payload.newComponent);
-        }
+    
     },
     extraReducers: {
         //qui inseriamo i metodi : PENDING, FULLFILLED, REJECT utili per la gestione delle richieste asincrone
@@ -76,7 +76,7 @@ export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
     addComponent, removeComponent, updatePosition, updateRotation,
     updateScale, updateBox3, selectComponent, incrementNumberOfGeneratedKey,
-    subtractionComponent, updateCompositeEntityPositionVertices, updateCompositeEntityNormalVertices, updateCompositeEntityUvVertices
+    updateCompositeEntityPositionVertices, updateCompositeEntityNormalVertices, updateCompositeEntityUvVertices
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas;

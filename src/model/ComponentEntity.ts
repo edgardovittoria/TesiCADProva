@@ -5,6 +5,9 @@ export type ComponentEntity = {
     position: [number, number, number]
     rotation: [number, number, number]
     scale: [number, number, number]
+    previousPosition: [number, number, number]
+    previousRotation: [number, number, number]
+    previousScale: [number, number, number]
     box3Min: [number ,number ,number ] | undefined
     box3Max: [number,number,number] | undefined
     color: string

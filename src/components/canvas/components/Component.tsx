@@ -36,7 +36,6 @@ export const Component: React.FC<ComponentProps> = (
     useDetectComponentsCollision(componentEntity, canvasState)
 
     useEffect(() => {
-        console.log(meshRef.current)
         if(!(componentEntity as CompositeEntity).geometryPositionVertices){
             if(meshRef.current){
                 let mesh = meshRef.current as Mesh
