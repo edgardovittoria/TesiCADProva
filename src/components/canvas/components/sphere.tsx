@@ -25,8 +25,8 @@ export function getDefaultSphere(canvasState: CanvasState, dispatch: Dispatch){
         box3Min: undefined,
         box3Max: undefined,
         radius: 1,
-        widthSegments: 40,
-        heightSegments: 40,
+        widthSegments: 20,
+        heightSegments: 20,
         color: 'yellow',
         isSelected: false
     }
