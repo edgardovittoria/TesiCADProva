@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Box3} from "three";
-import {ComponentEntity} from "../model/ComponentEntity";
+import {ComponentEntity, CompositeEntity} from "../model/ComponentEntity";
 
 export type CanvasState = {
     components: ComponentEntity[],
@@ -40,6 +40,19 @@ export const CanvasSlice = createSlice({
             component.box3Min = [action.payload.box3.min.x, action.payload.box3.min.y, action.payload.box3.min.z]
             component.box3Max = [action.payload.box3.max.x, action.payload.box3.max.y, action.payload.box3.max.z]
         },
+        updateCompositeEntityPositionVertices(state: CanvasState, action: PayloadAction<{key: number, vertices: Float32Array}>){
+            let component = findComponentByKey(state, action.payload.key);
+            (component as CompositeEntity).geometryPositionVertices = action.payload.vertices
+        },
+        updateCompositeEntityNormalVertices(state: CanvasState, action: PayloadAction<{key: number, vertices: Float32Array}>){
+            let component = findComponentByKey(state, action.payload.key);
+            (component as CompositeEntity).geometryNormalVertices = action.payload.vertices
+        },
+        updateCompositeEntityUvVertices(state: CanvasState, action: PayloadAction<{key: number, vertices: Float32Array}>){
+            let component = findComponentByKey(state, action.payload.key);
+            (component as CompositeEntity).geometryUvVertices = action.payload.vertices
+        },
+
         selectComponent(state: CanvasState, action: PayloadAction<number>){
             state.components.map(component => {
                 (component.keyComponent === action.payload)? component.isSelected = true : component.isSelected = false
@@ -63,7 +76,7 @@ export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
     addComponent, removeComponent, updatePosition, updateRotation,
     updateScale, updateBox3, selectComponent, incrementNumberOfGeneratedKey,
-    subtractionComponent
+    subtractionComponent, updateCompositeEntityPositionVertices, updateCompositeEntityNormalVertices, updateCompositeEntityUvVertices
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas;

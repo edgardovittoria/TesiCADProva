@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { Dispatch } from "redux";
+import { updateTypePredicateNodeWithModifier } from "typescript";
 import { thereIsCollisionBetween } from "../auxiliaryFunctionsUsingThreeDirectly/ThereIsCollisionBetween";
 import { GetNewKey } from "../components/canvas/components/cube";
 import { ComponentEntity, CompositeEntity } from "../model/ComponentEntity";
@@ -41,23 +42,31 @@ const makeBinaryOperation = (operation: string, elementA: ComponentEntity, eleme
 
     switch (operation) {
         case "SUBTRACTION" :
-            let newKeysSub = GetNewKey(canvasState, dispatch, 2)
+            let newKeysSub = GetNewKey(canvasState, dispatch, 3)
             let subtractEntity : CompositeEntity = {
                 ...elementA,
                 elementKeys: {elementA: {...elementA, keyComponent:newKeysSub[0]}, elementB: {...elementB, keyComponent:newKeysSub[1]}},
                 type: "SUBTRACTION",
+                geometryPositionVertices: undefined,
+                geometryNormalVertices: undefined,
+                geometryUvVertices: undefined,
+                keyComponent: newKeysSub[2]
             }
             dispatch(removeComponent(elementA))
             dispatch(addComponent(subtractEntity))
             break;
 
         case "INTERSECTION" :
-            let newKeysInt = GetNewKey(canvasState, dispatch, 2)
+            let newKeysInt = GetNewKey(canvasState, dispatch, 3)
             let intersectionEntity : CompositeEntity = {
                 ...elementA,
                 //position: [(elementA.position[0]+elementB.position[0])/2, (elementA.position[1]+elementB.position[1])/2, (elementA.position[2]+elementB.position[2])/2],
                 elementKeys: {elementA: {...elementA, keyComponent:newKeysInt[0]}, elementB: {...elementB, keyComponent:newKeysInt[1]}},
                 type: "INTERSECTION",
+                geometryPositionVertices: undefined,
+                geometryNormalVertices: undefined,
+                geometryUvVertices: undefined,
+                keyComponent: newKeysInt[2]
             }
             dispatch(removeComponent(elementA))
             dispatch(removeComponent(elementB))
@@ -65,12 +74,16 @@ const makeBinaryOperation = (operation: string, elementA: ComponentEntity, eleme
             break;
 
         case "UNION" :
-            let newKeys = GetNewKey(canvasState, dispatch, 2)
+            let newKeys = GetNewKey(canvasState, dispatch, 3)
             let unionEntity : CompositeEntity = {
                 ...elementA,
                 //position: [(elementA.position[0]+elementB.position[0])/2, (elementA.position[1]+elementB.position[1])/2, (elementA.position[2]+elementB.position[2])/2],
                 elementKeys: {elementA: {...elementA, keyComponent:newKeys[0]}, elementB: {...elementB, keyComponent:newKeys[1]}},
                 type: "UNION",
+                geometryPositionVertices: undefined,
+                geometryNormalVertices: undefined,
+                geometryUvVertices: undefined,
+                keyComponent: newKeys[2]
             }
             dispatch(removeComponent(elementA))
             dispatch(removeComponent(elementB))

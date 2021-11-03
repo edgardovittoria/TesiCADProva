@@ -27,4 +27,7 @@ export type SphereEntity = {
 
 export type CompositeEntity = {
     elementKeys : {elementA: ComponentEntity, elementB: ComponentEntity}
+    geometryPositionVertices: Float32Array | undefined,
+    geometryNormalVertices: Float32Array | undefined,
+    geometryUvVertices: Float32Array | undefined
 } & ComponentEntity

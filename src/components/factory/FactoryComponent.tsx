@@ -1,9 +1,10 @@
 import {ComponentEntity, CompositeEntity, CubeEntity, SphereEntity} from "../../model/ComponentEntity";
 import {Cube, CubeProps} from "../canvas/components/cube";
-import {Mesh} from 'three'
+import {BufferGeometry, Mesh} from 'three'
 import {CSG} from 'three-csg-ts';
 import {emptyObject} from "../emptyObject";
 import { Sphere, SphereProps } from "../canvas/components/sphere";
+import * as THREE from "three"
 
 
 export const FactoryComponent = (entity: ComponentEntity) => {
@@ -27,6 +28,9 @@ export const FactoryComponent = (entity: ComponentEntity) => {
                 )    
 
         case "SUBTRACTION":
+            if((entity as CompositeEntity).geometryPositionVertices !== undefined){
+                return createMeshWithBufferGeometryFromCompositeEntity(entity)
+            }
             let [elementASUB, elementBSUB] = getOperationElements(entity)
             if (elementASUB && elementBSUB) {
                 let newMesh = CSG.subtract(elementASUB, elementBSUB)
@@ -34,6 +38,9 @@ export const FactoryComponent = (entity: ComponentEntity) => {
             } else { return emptyObject() }
 
         case "INTERSECTION":
+            if((entity as CompositeEntity).geometryPositionVertices !== undefined){
+                return createMeshWithBufferGeometryFromCompositeEntity(entity)
+            }
             let [elementAINT, elementBINT] = getOperationElements(entity)
             if (elementAINT && elementBINT) {
                 let newMesh = CSG.intersect(elementAINT, elementBINT)
@@ -41,6 +48,9 @@ export const FactoryComponent = (entity: ComponentEntity) => {
             } else { return emptyObject() }
 
         case "UNION":
+            if((entity as CompositeEntity).geometryPositionVertices !== undefined){
+                return createMeshWithBufferGeometryFromCompositeEntity(entity)
+            }
             let [elementA, elementB] = getOperationElements(entity)
             if (elementA && elementB) {
                 let newMesh = CSG.union(elementA, elementB)
@@ -88,4 +98,17 @@ const resetMeshTransformationParams = (mesh: Mesh) => {
     meshClone.rotation.set(0,0,0)
 
     return meshClone
+}
+
+const createMeshWithBufferGeometryFromCompositeEntity = (entity : ComponentEntity) => {
+    let positionVertices = (entity as CompositeEntity).geometryPositionVertices as Float32Array
+    let normalVertices = (entity as CompositeEntity).geometryPositionVertices as Float32Array
+    let uvVertices = (entity as CompositeEntity).geometryPositionVertices as Float32Array
+                let geometry = new THREE.BufferGeometry()
+                geometry.setAttribute("position", new THREE.BufferAttribute(positionVertices, 3))
+                geometry.setAttribute("normal", new THREE.BufferAttribute(normalVertices, 3))
+                geometry.setAttribute("uv", new THREE.BufferAttribute(uvVertices, 3))
+                let material = new THREE.MeshBasicMaterial()
+                material.color.set(entity.color)
+               return  new THREE.Mesh(geometry, material)
 }
