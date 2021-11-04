@@ -13,6 +13,7 @@ export type ComponentEntity = {
     color: string
     keyComponent: number
     isSelected: boolean
+    lastTransformationType : string | undefined
 }
 
 export type CubeEntity = {

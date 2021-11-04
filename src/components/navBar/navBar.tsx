@@ -6,7 +6,8 @@ import {getDefaultCube} from "../canvas/components/cube";
 import {addComponent, canvasStateSelector} from "../../store/canvasSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getDefaultSphere } from '../canvas/components/sphere';
-
+import { store } from '../../store/store';
+import { ActionCreators } from 'redux-undo';
 
 interface NavBarProps {
 }
@@ -28,6 +29,7 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
                             <Nav.Link onClick={() => {
                                 let cube = getDefaultCube(canvasState, dispatch);
                                 dispatch(addComponent(cube))
+                                
                             }}>
                                 <FontAwesomeIcon icon={faCube} style={{ marginRight: "5px" }} />
                                 Cube

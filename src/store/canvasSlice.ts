@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { StateWithHistory } from 'redux-undo';
 import {Box3} from "three";
 import {ComponentEntity, CompositeEntity} from "../model/ComponentEntity";
 
@@ -27,16 +28,19 @@ export const CanvasSlice = createSlice({
             let selectedComponent = findSelectedComponent(state)
             selectedComponent.previousPosition = selectedComponent.position
             selectedComponent.position = action.payload
+            selectedComponent.lastTransformationType = "TRANSLATE"
         },
         updateRotation(state: CanvasState, action: PayloadAction<[number,number,number]>){
             let selectedComponent = findSelectedComponent(state)
             selectedComponent.previousRotation = selectedComponent.rotation
             selectedComponent.rotation = action.payload
+            selectedComponent.lastTransformationType = "ROTATE"
         },
         updateScale(state: CanvasState, action: PayloadAction<[number,number,number]>){
             let selectedComponent = findSelectedComponent(state)
             selectedComponent.previousScale = selectedComponent.scale
             selectedComponent.scale = action.payload
+            selectedComponent.lastTransformationType = "SCALE"
         },
         updateBox3(state: CanvasState, action: PayloadAction<{key: number ,box3: Box3}>){
             let component = findComponentByKey(state, action.payload.key)
@@ -79,8 +83,8 @@ export const {
     updateCompositeEntityPositionVertices, updateCompositeEntityNormalVertices, updateCompositeEntityUvVertices
 } = CanvasSlice.actions
 
-export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas;
-export const selectedComponentSelector = (state: { canvas: CanvasState }) => findSelectedComponent(state.canvas)
+export const canvasStateSelector = (state: { canvas: StateWithHistory<CanvasState> }) => state.canvas.present;
+export const selectedComponentSelector = (state: { canvas: StateWithHistory<CanvasState> }) => findSelectedComponent(state.canvas.present)
 
 const findSelectedComponent = (canvas: CanvasState) => canvas.components.filter(component => component.isSelected)[0]
 const findComponentByKey = (canvas: CanvasState, key: number) => canvas.components.filter(component => component.keyComponent === key)[0]

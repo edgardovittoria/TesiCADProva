@@ -31,7 +31,8 @@ export function getDefaultSphere(canvasState: CanvasState, dispatch: Dispatch){
         isSelected: false,
         previousPosition: [0,0,0],
         previousRotation: [0,0,0],
-        previousScale: [1,1,1]
+        previousScale: [1,1,1],
+        lastTransformationType: undefined
 
     }
     return component

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { ActionCreators } from "redux-undo";
 import { thereIsCollisionBetween } from "../auxiliaryFunctionsUsingThreeDirectly/ThereIsCollisionBetween";
 import { GetNewKey } from "../components/canvas/components/cube";
 import { ComponentEntity, CompositeEntity } from "../model/ComponentEntity";
@@ -64,7 +65,8 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
                         geometryPositionVertices: undefined,
                         geometryNormalVertices: undefined,
                         geometryUvVertices: undefined,
-                        keyComponent: newKeysSub[2+indexKey]
+                        keyComponent: newKeysSub[2+indexKey],
+                        lastTransformationType: undefined
                     }
                     return resultEntity
                 }, collisions[0][0] as CompositeEntity)
@@ -87,31 +89,50 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
                         geometryPositionVertices: undefined,
                         geometryNormalVertices: undefined,
                         geometryUvVertices: undefined,
-                        keyComponent: newKeysSub[2+indexKey]
+                        keyComponent: newKeysSub[2+indexKey],
+                        lastTransformationType: undefined
                     }
                     return resultEntity
                 })
+                
                 let elementACopy: ComponentEntity = {...collisions[0][0], box3Min: undefined, box3Max: undefined}
-                elementACopy.keyComponent = newKeysSub[newKeysSub.length-1]
-                elementACopy.position = elementACopy.previousPosition
-                elementACopy.scale = elementACopy.previousScale
-                elementACopy.rotation = elementACopy.previousRotation
+                elementACopy.keyComponent = newKeysSub[newKeysSub.length-1];
+                if(elementACopy.lastTransformationType === "TRANSLATE"){elementACopy.position = elementACopy.previousPosition}
+                else if(elementACopy.lastTransformationType === "ROTATE"){elementACopy.rotation = elementACopy.previousRotation}
+                else{elementACopy.scale = elementACopy.previousScale}
                 dispatch(removeComponent(collisions[0][0]))
                 collisions.map(([,elementB]) => {
                     dispatch(removeComponent(elementB))
                 })
                 resultSUB.map(result => dispatch(addComponent(result)))
                 dispatch(addComponent(elementACopy))
+                break;
 
-        }
-
-
-
-        /*if (operation === "SUBTRACTION") {
-            let elementBCopy: ComponentEntity = { ...elementB, keyComponent: newKeysSub[3], position: elementB.previousPosition, rotation: elementB.previousRotation, scale: elementB.previousScale, box3Max: undefined, box3Min: undefined, isSelected: false }
-            dispatch(addComponent(elementBCopy))
-        }*/
-
+                case "INTERSECTION" :
+                    
+                let resultINT = collisions.map(([elementA, elementB], index) => {
+                    let indexKey = 3*index
+                    let resultEntity: CompositeEntity = {
+                        ...elementB,
+                        elementKeys: { elementA: { ...elementB, keyComponent: newKeysSub[indexKey] }, elementB: { ...elementA, keyComponent: newKeysSub[1+indexKey] } },
+                        type: operation,
+                        geometryPositionVertices: undefined,
+                        geometryNormalVertices: undefined,
+                        geometryUvVertices: undefined,
+                        keyComponent: newKeysSub[2+indexKey],
+                        lastTransformationType: undefined
+                    }
+                    return resultEntity
+                })
+                
+                
+                dispatch(removeComponent(collisions[0][0]))
+                collisions.map(([,elementB]) => {
+                    dispatch(removeComponent(elementB))
+                })
+                resultINT.map(result => dispatch(addComponent(result)))
+                break;
+            }
         
 
     }
