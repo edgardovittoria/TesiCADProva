@@ -1,10 +1,19 @@
 input.Number {
+    cursor: ns-resize;
+    background-color: white;
+    text-align: center;
+    width: 95px;
+    margin-right: 10px;
     color: #08f !important;
-    font-size: 12px;
+    font-size: 20px;
     border: 1px solid white;
     padding: 2px;
 }
 
 .Text{
     color: white;
+}
+
+.transformation{
+    margin-bottom: 10px;
 }

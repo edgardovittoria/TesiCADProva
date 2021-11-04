@@ -38,7 +38,7 @@ export function getDefaultCube(canvasState: CanvasState, dispatch: Dispatch){
         width: 1,
         depth: 1,
         height: 1,
-        color: 'red',
+        color: '#ec2626',
         isSelected: false,
         previousPosition: [0,0,0],
         previousRotation: [0,0,0],

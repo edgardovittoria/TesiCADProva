@@ -3,14 +3,15 @@ import {CanvasState} from "../../../store/canvasSlice";
 import {useDispatch} from "react-redux";
 import {ComponentEntity} from "../../../model/ComponentEntity";
 import {manageTransformation} from "../../../hooks/useTransformations";
+import {Dispatch} from "@reduxjs/toolkit";
 
 interface PositionProps {
-    canvasState: CanvasState
+    selectedComponent: ComponentEntity
+    dispatch: Dispatch
 }
 
 
 function InputElement(props: any){
-    const dispatch = useDispatch()
     function getValue(): number{
         if(props.axisName === "x"){
             return props.x
@@ -26,21 +27,21 @@ function InputElement(props: any){
             manageTransformation(
                 'translate',
                 [parseFloat(e.target.value),props.y, props.z],
-                dispatch
+                props.dispatch
             )
             
         }else if(props.axisName === "y"){
             manageTransformation(
                 'translate',
                 [props.x,parseFloat(e.target.value),props.z],
-                dispatch
+                props.dispatch
             )
             
         }else{
             manageTransformation(
                 'translate',
                 [props.x,props.y,parseFloat(e.target.value)],
-                dispatch
+                props.dispatch
             )
             
         }
@@ -49,7 +50,6 @@ function InputElement(props: any){
     return(
         <input type="number"
                id={props.id}
-               style={{cursor: "ns-resize", backgroundColor: "transparent", width: "50px"}}
                step="0.1"
                className="Number"
                autoComplete="off"
@@ -61,8 +61,7 @@ function InputElement(props: any){
     )
 }
 
-export const Position: React.FC<PositionProps> = ({canvasState}) => {
-    let selectedComponent: ComponentEntity = canvasState.components.filter(component => component.isSelected)[0]
+export const Position: React.FC<PositionProps> = ({selectedComponent, dispatch}) => {
     let position: [number, number, number] = [0,0,0];
     const [x,setX] = useState(0);
     const [y,setY] = useState(0);
@@ -74,15 +73,15 @@ export const Position: React.FC<PositionProps> = ({canvasState}) => {
              setY(position[1])
              setZ(position[2])
         }
-    }, [canvasState.components]);
+    }, [position]);
 
     return(
         <>
-            <div className="Row">
+            <div className="Row transformation">
                 <span className="Text" style={{cursor: "default", display: "inline-block", width: "90px"}}>Position</span>
-                <InputElement id="translateX" axisName="x" x={x} y={y} z={z}/>
-                <InputElement id="translateY" axisName="y" x={x} y={y} z={z}/>
-                <InputElement id="translateZ" axisName="z" x={x} y={y} z={z}/>
+                <InputElement id="translateX" axisName="x" x={x} y={y} z={z} dispatch={dispatch}/>
+                <InputElement id="translateY" axisName="y" x={x} y={y} z={z} dispatch={dispatch}/>
+                <InputElement id="translateZ" axisName="z" x={x} y={y} z={z} dispatch={dispatch}/>
             </div>
 
         </>

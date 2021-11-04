@@ -1,13 +1,13 @@
-import React from 'react';
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { faCircle, faCube } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, {useRef} from 'react';
+import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
+import {faCircle, faCube} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {getDefaultCube} from "../canvas/components/cube";
-import {addComponent, canvasStateSelector} from "../../store/canvasSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { getDefaultSphere } from '../canvas/components/sphere';
-import { store } from '../../store/store';
-import { ActionCreators } from 'redux-undo';
+import {addComponent, CanvasState, canvasStateSelector, importStateCanvas} from "../../store/canvasSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {getDefaultSphere} from '../canvas/components/sphere';
+import {RootState, store} from '../../store/store';
+import {ActionCreators} from 'redux-undo';
 
 interface NavBarProps {
 }
@@ -16,6 +16,7 @@ interface NavBarProps {
 export const MyNavBar: React.FC<NavBarProps> = () => {
     const dispatch = useDispatch();
     const canvasState = useSelector(canvasStateSelector);
+    const inputRef = useRef(null)
     return (
         <>
             <Navbar bg="dark" variant="dark">
@@ -29,9 +30,9 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
                             <Nav.Link onClick={() => {
                                 let cube = getDefaultCube(canvasState, dispatch);
                                 dispatch(addComponent(cube))
-                                
+
                             }}>
-                                <FontAwesomeIcon icon={faCube} style={{ marginRight: "5px" }} />
+                                <FontAwesomeIcon icon={faCube} style={{marginRight: "5px"}}/>
                                 Cube
                             </Nav.Link>
                             <Nav.Link onClick={() => {
@@ -39,12 +40,22 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
                                 dispatch(addComponent(sphere))
 
                             }}>
-                                <FontAwesomeIcon icon={faCircle} style={{ marginRight: "5px" }} />
+                                <FontAwesomeIcon icon={faCircle} style={{marginRight: "5px"}}/>
                                 Sphere
                             </Nav.Link>
                         </NavDropdown>
-                        <Nav.Link>Import</Nav.Link>
-                        <Nav.Link>Export</Nav.Link>
+                        <input type="file" onChange={(e) => {
+                            let files = e.target.files;
+                            (files) && files[0].text().then((value) => {
+                                let storeState: RootState = JSON.parse(value)
+                                dispatch(importStateCanvas(storeState.canvas.present))
+                            })
+                        }}/> Import
+                        <Nav.Link
+                            href={`data:text/json;charset=utf-8,${encodeURIComponent(
+                                JSON.stringify(store.getState())
+                            )}`}
+                            download="canvasState.json">Export</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>

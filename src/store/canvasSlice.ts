@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import { StateWithHistory } from 'redux-undo';
 import {Box3} from "three";
 import {ComponentEntity, CompositeEntity} from "../model/ComponentEntity";
+import {RootState, store} from "./store";
 
 export type CanvasState = {
     components: ComponentEntity[],
@@ -68,6 +69,18 @@ export const CanvasSlice = createSlice({
         incrementNumberOfGeneratedKey(state: CanvasState, action: PayloadAction<number>){
             state.numberOfGeneratedKey += action.payload;
         },
+        updateColor(state: CanvasState, action: PayloadAction<{key: number ,color: string}>){
+            let component = findComponentByKey(state, action.payload.key);
+            component.color = action.payload.color
+        },
+        updateName(state: CanvasState, action: PayloadAction<{key: number ,name: string}>){
+            let component = findComponentByKey(state, action.payload.key);
+            component.name = action.payload.name
+        },
+        importStateCanvas(state: CanvasState, action: PayloadAction<CanvasState>){
+            state.components = action.payload.components
+        }
+
     
     },
     extraReducers: {
@@ -80,7 +93,8 @@ export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
     addComponent, removeComponent, updatePosition, updateRotation,
     updateScale, updateBox3, selectComponent, incrementNumberOfGeneratedKey,
-    updateCompositeEntityPositionVertices, updateCompositeEntityNormalVertices, updateCompositeEntityUvVertices
+    updateCompositeEntityPositionVertices, updateCompositeEntityNormalVertices, updateCompositeEntityUvVertices,
+    updateColor, updateName, importStateCanvas
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: StateWithHistory<CanvasState> }) => state.canvas.present;
