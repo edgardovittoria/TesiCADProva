@@ -12,21 +12,31 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
     let dispatch = useDispatch()
     let modal = useSelector(modalStateSelector).modals.filter(modal => modal.name === "BINARY_OP")[0]
     const [elementsForOperation, setElementsForOperation] = useState<ComponentEntity[]>([]);
-    const [thereAreCollisions, setThereAreCollisions] = useState<boolean>(false)
+    const [collisions, setCollisions] = useState<[ComponentEntity, ComponentEntity][]>([])
    
     useEffect(() => {
-        let collisions = arrayOfCollisionsBetween(componentEntity, canvasState.components);
-        (collisions.length > 0) ? setThereAreCollisions(true) : setThereAreCollisions(false)
-        collisions
-            .map(([, componentKey]) => {
-                setElementsForOperation([elementFromCanvasByKey(canvasState, componentKey), componentEntity]);
-                (componentEntity.previousPosition.every((val, index) => val === componentEntity.position[index])) ? removeEntityJustCreated(componentEntity, dispatch) : dispatch(openModal('BINARY_OP'))
-            })
+        let collisionsSet = arrayOfCollisionsBetween(componentEntity, canvasState.components);
+        console.log(collisionsSet);
+        (collisionsSet.length > 0) && setCollisions(collisionsSet);
+        if(collisionsSet.length > 0
+            && componentEntity.previousPosition.every((val, index) => val === componentEntity.position[index])
+            && componentEntity.previousScale.every((val, index) => val === componentEntity.scale[index])
+            && componentEntity.previousRotation.every((val, index) => val === componentEntity.rotation[index])
+        ){
+            removeEntityJustCreated(componentEntity, dispatch)
+        }else if(collisionsSet.length > 0 &&
+            (!componentEntity.previousPosition.every((val, index) => val === componentEntity.position[index])
+                || !componentEntity.previousScale.every((val, index) => val === componentEntity.scale[index])
+                || !componentEntity.previousRotation.every((val, index) => val === componentEntity.rotation[index])
+            )
+        ){
+            dispatch(openModal('BINARY_OP'))
+        }
     }, [componentEntity.box3Max, componentEntity.box3Min])
 
     useEffect(() => {
-        if (modal.previousOpen && !modal.currentOpen && thereAreCollisions) {
-            makeBinaryOperation(modal.lastValue, elementsForOperation[0], elementsForOperation[1], canvasState, dispatch)
+        if (modal.previousOpen && !modal.currentOpen && collisions.length > 0) {
+            makeBinaryOperation(modal.lastValue, collisions, canvasState, dispatch)
         }
     }, [modal.previousOpen, modal.currentOpen]);
 
@@ -35,34 +45,72 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
     const arrayOfCollisionsBetween = (element: ComponentEntity, allElements: ComponentEntity[]) => {
         return allElements
             .filter(component => component.keyComponent !== element.keyComponent)
-            .reduce((results: [number, number][], component) => {
-                (thereIsCollisionBetween(element, component)) && results.push([element.keyComponent, component.keyComponent])
+            .reduce((results: [ComponentEntity, ComponentEntity][], component) => {
+                (thereIsCollisionBetween(element, component)) && results.push([element, component])
                 return results
             }, [])
     }
 
-    const elementFromCanvasByKey = (canvas : CanvasState, keyElement : number) => {
-       return canvas.components.filter(component => component.keyComponent === keyElement)[0];
-    }
+    const makeBinaryOperation = (operation: string, collisions: [ComponentEntity, ComponentEntity][], canvasState: CanvasState, dispatch: Dispatch) => {
+        let newKeysSub = GetNewKey(canvasState, dispatch, 4*collisions.length)
+        switch (operation) {
+            case "UNION":
+                let result = collisions.reduce((componentResult: CompositeEntity , [elementA,elementB], index) => {
+                    let indexKey = 3*index
+                    let resultEntity: CompositeEntity = {
+                        ...componentResult,
+                        elementKeys: { elementA: { ...componentResult, keyComponent: newKeysSub[0+ indexKey] }, elementB: { ...elementB, keyComponent: newKeysSub[1+indexKey] } },
+                        type: operation,
+                        geometryPositionVertices: undefined,
+                        geometryNormalVertices: undefined,
+                        geometryUvVertices: undefined,
+                        keyComponent: newKeysSub[2+indexKey]
+                    }
+                    return resultEntity
+                }, collisions[0][0] as CompositeEntity)
 
-    const makeBinaryOperation = (operation: string, elementA: ComponentEntity, elementB: ComponentEntity, canvasState: CanvasState, dispatch: Dispatch) => {
-        let newKeysSub = GetNewKey(canvasState, dispatch, 4)
-        let subtractEntity: CompositeEntity = {
-            ...elementA,
-            elementKeys: { elementA: { ...elementA, keyComponent: newKeysSub[0] }, elementB: { ...elementB, keyComponent: newKeysSub[1] } },
-            type: operation,
-            geometryPositionVertices: undefined,
-            geometryNormalVertices: undefined,
-            geometryUvVertices: undefined,
-            keyComponent: newKeysSub[2]
+                dispatch(removeComponent(collisions[0][0]))
+                collisions.map(([, elementB]) => {
+                    dispatch(removeComponent(elementB))
+                })
+
+                dispatch(addComponent(result))
+                break;
+
+            case "SUBTRACTION" :
+                let resultSUB = collisions.map(([elementA, elementB], index) => {
+                    let indexKey = 3*index
+                    let resultEntity: CompositeEntity = {
+                        ...elementB,
+                        elementKeys: { elementA: { ...elementB, keyComponent: newKeysSub[indexKey] }, elementB: { ...elementA, keyComponent: newKeysSub[1+indexKey] } },
+                        type: operation,
+                        geometryPositionVertices: undefined,
+                        geometryNormalVertices: undefined,
+                        geometryUvVertices: undefined,
+                        keyComponent: newKeysSub[2+indexKey]
+                    }
+                    return resultEntity
+                })
+                let elementACopy: ComponentEntity = {...collisions[0][0], box3Min: undefined, box3Max: undefined}
+                elementACopy.keyComponent = newKeysSub[newKeysSub.length-1]
+                elementACopy.position = elementACopy.previousPosition
+                elementACopy.scale = elementACopy.previousScale
+                elementACopy.rotation = elementACopy.previousRotation
+                dispatch(removeComponent(collisions[0][0]))
+                collisions.map(([,elementB]) => {
+                    dispatch(removeComponent(elementB))
+                })
+                resultSUB.map(result => dispatch(addComponent(result)))
+                dispatch(addComponent(elementACopy))
+
         }
-        dispatch(removeComponent(elementA))
-        dispatch(removeComponent(elementB))
-        dispatch(addComponent(subtractEntity))
-        if (operation === "SUBTRACTION") {
+
+
+
+        /*if (operation === "SUBTRACTION") {
             let elementBCopy: ComponentEntity = { ...elementB, keyComponent: newKeysSub[3], position: elementB.previousPosition, rotation: elementB.previousRotation, scale: elementB.previousScale, box3Max: undefined, box3Min: undefined, isSelected: false }
             dispatch(addComponent(elementBCopy))
-        }
+        }*/
 
         
 
