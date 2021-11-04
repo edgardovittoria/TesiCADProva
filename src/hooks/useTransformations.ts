@@ -23,11 +23,10 @@ export const useTransformations = (
     const dispatch = useDispatch();
     const toolbarTransformationState = useSelector(toolbarTransformationStateSelector);
     const canvasState = useSelector(canvasStateSelector);
-    let selectedComponent = useSelector(selectedComponentSelector);
 
 
     useEffect(() => {
-        if (transformation.current && selectedComponent) {
+        if (transformation.current) {
             const controls: Object3DNode<any, any> = transformation.current
 
             controls.setMode(getActiveTransformationType(toolbarTransformationState))

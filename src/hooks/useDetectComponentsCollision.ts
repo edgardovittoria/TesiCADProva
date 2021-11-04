@@ -12,17 +12,20 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
     let dispatch = useDispatch()
     let modal = useSelector(modalStateSelector).modals.filter(modal => modal.name === "BINARY_OP")[0]
     const [elementsForOperation, setElementsForOperation] = useState<ComponentEntity[]>([]);
-
+    const [thereAreCollisions, setThereAreCollisions] = useState<boolean>(false)
+   
     useEffect(() => {
-        arrayOfCollisionsBetween(componentEntity, canvasState.components)
+        let collisions = arrayOfCollisionsBetween(componentEntity, canvasState.components);
+        (collisions.length > 0) ? setThereAreCollisions(true) : setThereAreCollisions(false)
+        collisions
             .map(([, componentKey]) => {
                 setElementsForOperation([elementFromCanvasByKey(canvasState, componentKey), componentEntity]);
-                (componentEntity.previousPosition[0] === componentEntity.position[0]) ? alert("È già presente un componente nell'origine. Spostalo!") : dispatch(openModal('BINARY_OP'))
+                (componentEntity.previousPosition.every((val, index) => val === componentEntity.position[index])) ? removeEntityJustCreated(componentEntity, dispatch) : dispatch(openModal('BINARY_OP'))
             })
     }, [componentEntity.box3Max, componentEntity.box3Min])
 
     useEffect(() => {
-        if (modal.previousOpen && !modal.currentOpen && componentEntity.isSelected) {
+        if (modal.previousOpen && !modal.currentOpen && thereAreCollisions) {
             makeBinaryOperation(modal.lastValue, elementsForOperation[0], elementsForOperation[1], canvasState, dispatch)
         }
     }, [modal.previousOpen, modal.currentOpen]);
@@ -60,4 +63,12 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
             let elementBCopy: ComponentEntity = { ...elementB, keyComponent: newKeysSub[3], position: elementB.previousPosition, rotation: elementB.previousRotation, scale: elementB.previousScale, box3Max: undefined, box3Min: undefined, isSelected: false }
             dispatch(addComponent(elementBCopy))
         }
+
+        
+
+    }
+
+    const removeEntityJustCreated = (entity: ComponentEntity, dispatch: Dispatch) => {
+        dispatch(removeComponent(entity))
+        alert("Esiste già un componente nella stessa posizione. Spostalo prima di crearne uno nuovo!")
     }
