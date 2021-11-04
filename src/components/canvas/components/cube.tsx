@@ -1,4 +1,3 @@
-import {MutableRefObject, useState} from 'react';
 import {
     CanvasState,
     incrementNumberOfGeneratedKey,
@@ -6,7 +5,6 @@ import {
 import {CubeEntity} from "../../../model/ComponentEntity";
 import {Dispatch} from "@reduxjs/toolkit";
 import * as THREE from 'three'
-import { useDispatch } from 'react-redux';
 
 export type CubeProps = {
     color: string,

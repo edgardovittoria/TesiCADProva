@@ -3,15 +3,15 @@ import {TransformControls} from "@react-three/drei";
 import {
     canvasStateSelector,
     selectComponent,
-    updateBox3, updateCompositeEntityNormalVertices, updateCompositeEntityPositionVertices, updateCompositeEntityUvVertices, updatePosition,
+    updateBox3, updateCompositeEntityNormalVertices, updateCompositeEntityPositionVertices, updateCompositeEntityUvVertices,
 } from "../../../store/canvasSlice";
 import {useTransformations} from "../../../hooks/useTransformations";
 import {useDispatch, useSelector} from "react-redux";
-import {ComponentEntity, CompositeEntity} from "../../../model/ComponentEntity";
+import {ComponentEntity} from "../../../model/ComponentEntity";
 import {useDetectComponentsCollision} from '../../../hooks/useDetectComponentsCollision';
 import {Mesh} from 'three';
 import {FactoryComponent} from "../../factory/FactoryComponent";
-import {Object3DNode} from "@react-three/fiber";
+import { has } from '@reduxjs/toolkit/node_modules/immer/dist/internal';
 
 interface ComponentProps {
     orbit: MutableRefObject<null>
@@ -36,7 +36,7 @@ export const Component: React.FC<ComponentProps> = (
     useDetectComponentsCollision(componentEntity, canvasState)
 
     useEffect(() => {
-        if(!(componentEntity as CompositeEntity).geometryPositionVertices){
+        if(componentEntity.hasOwnProperty("geometryPositionVertices")){
             if(meshRef.current){
                 let mesh = meshRef.current as Mesh
                 dispatch(updateCompositeEntityPositionVertices({key: componentEntity.keyComponent, vertices: mesh.geometry.attributes.position.array as Float32Array}))
