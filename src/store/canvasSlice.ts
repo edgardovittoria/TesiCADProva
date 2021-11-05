@@ -76,6 +76,7 @@ export const CanvasSlice = createSlice({
         },
         importStateCanvas(state: CanvasState, action: PayloadAction<CanvasState>){
             state.components = action.payload.components
+            state.numberOfGeneratedKey = action.payload.numberOfGeneratedKey
         }
 
     
