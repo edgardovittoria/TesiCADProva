@@ -59,7 +59,7 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
                     let indexKey = 3*index
                     let resultEntity: CompositeEntity = {
                         ...componentResult,
-                        elementKeys: { elementA: { ...componentResult, keyComponent: newKeysSub[0+ indexKey] }, elementB: { ...elementB, keyComponent: newKeysSub[1+indexKey] } },
+                        baseElements: { elementA: { ...componentResult, keyComponent: newKeysSub[0+ indexKey] }, elementB: { ...elementB, keyComponent: newKeysSub[1+indexKey] } },
                         type: operation,
                         geometryPositionVertices: undefined,
                         geometryNormalVertices: undefined,
@@ -83,7 +83,7 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
                     let indexKey = 3*index
                     let resultEntity: CompositeEntity = {
                         ...elementB,
-                        elementKeys: { elementA: { ...elementB, keyComponent: newKeysSub[indexKey] }, elementB: { ...elementA, keyComponent: newKeysSub[1+indexKey] } },
+                        baseElements: { elementA: { ...elementB, keyComponent: newKeysSub[indexKey] }, elementB: { ...elementA, keyComponent: newKeysSub[1+indexKey] } },
                         type: operation,
                         geometryPositionVertices: undefined,
                         geometryNormalVertices: undefined,
@@ -113,7 +113,7 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
                     let indexKey = 3*index
                     let resultEntity: CompositeEntity = {
                         ...elementB,
-                        elementKeys: { elementA: { ...elementB, keyComponent: newKeysSub[indexKey] }, elementB: { ...elementA, keyComponent: newKeysSub[1+indexKey] } },
+                        baseElements: { elementA: { ...elementB, keyComponent: newKeysSub[indexKey] }, elementB: { ...elementA, keyComponent: newKeysSub[1+indexKey] } },
                         type: operation,
                         geometryPositionVertices: undefined,
                         geometryNormalVertices: undefined,

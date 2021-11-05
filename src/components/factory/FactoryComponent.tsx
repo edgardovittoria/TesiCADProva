@@ -65,22 +65,22 @@ export const FactoryComponent = (entity: ComponentEntity) => {
 const getOperationElements = (entity: ComponentEntity) => {
     let compositeEntity = entity as CompositeEntity
 
-    let positionTS = compositeEntity.elementKeys.elementA.position
-    let positionTHS = compositeEntity.elementKeys.elementB.position
+    let positionTS = compositeEntity.baseElements.elementA.position
+    let positionTHS = compositeEntity.baseElements.elementB.position
 
-    let scaleTS = compositeEntity.elementKeys.elementA.scale
-    let scaleTHS = compositeEntity.elementKeys.elementB.scale
+    let scaleTS = compositeEntity.baseElements.elementA.scale
+    let scaleTHS = compositeEntity.baseElements.elementB.scale
 
-    let rotationTS = compositeEntity.elementKeys.elementA.rotation
-    let rotationTHS = compositeEntity.elementKeys.elementB.rotation
+    let rotationTS = compositeEntity.baseElements.elementA.rotation
+    let rotationTHS = compositeEntity.baseElements.elementB.rotation
 
-    let elementToSubtract = FactoryComponent(compositeEntity.elementKeys.elementA)
+    let elementToSubtract = FactoryComponent(compositeEntity.baseElements.elementA)
     elementToSubtract?.position.set(positionTS[0], positionTS[1], positionTS[2])
     elementToSubtract?.scale.set(scaleTS[0], scaleTS[1], scaleTS[2])
     elementToSubtract?.rotation.set(rotationTS[0], rotationTS[1], rotationTS[2])
     elementToSubtract?.updateMatrix()
 
-    let elementThatSubtract = FactoryComponent(compositeEntity.elementKeys.elementB)
+    let elementThatSubtract = FactoryComponent(compositeEntity.baseElements.elementB)
     elementThatSubtract?.position.set(positionTHS[0], positionTHS[1], positionTHS[2])
     elementThatSubtract?.scale.set(scaleTHS[0], scaleTHS[1], scaleTHS[2])
     elementThatSubtract?.rotation.set(rotationTHS[0], rotationTHS[1], rotationTHS[2])

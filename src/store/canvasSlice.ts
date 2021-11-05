@@ -75,10 +75,19 @@ export const CanvasSlice = createSlice({
             component.name = action.payload.name
         },
         importStateCanvas(state: CanvasState, action: PayloadAction<CanvasState>){
-            state.components = action.payload.components
+            state.components = action.payload.components.map(component => {
+                if (component.hasOwnProperty("baseElements")){
+                    (component as CompositeEntity).geometryPositionVertices = undefined;
+                    (component as CompositeEntity).geometryNormalVertices = undefined;
+                    (component as CompositeEntity).geometryUvVertices = undefined
+                    return component
+                }
+                return component
+            }
+            )
             state.numberOfGeneratedKey = action.payload.numberOfGeneratedKey
+        
         }
-
     
     },
     extraReducers: {
