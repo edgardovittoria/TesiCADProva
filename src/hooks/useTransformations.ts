@@ -10,7 +10,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { ToolbarTransformationState, toolbarTransformationStateSelector } from "../store/toolbarTransformationSlice";
 import { Dispatch } from "@reduxjs/toolkit";
-import { ActionCreators } from "redux-undo";
 
 export const useTransformations = (
     transformation: React.MutableRefObject<null>,

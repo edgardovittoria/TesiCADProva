@@ -7,8 +7,7 @@ import {addComponent, CanvasState, canvasStateSelector, importStateCanvas} from 
 import {useDispatch, useSelector} from "react-redux";
 import {getDefaultSphere} from '../canvas/components/sphere';
 import {RootState, store} from '../../store/store';
-import {ActionCreators} from 'redux-undo';
-import './style/navBar.css'
+import './style/navBar.css';
 
 interface NavBarProps {
 }
@@ -67,7 +66,7 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
                                     let files = e.target.files;
                                     (files) && files[0].text().then((value) => {
                                         let storeState: RootState = JSON.parse(value)
-                                        dispatch(importStateCanvas(storeState.canvas.present))
+                                        dispatch(importStateCanvas(storeState.canvas))
                                     })
                                 }}/>
                         </button>

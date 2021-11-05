@@ -1,9 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import { StateWithHistory } from 'redux-undo';
 import {Box3} from "three";
 import {ComponentEntity, CompositeEntity} from "../model/ComponentEntity";
-import {RootState, store} from "./store";
-
 export type CanvasState = {
     components: ComponentEntity[],
     numberOfGeneratedKey: number,
@@ -97,8 +94,8 @@ export const {
     updateColor, updateName, importStateCanvas
 } = CanvasSlice.actions
 
-export const canvasStateSelector = (state: { canvas: StateWithHistory<CanvasState> }) => state.canvas.present;
-export const selectedComponentSelector = (state: { canvas: StateWithHistory<CanvasState> }) => findSelectedComponent(state.canvas.present)
+export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas;
+export const selectedComponentSelector = (state: { canvas: CanvasState }) => findSelectedComponent(state.canvas)
 
 const findSelectedComponent = (canvas: CanvasState) => canvas.components.filter(component => component.isSelected)[0]
 const findComponentByKey = (canvas: CanvasState, key: number) => canvas.components.filter(component => component.keyComponent === key)[0]
