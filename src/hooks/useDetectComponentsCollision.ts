@@ -16,7 +16,6 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
    
     useEffect(() => {
         let collisionsSet = arrayOfCollisionsBetween(componentEntity, canvasState.components);
-        console.log(collisionsSet);
         (collisionsSet.length > 0) && setCollisions(collisionsSet);
         if(collisionsSet.length > 0
             && componentEntity.previousPosition.every((val, index) => val === componentEntity.position[index])
