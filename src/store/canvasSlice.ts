@@ -1,6 +1,6 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {Box3} from "three";
-import {ComponentEntity, CompositeEntity} from "../model/ComponentEntity";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Box3 } from "three";
+import { ComponentEntity, CompositeEntity } from "../model/ComponentEntity";
 export type CanvasState = {
     components: ComponentEntity[],
     numberOfGeneratedKey: number,
@@ -14,85 +14,76 @@ export const CanvasSlice = createSlice({
     } as CanvasState,
     reducers: {
         //qui vanno inserite le azioni
-        addComponent(state: CanvasState, action: PayloadAction<ComponentEntity>){
+        addComponent(state: CanvasState, action: PayloadAction<ComponentEntity>) {
             state.components.push(action.payload);
         },
-        removeComponent(state: CanvasState, action: PayloadAction<ComponentEntity>){
+        removeComponent(state: CanvasState, action: PayloadAction<ComponentEntity>) {
             state.components = state.components.filter(component => {
                 return component.keyComponent !== action.payload.keyComponent;
             })
         },
-        updatePosition(state: CanvasState, action: PayloadAction<[number,number,number]>){
+        updatePosition(state: CanvasState, action: PayloadAction<[number, number, number]>) {
             let selectedComponent = findSelectedComponent(state)
             selectedComponent.previousPosition = selectedComponent.position
             selectedComponent.position = action.payload
             selectedComponent.lastTransformationType = "TRANSLATE"
         },
-        updateRotation(state: CanvasState, action: PayloadAction<[number,number,number]>){
+        updateRotation(state: CanvasState, action: PayloadAction<[number, number, number]>) {
             let selectedComponent = findSelectedComponent(state)
             selectedComponent.previousRotation = selectedComponent.rotation
             selectedComponent.rotation = action.payload
             selectedComponent.lastTransformationType = "ROTATE"
         },
-        updateScale(state: CanvasState, action: PayloadAction<[number,number,number]>){
+        updateScale(state: CanvasState, action: PayloadAction<[number, number, number]>) {
             let selectedComponent = findSelectedComponent(state)
             selectedComponent.previousScale = selectedComponent.scale
             selectedComponent.scale = action.payload
             selectedComponent.lastTransformationType = "SCALE"
         },
-        updateBox3(state: CanvasState, action: PayloadAction<{key: number ,box3: Box3}>){
+        updateBox3(state: CanvasState, action: PayloadAction<{ key: number, box3: Box3 }>) {
             let component = findComponentByKey(state, action.payload.key)
             component.box3Min = [action.payload.box3.min.x, action.payload.box3.min.y, action.payload.box3.min.z]
             component.box3Max = [action.payload.box3.max.x, action.payload.box3.max.y, action.payload.box3.max.z]
         },
-        updateCompositeEntityPositionVertices(state: CanvasState, action: PayloadAction<{key: number, vertices: Float32Array}>){
+        updateCompositeEntityPositionVertices(state: CanvasState, action: PayloadAction<{ key: number, vertices: Float32Array }>) {
             let component = findComponentByKey(state, action.payload.key);
             (component as CompositeEntity).geometryPositionVertices = action.payload.vertices
         },
-        updateCompositeEntityNormalVertices(state: CanvasState, action: PayloadAction<{key: number, vertices: Float32Array}>){
+        updateCompositeEntityNormalVertices(state: CanvasState, action: PayloadAction<{ key: number, vertices: Float32Array }>) {
             let component = findComponentByKey(state, action.payload.key);
             (component as CompositeEntity).geometryNormalVertices = action.payload.vertices
         },
-        updateCompositeEntityUvVertices(state: CanvasState, action: PayloadAction<{key: number, vertices: Float32Array}>){
+        updateCompositeEntityUvVertices(state: CanvasState, action: PayloadAction<{ key: number, vertices: Float32Array }>) {
             let component = findComponentByKey(state, action.payload.key);
             (component as CompositeEntity).geometryUvVertices = action.payload.vertices
         },
 
-        selectComponent(state: CanvasState, action: PayloadAction<number>){
+        selectComponent(state: CanvasState, action: PayloadAction<number>) {
             state.components.map(component => {
-                (component.keyComponent === action.payload)? component.isSelected = true : component.isSelected = false
+                (component.keyComponent === action.payload) ? component.isSelected = true : component.isSelected = false
             })
         },
-        incrementNumberOfGeneratedKey(state: CanvasState, action: PayloadAction<number>){
+        incrementNumberOfGeneratedKey(state: CanvasState, action: PayloadAction<number>) {
             state.numberOfGeneratedKey += action.payload;
         },
-        updateColor(state: CanvasState, action: PayloadAction<{key: number ,color: string}>){
+        updateColor(state: CanvasState, action: PayloadAction<{ key: number, color: string }>) {
             let component = findComponentByKey(state, action.payload.key);
             component.color = action.payload.color
         },
-        updateName(state: CanvasState, action: PayloadAction<{key: number ,name: string}>){
+        updateName(state: CanvasState, action: PayloadAction<{ key: number, name: string }>) {
             let component = findComponentByKey(state, action.payload.key);
             component.name = action.payload.name
         },
-        importStateCanvas(state: CanvasState, action: PayloadAction<CanvasState>){
-            state.components = action.payload.components.map(component => {
-                if (component.hasOwnProperty("baseElements")){
-                    (component as CompositeEntity).geometryPositionVertices = undefined;
-                    (component as CompositeEntity).geometryNormalVertices = undefined;
-                    (component as CompositeEntity).geometryUvVertices = undefined
-                    return component
-                }
-                return component
-            }
-            )
+        importStateCanvas(state: CanvasState, action: PayloadAction<CanvasState>) {
+            state.components = cleanVerticesCompositeEntityBeforeImport(action.payload.components)
             state.numberOfGeneratedKey = action.payload.numberOfGeneratedKey
-        
+
         }
-    
+
     },
     extraReducers: {
         //qui inseriamo i metodi : PENDING, FULLFILLED, REJECT utili per la gestione delle richieste asincrone
-}
+    }
 })
 
 
@@ -109,3 +100,19 @@ export const selectedComponentSelector = (state: { canvas: CanvasState }) => fin
 
 const findSelectedComponent = (canvas: CanvasState) => canvas.components.filter(component => component.isSelected)[0]
 const findComponentByKey = (canvas: CanvasState, key: number) => canvas.components.filter(component => component.keyComponent === key)[0]
+
+const cleanVerticesCompositeEntityBeforeImport = (components: ComponentEntity[]) => {
+    return components.map(component => {
+        if (component.hasOwnProperty("baseElements")) {
+            let composite = component as CompositeEntity
+            composite.geometryPositionVertices = undefined
+            composite.geometryNormalVertices = undefined
+            composite.geometryUvVertices = undefined
+            let [elementA, elementB] = cleanVerticesCompositeEntityBeforeImport([composite.baseElements.elementA, composite.baseElements.elementB])
+            composite.baseElements.elementA = elementA
+            composite.baseElements.elementB = elementB
+        }
+        return component
+    }
+    )
+}
