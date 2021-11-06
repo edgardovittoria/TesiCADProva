@@ -1,114 +1,84 @@
-import {ComponentEntity, CompositeEntity, CubeEntity, SphereEntity} from "../../model/ComponentEntity";
-import {Cube, CubeProps} from "../canvas/components/cube";
-import {BufferGeometry, Mesh} from 'three'
-import {CSG} from 'three-csg-ts';
-import {emptyObject} from "../emptyObject";
+import { ComponentEntity, CompositeEntity, CubeEntity, SphereEntity } from "../../model/ComponentEntity";
+import { Cube, CubeProps } from "../canvas/components/cube";
+import { CSG } from 'three-csg-ts';
+import { emptyObject } from "../emptyObject";
 import { Sphere, SphereProps } from "../canvas/components/sphere";
 import * as THREE from "three"
 
 
 export const FactoryComponent = (entity: ComponentEntity) => {
-
-
     switch (entity.type) {
         case "CUBE":
             let cubeEntity = entity as CubeEntity
-
             let cubeProps: CubeProps = { color: cubeEntity.color, width: cubeEntity.width, height: cubeEntity.height, depth: cubeEntity.depth }
-            return (
-                Cube(cubeProps)
-            )
-        
-            case "SPHERE":
-                let sphereEntity = entity as SphereEntity
-    
-                let sphereProps: SphereProps = { radius: sphereEntity.radius, color: sphereEntity.color, heightSegments: sphereEntity.heightSegments, widthSegments: sphereEntity.widthSegments }
-                return (
-                    Sphere(sphereProps)
-                )    
-
-        case "SUBTRACTION":
-            if((entity as CompositeEntity).geometryPositionVertices !== undefined){
-                return createMeshWithBufferGeometryFromCompositeEntity(entity)
+            return Cube(cubeProps)
+        case "SPHERE":
+            let sphereEntity = entity as SphereEntity
+            let sphereProps: SphereProps = { radius: sphereEntity.radius, color: sphereEntity.color, heightSegments: sphereEntity.heightSegments, widthSegments: sphereEntity.widthSegments }
+            return Sphere(sphereProps)
+        default:
+            if (areDefinedVerticesOf(entity)) {
+                return meshWithBufferGeometryFrom(entity)
             }
-            let [elementASUB, elementBSUB] = getOperationElements(entity)
-            if (elementASUB && elementBSUB) {
-                let newMesh = CSG.subtract(elementASUB, elementBSUB)
-                return resetMeshTransformationParams(newMesh)
-            } else { return emptyObject() }
-
-        case "INTERSECTION":
-            if((entity as CompositeEntity).geometryPositionVertices !== undefined){
-                return createMeshWithBufferGeometryFromCompositeEntity(entity)
-            }
-            let [elementAINT, elementBINT] = getOperationElements(entity)
-            if (elementAINT && elementBINT) {
-                let newMesh = CSG.intersect(elementAINT, elementBINT)
-                return resetMeshTransformationParams(newMesh)
-            } else { return emptyObject() }
-
-        case "UNION":
-            if((entity as CompositeEntity).geometryPositionVertices !== undefined){
-                return createMeshWithBufferGeometryFromCompositeEntity(entity)
-            }
-            let [elementA, elementB] = getOperationElements(entity)
-            if (elementA && elementB) {
-                let newMesh = CSG.union(elementA, elementB)
-                return resetMeshTransformationParams(newMesh)
-            } else { return emptyObject() }
-
-        default: return emptyObject()
+            let [elementA, elementB] = getOperationElementsFrom(entity as CompositeEntity)
+            return (elementA && elementB) ? meshFromOperationBetweenElements(entity.type, elementA, elementB) : emptyObject()
 
     }
 }
 
-const getOperationElements = (entity: ComponentEntity) => {
-    let compositeEntity = entity as CompositeEntity
+const areDefinedVerticesOf = (entity: ComponentEntity) => (entity as CompositeEntity).geometryPositionVertices !== undefined
 
-    let positionTS = compositeEntity.baseElements.elementA.position
-    let positionTHS = compositeEntity.baseElements.elementB.position
-
-    let scaleTS = compositeEntity.baseElements.elementA.scale
-    let scaleTHS = compositeEntity.baseElements.elementB.scale
-
-    let rotationTS = compositeEntity.baseElements.elementA.rotation
-    let rotationTHS = compositeEntity.baseElements.elementB.rotation
-
-    let elementToSubtract = FactoryComponent(compositeEntity.baseElements.elementA)
-    elementToSubtract?.position.set(positionTS[0], positionTS[1], positionTS[2])
-    elementToSubtract?.scale.set(scaleTS[0], scaleTS[1], scaleTS[2])
-    elementToSubtract?.rotation.set(rotationTS[0], rotationTS[1], rotationTS[2])
-    elementToSubtract?.updateMatrix()
-
-    let elementThatSubtract = FactoryComponent(compositeEntity.baseElements.elementB)
-    elementThatSubtract?.position.set(positionTHS[0], positionTHS[1], positionTHS[2])
-    elementThatSubtract?.scale.set(scaleTHS[0], scaleTHS[1], scaleTHS[2])
-    elementThatSubtract?.rotation.set(rotationTHS[0], rotationTHS[1], rotationTHS[2])
-    elementThatSubtract?.updateMatrix()
-
-    return [elementToSubtract, elementThatSubtract]
+const meshWithBufferGeometryFrom = (entity: ComponentEntity) => {
+    let [positionVertices, normalVertices, uvVertices] = [
+        (entity as CompositeEntity).geometryPositionVertices, 
+        (entity as CompositeEntity).geometryPositionVertices, 
+        (entity as CompositeEntity).geometryPositionVertices] as Float32Array[]
+    return new THREE.Mesh(bufferGeometryWithAttributes(positionVertices, normalVertices, uvVertices), basicMaterialWith(entity.color))
 }
 
-const resetMeshTransformationParams = (mesh: Mesh) => {
+const bufferGeometryWithAttributes = (positionVertices: Float32Array, normalVertices: Float32Array, uvVertices: Float32Array) => {
+    let bufferGeometry = new THREE.BufferGeometry()
+    bufferGeometry.setAttribute("position", new THREE.BufferAttribute(positionVertices, 3))
+    bufferGeometry.setAttribute("normal", new THREE.BufferAttribute(normalVertices, 3))
+    bufferGeometry.setAttribute("uv", new THREE.BufferAttribute(uvVertices, 3))
+    return bufferGeometry
+}
 
+const basicMaterialWith = (color: string) => {
+    let basicMaterial = new THREE.MeshBasicMaterial()
+    basicMaterial.color.set(color)
+    return basicMaterial
+}
+
+const getOperationElementsFrom = (compositeEntity: CompositeEntity) => {
+    let [positionA, scaleA, rotationA] = [compositeEntity.baseElements.elementA.position, compositeEntity.baseElements.elementA.scale, compositeEntity.baseElements.elementA.rotation]
+    let [positionB, scaleB, rotationB] = [compositeEntity.baseElements.elementB.position, compositeEntity.baseElements.elementB.scale, compositeEntity.baseElements.elementB.rotation]
+    let elementA = FactoryComponent(compositeEntity.baseElements.elementA) as THREE.Mesh
+    setMeshPositionRotationScale(elementA, positionA, rotationA, scaleA)
+    let elementB = FactoryComponent(compositeEntity.baseElements.elementB) as THREE.Mesh
+    setMeshPositionRotationScale(elementB, positionB, rotationB, scaleB)
+    return [elementA, elementB]
+}
+
+const setMeshPositionRotationScale = (mesh: THREE.Mesh, position: [number, number, number], rotation: [number, number, number], scale: [number, number, number]) => {
+    mesh.position.set(position[0], position[1], position[2])
+    mesh.scale.set(scale[0], scale[1], scale[2])
+    mesh.rotation.set(rotation[0], rotation[1], rotation[2])
+    mesh.updateMatrix()
+}
+
+const meshFromOperationBetweenElements = (operation: string, elementA: THREE.Mesh, elementB: THREE.Mesh) => {
+    let newMesh: THREE.Mesh
+    if (operation === "UNION") { newMesh = CSG.union(elementA, elementB) }
+    else if (operation === "INTERSECTION") { newMesh = CSG.intersect(elementA, elementB) }
+    else { newMesh = CSG.subtract(elementA, elementB) }
+    return resetMeshTransformationParams(newMesh)
+}
+
+const resetMeshTransformationParams = (mesh: THREE.Mesh) => {
     let meshClone = mesh.copy(mesh, true);
-
-    meshClone.position.set(0,0,0)
-    meshClone.scale.set(1,1,1)
-    meshClone.rotation.set(0,0,0)
-
+    meshClone.position.set(0, 0, 0)
+    meshClone.scale.set(1, 1, 1)
+    meshClone.rotation.set(0, 0, 0)
     return meshClone
-}
-
-const createMeshWithBufferGeometryFromCompositeEntity = (entity : ComponentEntity) => {
-    let positionVertices = (entity as CompositeEntity).geometryPositionVertices as Float32Array
-    let normalVertices = (entity as CompositeEntity).geometryPositionVertices as Float32Array
-    let uvVertices = (entity as CompositeEntity).geometryPositionVertices as Float32Array
-                let geometry = new THREE.BufferGeometry()
-                geometry.setAttribute("position", new THREE.BufferAttribute(positionVertices, 3))
-                geometry.setAttribute("normal", new THREE.BufferAttribute(normalVertices, 3))
-                geometry.setAttribute("uv", new THREE.BufferAttribute(uvVertices, 3))
-                let material = new THREE.MeshBasicMaterial()
-                material.color.set(entity.color)
-               return  new THREE.Mesh(geometry, material)
 }
