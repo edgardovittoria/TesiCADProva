@@ -11,7 +11,8 @@ import { Mesh } from 'three';
 import { FactoryComponent } from "../../factory/FactoryComponent";
 import { DetectCollision } from './detectCollision';
 import { Transformations } from './transformations';
-import { setMeshPositionRotationScale } from '../../../auxiliaryFunctionsUsingThreeDirectly/setMeshPositionRotationScale';
+import { meshWithPositionRotationScaleFromOldOne } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshWithPositionRotationScaleFromOldOne';
+import { computeGeometryBoundingBoxOf } from '../../../auxiliaryFunctionsUsingThreeDirectly/computeGeometryBoundingBoxOf';
 
 interface ComponentProps {
     orbit: MutableRefObject<null>
@@ -49,9 +50,8 @@ export const Component: React.FC<ComponentProps> = (
 
     useEffect(() => {
         if (meshRef.current) {
-            let mesh = setMeshPositionRotationScale(meshRef.current as Mesh, componentEntity.position, componentEntity.rotation, componentEntity.scale)
-            mesh.geometry.computeBoundingBox()
-            mesh.geometry.boundingBox?.applyMatrix4(mesh.matrix)
+            let mesh = meshRef.current as Mesh
+            mesh = computeGeometryBoundingBoxOf(meshWithPositionRotationScaleFromOldOne(mesh, componentEntity.position, componentEntity.rotation, componentEntity.scale))
             if (mesh.geometry.boundingBox) {
                 dispatch(updateBox3({ key: componentEntity.keyComponent, box3: mesh.geometry.boundingBox }))
             }
