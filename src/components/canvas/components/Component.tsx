@@ -49,8 +49,7 @@ export const Component: React.FC<ComponentProps> = (
 
     useEffect(() => {
         if (meshRef.current) {
-            let mesh = meshRef.current as Mesh
-            mesh = setMeshPositionRotationScale(meshRef.current as Mesh, componentEntity.position, componentEntity.rotation, componentEntity.scale) 
+            let mesh = setMeshPositionRotationScale(meshRef.current as Mesh, componentEntity.position, componentEntity.rotation, componentEntity.scale)
             mesh.geometry.computeBoundingBox()
             mesh.geometry.boundingBox?.applyMatrix4(mesh.matrix)
             if (mesh.geometry.boundingBox) {
