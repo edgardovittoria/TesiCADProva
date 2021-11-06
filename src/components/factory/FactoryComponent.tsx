@@ -4,6 +4,7 @@ import { CSG } from 'three-csg-ts';
 import { emptyObject } from "../emptyObject";
 import { Sphere, SphereProps } from "../canvas/components/sphere";
 import * as THREE from "three"
+import { setMeshPositionRotationScale } from "../../auxiliaryFunctionsUsingThreeDirectly/setMeshPositionRotationScale";
 
 
 export const FactoryComponent = (entity: ComponentEntity) => {
@@ -53,18 +54,9 @@ const basicMaterialWith = (color: string) => {
 const getOperationElementsFrom = (compositeEntity: CompositeEntity) => {
     let [positionA, scaleA, rotationA] = [compositeEntity.baseElements.elementA.position, compositeEntity.baseElements.elementA.scale, compositeEntity.baseElements.elementA.rotation]
     let [positionB, scaleB, rotationB] = [compositeEntity.baseElements.elementB.position, compositeEntity.baseElements.elementB.scale, compositeEntity.baseElements.elementB.rotation]
-    let elementA = FactoryComponent(compositeEntity.baseElements.elementA) as THREE.Mesh
-    setMeshPositionRotationScale(elementA, positionA, rotationA, scaleA)
-    let elementB = FactoryComponent(compositeEntity.baseElements.elementB) as THREE.Mesh
-    setMeshPositionRotationScale(elementB, positionB, rotationB, scaleB)
+    let elementA = setMeshPositionRotationScale(FactoryComponent(compositeEntity.baseElements.elementA) as THREE.Mesh, positionA, rotationA, scaleA)
+    let elementB = setMeshPositionRotationScale(FactoryComponent(compositeEntity.baseElements.elementB) as THREE.Mesh, positionB, rotationB, scaleB)
     return [elementA, elementB]
-}
-
-const setMeshPositionRotationScale = (mesh: THREE.Mesh, position: [number, number, number], rotation: [number, number, number], scale: [number, number, number]) => {
-    mesh.position.set(position[0], position[1], position[2])
-    mesh.scale.set(scale[0], scale[1], scale[2])
-    mesh.rotation.set(rotation[0], rotation[1], rotation[2])
-    mesh.updateMatrix()
 }
 
 const meshFromOperationBetweenElements = (operation: string, elementA: THREE.Mesh, elementB: THREE.Mesh) => {

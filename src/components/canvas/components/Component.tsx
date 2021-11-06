@@ -6,11 +6,12 @@ import {
 } from "../../../store/canvasSlice";
 import { useTransformations } from "../../../hooks/useTransformations";
 import { useDispatch, useSelector } from "react-redux";
-import { ComponentEntity, CompositeEntity } from "../../../model/ComponentEntity";
+import { ComponentEntity } from "../../../model/ComponentEntity";
 import { Mesh } from 'three';
 import { FactoryComponent } from "../../factory/FactoryComponent";
 import { DetectCollision } from './detectCollision';
 import { Transformations } from './transformations';
+import { setMeshPositionRotationScale } from '../../../auxiliaryFunctionsUsingThreeDirectly/setMeshPositionRotationScale';
 
 interface ComponentProps {
     orbit: MutableRefObject<null>
@@ -49,10 +50,7 @@ export const Component: React.FC<ComponentProps> = (
     useEffect(() => {
         if (meshRef.current) {
             let mesh = meshRef.current as Mesh
-            mesh.position.set(componentEntity.position[0], componentEntity.position[1], componentEntity.position[2])
-            mesh.rotation.set(componentEntity.rotation[0], componentEntity.rotation[1], componentEntity.rotation[2])
-            mesh.scale.set(componentEntity.scale[0], componentEntity.scale[1], componentEntity.scale[2])
-            mesh.updateMatrix()
+            mesh = setMeshPositionRotationScale(meshRef.current as Mesh, componentEntity.position, componentEntity.rotation, componentEntity.scale) 
             mesh.geometry.computeBoundingBox()
             mesh.geometry.boundingBox?.applyMatrix4(mesh.matrix)
             if (mesh.geometry.boundingBox) {
