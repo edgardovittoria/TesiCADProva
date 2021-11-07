@@ -60,9 +60,6 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
                         ...componentResult,
                         baseElements: { elementA: { ...componentResult, keyComponent: newKeysSub[0+ indexKey] }, elementB: { ...elementB, keyComponent: newKeysSub[1+indexKey] } },
                         type: operation,
-                        geometryPositionVertices: undefined,
-                        geometryNormalVertices: undefined,
-                        geometryUvVertices: undefined,
                         keyComponent: newKeysSub[2+indexKey],
                         lastTransformationType: undefined
                     }
@@ -84,9 +81,6 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
                         ...elementB,
                         baseElements: { elementA: { ...elementB, keyComponent: newKeysSub[indexKey] }, elementB: { ...elementA, keyComponent: newKeysSub[1+indexKey] } },
                         type: operation,
-                        geometryPositionVertices: undefined,
-                        geometryNormalVertices: undefined,
-                        geometryUvVertices: undefined,
                         keyComponent: newKeysSub[2+indexKey],
                         lastTransformationType: undefined
                     }
@@ -114,9 +108,6 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
                         ...elementB,
                         baseElements: { elementA: { ...elementB, keyComponent: newKeysSub[indexKey] }, elementB: { ...elementA, keyComponent: newKeysSub[1+indexKey] } },
                         type: operation,
-                        geometryPositionVertices: undefined,
-                        geometryNormalVertices: undefined,
-                        geometryUvVertices: undefined,
                         keyComponent: newKeysSub[2+indexKey],
                         lastTransformationType: undefined
                     }

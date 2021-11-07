@@ -50,7 +50,7 @@ export const Outliner: React.FC<OutlinerProps> = ({canvasState}) => {
                                 <span className="type Mesh"/>
                                 {component.name}
                             </div>
-                            <div hidden={!inputItemVisibility}>
+                            <div key={component.keyComponent + "_input"} hidden={!inputItemVisibility}>
                                 <input
                                     type="text"
                                     defaultValue={component.name + component.keyComponent}

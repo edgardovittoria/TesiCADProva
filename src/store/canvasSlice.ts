@@ -45,19 +45,6 @@ export const CanvasSlice = createSlice({
             component.box3Min = [action.payload.box3.min.x, action.payload.box3.min.y, action.payload.box3.min.z]
             component.box3Max = [action.payload.box3.max.x, action.payload.box3.max.y, action.payload.box3.max.z]
         },
-        updateCompositeEntityPositionVertices(state: CanvasState, action: PayloadAction<{ key: number, vertices: Float32Array }>) {
-            let component = findComponentByKey(state, action.payload.key);
-            (component as CompositeEntity).geometryPositionVertices = action.payload.vertices
-        },
-        updateCompositeEntityNormalVertices(state: CanvasState, action: PayloadAction<{ key: number, vertices: Float32Array }>) {
-            let component = findComponentByKey(state, action.payload.key);
-            (component as CompositeEntity).geometryNormalVertices = action.payload.vertices
-        },
-        updateCompositeEntityUvVertices(state: CanvasState, action: PayloadAction<{ key: number, vertices: Float32Array }>) {
-            let component = findComponentByKey(state, action.payload.key);
-            (component as CompositeEntity).geometryUvVertices = action.payload.vertices
-        },
-
         selectComponent(state: CanvasState, action: PayloadAction<number>) {
             state.components.map(component => {
                 (component.keyComponent === action.payload) ? component.isSelected = true : component.isSelected = false
@@ -75,7 +62,7 @@ export const CanvasSlice = createSlice({
             component.name = action.payload.name
         },
         importStateCanvas(state: CanvasState, action: PayloadAction<CanvasState>) {
-            state.components = cleanVerticesCompositeEntityBeforeImport(action.payload.components)
+            state.components = action.payload.components
             state.numberOfGeneratedKey = action.payload.numberOfGeneratedKey
 
         }
@@ -91,7 +78,6 @@ export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
     addComponent, removeComponent, updatePosition, updateRotation,
     updateScale, updateBox3, selectComponent, incrementNumberOfGeneratedKey,
-    updateCompositeEntityPositionVertices, updateCompositeEntityNormalVertices, updateCompositeEntityUvVertices,
     updateColor, updateName, importStateCanvas
 } = CanvasSlice.actions
 
@@ -101,18 +87,3 @@ export const selectedComponentSelector = (state: { canvas: CanvasState }) => fin
 const findSelectedComponent = (canvas: CanvasState) => canvas.components.filter(component => component.isSelected)[0]
 const findComponentByKey = (canvas: CanvasState, key: number) => canvas.components.filter(component => component.keyComponent === key)[0]
 
-const cleanVerticesCompositeEntityBeforeImport = (components: ComponentEntity[]) => {
-    return components.map(component => {
-        if (component.hasOwnProperty("baseElements")) {
-            let composite = component as CompositeEntity
-            composite.geometryPositionVertices = undefined
-            composite.geometryNormalVertices = undefined
-            composite.geometryUvVertices = undefined
-            let [elementA, elementB] = cleanVerticesCompositeEntityBeforeImport([composite.baseElements.elementA, composite.baseElements.elementB])
-            composite.baseElements.elementA = elementA
-            composite.baseElements.elementB = elementB
-        }
-        return component
-    }
-    )
-}

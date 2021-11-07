@@ -1,11 +1,10 @@
-import React, {useEffect, useRef} from 'react';
-import {Provider, ReactReduxContext, useDispatch, useSelector} from "react-redux";
-import {canvasStateSelector, selectedComponentSelector} from "../../store/canvasSlice";
+import React, {useRef} from 'react';
+import {Provider, ReactReduxContext, useSelector} from "react-redux";
+import {canvasStateSelector} from "../../store/canvasSlice";
 import {Canvas} from "@react-three/fiber";
-import {Component} from './components/Component';
 import {OrbitControls} from "@react-three/drei";
-import {SelectBinaryOp} from "../modal/selectBinaryOp";
-import {useDetectComponentsCollision} from "../../hooks/useDetectComponentsCollision";
+import { Component } from './components/Component';
+
 
 
 interface MyCanvasProps {

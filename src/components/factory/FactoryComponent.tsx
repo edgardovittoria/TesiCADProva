@@ -18,38 +18,12 @@ export const FactoryComponent = (entity: ComponentEntity) => {
             let sphereProps: SphereProps = { radius: sphereEntity.radius, color: sphereEntity.color, heightSegments: sphereEntity.heightSegments, widthSegments: sphereEntity.widthSegments }
             return Sphere(sphereProps)
         default:
-            if (areDefinedVerticesOf(entity)) {
-                return meshWithBufferGeometryFrom(entity)
-            }
             let [elementA, elementB] = getOperationElementsFrom(entity as CompositeEntity)
             return (elementA && elementB) ? meshFromOperationBetweenElements(entity.type, elementA, elementB) : emptyObject()
 
     }
 }
 
-const areDefinedVerticesOf = (entity: ComponentEntity) => (entity as CompositeEntity).geometryPositionVertices !== undefined
-
-const meshWithBufferGeometryFrom = (entity: ComponentEntity) => {
-    let [positionVertices, normalVertices, uvVertices] = [
-        (entity as CompositeEntity).geometryPositionVertices, 
-        (entity as CompositeEntity).geometryPositionVertices, 
-        (entity as CompositeEntity).geometryPositionVertices] as Float32Array[]
-    return new THREE.Mesh(bufferGeometryWithAttributes(positionVertices, normalVertices, uvVertices), basicMaterialWith(entity.color))
-}
-
-const bufferGeometryWithAttributes = (positionVertices: Float32Array, normalVertices: Float32Array, uvVertices: Float32Array) => {
-    let bufferGeometry = new THREE.BufferGeometry()
-    bufferGeometry.setAttribute("position", new THREE.BufferAttribute(positionVertices, 3))
-    bufferGeometry.setAttribute("normal", new THREE.BufferAttribute(normalVertices, 3))
-    bufferGeometry.setAttribute("uv", new THREE.BufferAttribute(uvVertices, 3))
-    return bufferGeometry
-}
-
-const basicMaterialWith = (color: string) => {
-    let basicMaterial = new THREE.MeshBasicMaterial()
-    basicMaterial.color.set(color)
-    return basicMaterial
-}
 
 const getOperationElementsFrom = (compositeEntity: CompositeEntity) => {
     let [positionA, scaleA, rotationA] = [compositeEntity.baseElements.elementA.position, compositeEntity.baseElements.elementA.scale, compositeEntity.baseElements.elementA.rotation]
