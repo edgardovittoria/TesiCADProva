@@ -16,7 +16,6 @@ export const Outliner: React.FC<OutlinerProps> = ({canvasState}) => {
         }
     }, [canvasState.components]);
 
-
     return (
         <>
             <div id="outliner" className="Outliner" tabIndex={0}>
