@@ -5,9 +5,11 @@ import { emptyObject } from "../emptyObject";
 import { Sphere, SphereProps } from "../canvas/components/sphere";
 import * as THREE from "three"
 import { meshWithPositionRotationScaleFromOldOne } from "../../auxiliaryFunctionsUsingThreeDirectly/meshWithPositionRotationScaleFromOldOne";
+import { resetMeshTransformationParams } from "../../auxiliaryFunctionsUsingThreeDirectly/resetMeshTransformationParams";
 
 
 export const FactoryComponent = (entity: ComponentEntity) => {
+    console.log("factory")
     switch (entity.type) {
         case "CUBE":
             let cubeEntity = entity as CubeEntity
@@ -19,11 +21,12 @@ export const FactoryComponent = (entity: ComponentEntity) => {
             return Sphere(sphereProps)
         default:
             let [elementA, elementB] = getOperationElementsFrom(entity as CompositeEntity)
-            return (elementA && elementB) ? meshFromOperationBetweenElements(entity.type, elementA, elementB) : emptyObject()
+            let meshComposite = (elementA && elementB) ? meshFromOperationBetweenElements(entity.type, elementA, elementB) : emptyObject();
+            (meshComposite.material as THREE.MeshBasicMaterial).color.set(entity.color)
+            return meshComposite
 
     }
 }
-
 
 const getOperationElementsFrom = (compositeEntity: CompositeEntity) => {
     let [positionA, scaleA, rotationA] = [compositeEntity.baseElements.elementA.position, compositeEntity.baseElements.elementA.scale, compositeEntity.baseElements.elementA.rotation]
@@ -41,10 +44,3 @@ const meshFromOperationBetweenElements = (operation: string, elementA: THREE.Mes
     return resetMeshTransformationParams(newMesh)
 }
 
-const resetMeshTransformationParams = (mesh: THREE.Mesh) => {
-    let meshClone = mesh.copy(mesh, true);
-    meshClone.position.set(0, 0, 0)
-    meshClone.scale.set(1, 1, 1)
-    meshClone.rotation.set(0, 0, 0)
-    return meshClone
-}
