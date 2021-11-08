@@ -1,7 +1,8 @@
-export const meshWithcomputedGeometryBoundingFromOld = (mesh: THREE.Mesh) => {
+export const meshWithcomputedGeometryBoundingFrom = (mesh: THREE.Mesh) => {
     let meshCopy = mesh.clone(true)
+    mesh.updateMatrixWorld(true)
     meshCopy.geometry.computeBoundingBox()
-    meshCopy.geometry.boundingBox?.applyMatrix4(meshCopy.matrix)
+    meshCopy.geometry.boundingBox?.applyMatrix4(meshCopy.matrixWorld)
     return meshCopy
 }
 

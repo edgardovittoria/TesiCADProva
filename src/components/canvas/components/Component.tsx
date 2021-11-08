@@ -6,7 +6,7 @@ import { ComponentEntity } from "../../../model/ComponentEntity";
 import { FactoryComponent } from "../../factory/FactoryComponent";
 import { DetectCollision } from './detectCollision';
 import { Transformations } from './transformations';
-import { meshWithcomputedGeometryBoundingFromOld, meshWithColorFromOldOne, meshWithPositionRotationScaleFromOldOne, meshWithResetTransformationParamsFromOld } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
+import { meshWithColorFromOldOne, meshWithPositionRotationScaleFromOldOne, meshWithResetTransformationParamsFromOld, meshWithcomputedGeometryBoundingFrom } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
 
 interface ComponentProps {
     orbit: MutableRefObject<null>
@@ -27,11 +27,10 @@ export const Component: React.FC<ComponentProps> = ({ children, orbit }) => {
     }, [componentEntity.color])
 
     useEffect(() => {
-        let meshTemp = (meshWithcomputedGeometryBoundingFromOld(meshWithPositionRotationScaleFromOldOne(mesh, componentEntity.position, componentEntity.rotation, componentEntity.scale)))
+        let meshTemp = (meshWithcomputedGeometryBoundingFrom(meshWithPositionRotationScaleFromOldOne(mesh, componentEntity.position, componentEntity.rotation, componentEntity.scale)))
         if (meshTemp.geometry.boundingBox) {
             dispatch(updateBox3({ key: componentEntity.keyComponent, box3: meshTemp.geometry.boundingBox }))
         }
-        setMesh(meshTemp)
     }, [componentEntity.position, componentEntity.rotation, componentEntity.scale])
 
     return (
@@ -51,6 +50,7 @@ export const Component: React.FC<ComponentProps> = ({ children, orbit }) => {
                     rotation={componentEntity.rotation}
                 />
             </group>
+            // <mesh  geometry={mesh.geometry} material={mesh.material} position={componentEntity.position} scale={componentEntity.scale} rotation={componentEntity.rotation}/>
     )
 
 }

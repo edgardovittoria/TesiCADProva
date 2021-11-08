@@ -1,7 +1,7 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Provider, ReactReduxContext, useSelector} from "react-redux";
 import {canvasStateSelector} from "../../store/canvasSlice";
-import {Canvas} from "@react-three/fiber";
+import {Canvas, useThree} from "@react-three/fiber";
 import {OrbitControls} from "@react-three/drei";
 import { Component } from './components/Component';
 
@@ -36,7 +36,7 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                                 <gridHelper scale={[2.88, 1, 2.95]}/>
                                 <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
                                                removeEventListener={undefined} dispatchEvent={undefined}/>
-
+    
                             </Provider>
                         </Canvas>
                     </>
