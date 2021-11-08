@@ -4,9 +4,7 @@ import { CSG } from 'three-csg-ts';
 import { emptyObject } from "../emptyObject";
 import { Sphere, SphereProps } from "../canvas/components/sphere";
 import * as THREE from "three"
-import { meshWithPositionRotationScaleFromOldOne } from "../../auxiliaryFunctionsUsingThreeDirectly/meshWithPositionRotationScaleFromOldOne";
-import { resetMeshTransformationParams } from "../../auxiliaryFunctionsUsingThreeDirectly/resetMeshTransformationParams";
-
+import { meshWithPositionRotationScaleFromOldOne, meshWithResetTransformationParamsFromOld } from "../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
 
 export const FactoryComponent = (entity: ComponentEntity) => {
     console.log("factory")
@@ -41,6 +39,6 @@ const meshFromOperationBetweenElements = (operation: string, elementA: THREE.Mes
     if (operation === "UNION") { newMesh = CSG.union(elementA, elementB) }
     else if (operation === "INTERSECTION") { newMesh = CSG.intersect(elementA, elementB) }
     else { newMesh = CSG.subtract(elementA, elementB) }
-    return resetMeshTransformationParams(newMesh)
+    return meshWithResetTransformationParamsFromOld(newMesh)
 }
 

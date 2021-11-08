@@ -6,13 +6,7 @@ import { ComponentEntity } from "../../../model/ComponentEntity";
 import { FactoryComponent } from "../../factory/FactoryComponent";
 import { DetectCollision } from './detectCollision';
 import { Transformations } from './transformations';
-import { meshWithPositionRotationScaleFromOldOne } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshWithPositionRotationScaleFromOldOne';
-import { computeGeometryBoundingBoxOf } from '../../../auxiliaryFunctionsUsingThreeDirectly/computeGeometryBoundingBoxOf';
-import { Mesh } from 'three';
-import { emptyObject } from '../../emptyObject';
-import { resetMeshTransformationParams } from '../../../auxiliaryFunctionsUsingThreeDirectly/resetMeshTransformationParams';
-import { meshWithColorFromOldOne } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshWithColorFromOldOne';
-
+import { meshWithcomputedGeometryBoundingFromOld, meshWithColorFromOldOne, meshWithPositionRotationScaleFromOldOne, meshWithResetTransformationParamsFromOld } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
 
 interface ComponentProps {
     orbit: MutableRefObject<null>
@@ -21,37 +15,30 @@ interface ComponentProps {
 export const Component: React.FC<ComponentProps> = ({ children, orbit }) => {
     const dispatch = useDispatch();
     const canvasState = useSelector(canvasStateSelector);
-    const transformation = useRef(null)
     let componentEntity = children as ComponentEntity
-    const[mesh, setMesh] = useState(useMemo(() => FactoryComponent(componentEntity),[]))
-    //let mesh = useMemo(() => FactoryComponent(componentEntity), [componentEntity.color])
-
-    
-    useTransformations(transformation, orbit);
+    const [mesh, setMesh] = useState(useMemo(() => FactoryComponent(componentEntity), []))
 
     useEffect(() => {
         dispatch(selectComponent(componentEntity.keyComponent))
     }, [])
 
-
     useEffect(() => {
         setMesh((meshWithColorFromOldOne(mesh, componentEntity.color)))
-    },[componentEntity.color])
+    }, [componentEntity.color])
 
     useEffect(() => {
-            let meshTemp = (computeGeometryBoundingBoxOf(meshWithPositionRotationScaleFromOldOne(mesh, componentEntity.position, componentEntity.rotation, componentEntity.scale)))
-            if (meshTemp.geometry.boundingBox) {
-                dispatch(updateBox3({ key: componentEntity.keyComponent, box3: meshTemp.geometry.boundingBox }))
-            } 
-            setMesh(meshTemp)
+        let meshTemp = (meshWithcomputedGeometryBoundingFromOld(meshWithPositionRotationScaleFromOldOne(mesh, componentEntity.position, componentEntity.rotation, componentEntity.scale)))
+        if (meshTemp.geometry.boundingBox) {
+            dispatch(updateBox3({ key: componentEntity.keyComponent, box3: meshTemp.geometry.boundingBox }))
+        }
+        setMesh(meshTemp)
     }, [componentEntity.position, componentEntity.rotation, componentEntity.scale])
-
 
     return (
         (componentEntity.isSelected) ?
             <>
                 <Transformations orbit={orbit} entity={componentEntity}>
-                    <primitive object={resetMeshTransformationParams(mesh)} />
+                    <primitive object={meshWithResetTransformationParamsFromOld(mesh)} />
                 </Transformations>
                 <DetectCollision canvasState={canvasState} entity={componentEntity} />
             </>
@@ -64,7 +51,6 @@ export const Component: React.FC<ComponentProps> = ({ children, orbit }) => {
                     rotation={componentEntity.rotation}
                 />
             </group>
-
     )
 
 }

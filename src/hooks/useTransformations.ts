@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Object3DNode } from "@react-three/fiber";
 import {
     canvasStateSelector,
-    selectedComponentSelector,
     updatePosition,
     updateRotation,
     updateScale

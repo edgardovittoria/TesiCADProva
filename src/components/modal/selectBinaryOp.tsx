@@ -4,8 +4,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     closeModal,
     modalStateSelector,
-    openModal,
-    specificModalStateSelector,
     updateLastValue
 } from "../../store/modalSlice";
 
@@ -24,10 +22,12 @@ export const SelectBinaryOp: React.FC<SelectBinaryOpProps> = ({}) => {
     let modal = modalState.modals.filter(modal => modal.name === NAME)[0];
     const [selectedOperation, setSelectedOperation] = useState(modal.lastValue);
     const [show, setShow] = useState(false);
+    
     useEffect(() => {
         setShow(modal.currentOpen)
     }, [modal.currentOpen]);
 
+    
 
     const handleClose = () => {
         setShow(false)

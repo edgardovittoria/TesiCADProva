@@ -5,6 +5,7 @@ import {
 import {CubeEntity} from "../../../model/ComponentEntity";
 import {Dispatch} from "@reduxjs/toolkit";
 import * as THREE from 'three'
+import { useMemo } from "react";
 
 export type CubeProps = {
     color: string,
@@ -13,7 +14,7 @@ export type CubeProps = {
     depth: number
 }
 
-export function GetNewKey (canvasState: CanvasState , dispatch: Dispatch, numberOfKeyToGenerate = 1)  {
+export function getNewKeys (canvasState: CanvasState , dispatch: Dispatch, numberOfKeyToGenerate = 1)  {
     let lastKey = canvasState.numberOfGeneratedKey
     let newKeys: number[] = []
     for(let i=1; i<=numberOfKeyToGenerate; i++){
@@ -28,7 +29,7 @@ export function getDefaultCube(canvasState: CanvasState, dispatch: Dispatch){
     const component: CubeEntity = {
         type: 'CUBE',
         name: 'CUBE',
-        keyComponent: GetNewKey(canvasState, dispatch)[0],
+        keyComponent: getNewKeys(canvasState, dispatch)[0],
         orbitEnabled: true,
         position: [0,0,0],
         rotation: [0,0,0],
@@ -51,15 +52,12 @@ export function getDefaultCube(canvasState: CanvasState, dispatch: Dispatch){
 export const Cube = (
     cubeProps: CubeProps
 ) => {
-    let color = new THREE.MeshBasicMaterial()
-    color.color.set(cubeProps.color)
-    let mesh = new THREE.Mesh(new THREE.BoxGeometry(cubeProps.width, cubeProps.height, cubeProps.depth), color)
-
-    return(
-        mesh
-        // <mesh ref={cubeProps.meshRef} onClick={() => cubeProps.clickHandler()}>
-        //     <boxGeometry args={[cubeProps.width, cubeProps.height, cubeProps.depth]} />
-        //     <meshBasicMaterial color={cubeProps.color}/>
-        // </mesh>
-    )
+    let mesh = useMemo(() => {
+        let color = new THREE.MeshBasicMaterial()
+        color.color.set(cubeProps.color)
+        let newMesh = new THREE.Mesh(new THREE.BoxGeometry(cubeProps.width, cubeProps.height, cubeProps.depth), color)
+        return newMesh
+    },[cubeProps])
+    
+    return mesh
 }
