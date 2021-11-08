@@ -42,13 +42,13 @@ export function getDefaultSphere(canvasState: CanvasState, dispatch: Dispatch){
 export const Sphere = (
     sphereProps: SphereProps
 )  => {
-    let mesh = useMemo(() => {
+    
         let color = new THREE.MeshBasicMaterial()
         color.color.set(sphereProps.color)
         let newMesh = new THREE.Mesh(new THREE.SphereGeometry(sphereProps.radius, sphereProps.widthSegments, sphereProps.heightSegments), color)
         return newMesh
-    },[sphereProps])
     
-    return mesh
+    
+    return newMesh
 
 }

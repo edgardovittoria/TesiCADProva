@@ -52,12 +52,11 @@ export function getDefaultCube(canvasState: CanvasState, dispatch: Dispatch){
 export const Cube = (
     cubeProps: CubeProps
 ) => {
-    let mesh = useMemo(() => {
         let color = new THREE.MeshBasicMaterial()
         color.color.set(cubeProps.color)
         let newMesh = new THREE.Mesh(new THREE.BoxGeometry(cubeProps.width, cubeProps.height, cubeProps.depth), color)
         return newMesh
-    },[cubeProps])
     
-    return mesh
+    
+    return newMesh
 }
