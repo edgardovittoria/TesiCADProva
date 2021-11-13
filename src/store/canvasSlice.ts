@@ -85,5 +85,5 @@ export const canvasStateSelector = (state: { canvas: CanvasState }) => state.can
 export const selectedComponentSelector = (state: { canvas: CanvasState }) => findSelectedComponent(state.canvas)
 
 const findSelectedComponent = (canvas: CanvasState) => canvas.components.filter(component => component.isSelected)[0]
-const findComponentByKey = (canvas: CanvasState, key: number) => canvas.components.filter(component => component.keyComponent === key)[0]
+export const findComponentByKey = (canvas: CanvasState, key: number) => canvas.components.filter(component => component.keyComponent === key)[0]
 

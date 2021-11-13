@@ -4,6 +4,8 @@ import {canvasStateSelector} from "../../store/canvasSlice";
 import {Canvas, useThree} from "@react-three/fiber";
 import {OrbitControls} from "@react-three/drei";
 import { Component } from './components/Component';
+import { Selection } from './components/selection';
+import { FactoryComponent } from '../factory/FactoryComponent';
 
 
 
@@ -30,13 +32,13 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                                 <pointLight position={[0, 50, 0]}/>
                                 {canvasState.components.map((component) => {
 
-                                    return <Component key={component.keyComponent} children={component} orbit={orbit}/>
+                                    return <FactoryComponent entity={component} orbit={orbit} />
 
                                 })}
                                 <gridHelper scale={[2.88, 1, 2.95]}/>
                                 <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
-                                               removeEventListener={undefined} dispatchEvent={undefined}/>
-    
+                                               removeEventListener={undefined} dispatchEvent={undefined} />
+                                {/* <Selection /> */}
                             </Provider>
                         </Canvas>
                     </>

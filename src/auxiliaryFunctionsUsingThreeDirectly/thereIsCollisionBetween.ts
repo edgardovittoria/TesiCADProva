@@ -1,5 +1,6 @@
 import { ComponentEntity } from "../model/ComponentEntity";
 import * as THREE from "three";
+import { meshWithcomputedGeometryBoundingFrom } from "./meshOpsAndSettings";
 
 export const thereIsCollisionBetween = (firstComponentEntity: ComponentEntity, secondComponentEntity: ComponentEntity) => {
     if (firstComponentEntity.box3Min !== undefined && firstComponentEntity.box3Max !== undefined && secondComponentEntity.box3Min !== undefined && secondComponentEntity.box3Max !== undefined) {
@@ -11,4 +12,14 @@ export const thereIsCollisionBetween = (firstComponentEntity: ComponentEntity, s
         return box3FirstComponent.intersectsBox(box3SecondComponent)
     }
     return false
+}
+
+export const thereIsCollisionBetweenMeshes = (firstComponentEntity: THREE.Mesh, secondComponentEntity: THREE.Mesh) => {
+    let mesh2 = meshWithcomputedGeometryBoundingFrom(secondComponentEntity);
+    let mesh1 = meshWithcomputedGeometryBoundingFrom(firstComponentEntity)
+    console.log(mesh1, mesh2)
+    return (mesh1.geometry.boundingBox && mesh2.geometry.boundingBox)
+        ? mesh1.geometry.boundingBox.intersectsBox(mesh2.geometry.boundingBox)
+        : false
+
 }

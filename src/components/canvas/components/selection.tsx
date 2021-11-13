@@ -17,6 +17,7 @@ export const Selection : FC<SelectionProps> = ({}) => {
         mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
     
         raycaster.setFromCamera( mouse, camera );  
+        raycaster.layers.set(1)
         let intersects = raycaster.intersectObjects( scene.children );
         console.log(intersects)
         for ( var i = 0; i < intersects.length; i++ ) {

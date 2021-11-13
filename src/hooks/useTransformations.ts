@@ -32,26 +32,26 @@ export const useTransformations = (
             controls.setMode(getActiveTransformationType(toolbarTransformationState))
             const callback = (event: any) => {
                 (orbit.current !== null) && ((orbit.current as Object3DNode<any, any>).enabled = !event.value)
-                if (controls.getMode() === 'translate') {
-                    manageTransformation(
-                        controls.getMode(),
-                        [controls.worldPosition.x, controls.worldPosition.y, controls.worldPosition.z],
-                        dispatch
-                    )
-
-                } else if (controls.getMode() === 'rotate') {
-                    manageTransformation(
-                        controls.getMode(),
-                        [controls.worldQuaternion.x, controls.worldQuaternion.y, controls.worldQuaternion.z],
-                        dispatch
-                    )
-
-                } else {
-                    manageTransformation(
-                        controls.getMode(),
-                        [controls.worldScale.x, controls.worldScale.y, controls.worldScale.z],
-                        dispatch
-                    )
+                if (!event.value) {
+                    if (controls.getMode() === 'translate') {
+                        manageTransformation(
+                            controls.getMode(),
+                            [controls.worldPosition.x, controls.worldPosition.y, controls.worldPosition.z],
+                            dispatch
+                        )
+                    } else if (controls.getMode() === 'rotate') {
+                        manageTransformation(
+                            controls.getMode(),
+                            [controls.worldQuaternion.x, controls.worldQuaternion.y, controls.worldQuaternion.z],
+                            dispatch
+                        )
+                    } else {
+                        manageTransformation(
+                            controls.getMode(),
+                            [controls.worldScale.x, controls.worldScale.y, controls.worldScale.z],
+                            dispatch
+                        )
+                    }
                 }
             }
             controls.addEventListener("dragging-changed", callback)

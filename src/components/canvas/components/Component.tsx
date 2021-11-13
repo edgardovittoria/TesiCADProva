@@ -1,56 +1,47 @@
-import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
-import { canvasStateSelector, selectComponent, updateBox3 } from "../../../store/canvasSlice";
-import { useTransformations } from "../../../hooks/useTransformations";
-import { useDispatch, useSelector } from "react-redux";
-import { ComponentEntity } from "../../../model/ComponentEntity";
-import { FactoryComponent } from "../../factory/FactoryComponent";
-import { DetectCollision } from './detectCollision';
+import React, { MutableRefObject, useEffect } from 'react';
+import { selectComponent, updateBox3 } from "../../../store/canvasSlice";
+import { useDispatch } from "react-redux";
 import { Transformations } from './transformations';
-import { meshWithColorFromOldOne, meshWithPositionRotationScaleFromOldOne, meshWithResetTransformationParamsFromOld, meshWithcomputedGeometryBoundingFrom } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
+import { DetectCollision } from './detectCollision';
+import { meshWithcomputedGeometryBoundingFrom } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
+import { MeshProps } from '@react-three/fiber';
 
-interface ComponentProps {
-    orbit: MutableRefObject<null>
+export interface ComponentProps {
+    orbit: MutableRefObject<null>, 
+    position : [number, number, number],
+    rotation : [number, number, number],
+    scale : [number, number, number], 
+    keyComponent : number, 
+    isSelected : boolean
 }
 
-export const Component: React.FC<ComponentProps> = ({ children, orbit }) => {
+export const Component: React.FC<ComponentProps> = ({ children, orbit, position, rotation, scale, keyComponent, isSelected }) => {
     const dispatch = useDispatch();
-    const canvasState = useSelector(canvasStateSelector);
-    let componentEntity = children as ComponentEntity
-    const [mesh, setMesh] = useState(useMemo(() => FactoryComponent(componentEntity), []))
 
     useEffect(() => {
-        dispatch(selectComponent(componentEntity.keyComponent))
+        dispatch(selectComponent(keyComponent))
     }, [])
 
     useEffect(() => {
-        setMesh((meshWithColorFromOldOne(mesh, componentEntity.color)))
-    }, [componentEntity.color])
-
-    useEffect(() => {
-        let meshTemp = (meshWithcomputedGeometryBoundingFrom(meshWithPositionRotationScaleFromOldOne(mesh, componentEntity.position, componentEntity.rotation, componentEntity.scale)))
-        if (meshTemp.geometry.boundingBox) {
-            dispatch(updateBox3({ key: componentEntity.keyComponent, box3: meshTemp.geometry.boundingBox }))
-        }
-    }, [componentEntity.position, componentEntity.rotation, componentEntity.scale])
-
+        let meshRef = (children as MeshProps).ref as MutableRefObject<null>
+        if(meshRef.current){
+            let meshTemp = meshWithcomputedGeometryBoundingFrom(meshRef.current);
+            (meshTemp.geometry.boundingBox) && dispatch(updateBox3({key: keyComponent, box3: meshTemp.geometry.boundingBox}))
+        }       
+    },[position, rotation, scale])
+    
     return (
-        (componentEntity.isSelected) ?
+        (isSelected) ?
             <>
-                <Transformations orbit={orbit} entity={componentEntity}>
-                    <primitive object={meshWithResetTransformationParamsFromOld(mesh)} />
+                <Transformations orbit={orbit} keyComponent={keyComponent} position={position} rotation={rotation} scale={scale}>
+                    {children}
                 </Transformations>
-                <DetectCollision canvasState={canvasState} entity={componentEntity} />
+                <DetectCollision  keyComponent={keyComponent} />
             </>
             :
-            <group key={componentEntity.keyComponent} onClick={() => dispatch(selectComponent(componentEntity.keyComponent))}>
-                <primitive
-                    object={mesh}
-                    position={componentEntity.position}
-                    scale={componentEntity.scale}
-                    rotation={componentEntity.rotation}
-                />
+            <group key={keyComponent} userData={{key: keyComponent}} onClick={() => dispatch(selectComponent(keyComponent))} position={position} rotation={rotation} scale={scale}>
+                {children}
             </group>
-            // <mesh  geometry={mesh.geometry} material={mesh.material} position={componentEntity.position} scale={componentEntity.scale} rotation={componentEntity.rotation}/>
     )
 
 }

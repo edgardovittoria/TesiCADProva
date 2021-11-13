@@ -5,28 +5,30 @@ import { useTransformations } from "../../../hooks/useTransformations";
 import { ComponentEntity } from "../../../model/ComponentEntity";
 
 interface TransformationsProps {
-    entity: ComponentEntity
+    position: [number, number, number],
+    rotation: [number, number, number],
+    scale: [number, number, number],
+    keyComponent: number
     orbit: MutableRefObject<null>
 }
-export const Transformations: FC<TransformationsProps> = ({ entity, orbit, children }) => {
+export const Transformations: FC<TransformationsProps> = ({ keyComponent, position, rotation, scale, orbit, children }) => {
     const transformation = useRef(null)
     useTransformations(transformation, orbit)
+    
 
     return (
         <TransformControls
-            key={entity.keyComponent}
+            key={keyComponent}
             ref={transformation}
-            position={entity.position}
-            rotation={entity.rotation}
-            scale={entity.scale}
             type={undefined} isGroup={undefined} id={undefined} uuid={undefined}
             name={undefined}
+            position={position} rotation={rotation} scale={scale}
             parent={undefined} modelViewMatrix={undefined} normalMatrix={undefined}
             matrixWorld={undefined} matrixAutoUpdate={undefined}
             matrixWorldNeedsUpdate={undefined}
             castShadow={undefined} receiveShadow={undefined} frustumCulled={undefined}
             renderOrder={undefined} animations={undefined}
-            userData={{ key: entity.keyComponent }}
+            userData={{ key: keyComponent }}
             customDepthMaterial={undefined} customDistanceMaterial={undefined}
             isObject3D={undefined}
             onBeforeRender={undefined} onAfterRender={undefined}
