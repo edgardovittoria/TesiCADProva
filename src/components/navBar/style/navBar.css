@@ -1,9 +1,9 @@
-.importNavBar{
+.dropdownItem{
     color: #9B9D9E;
     background-color: transparent;
     text-transform: capitalize;
 }
 
-.importNavBar:hover{
-    color: rgba(255,255,255,.75);
+.dropdownItem:hover{
+    color: white;
 }

@@ -1,6 +1,6 @@
 import * as THREE from "three"
 import { CSG } from "three-csg-ts"
-import { ComponentEntity, CompositeEntity, CubeEntity, SphereEntity } from "../model/ComponentEntity"
+import {BufferEntity, ComponentEntity, CompositeEntity, CubeEntity, SphereEntity} from "../model/ComponentEntity"
 
 export const meshWithcomputedGeometryBoundingFrom = (mesh: THREE.Mesh) => {
     let meshCopy = mesh.clone(true)
@@ -60,6 +60,14 @@ export const meshFrom = (entity: ComponentEntity) => {
             let materialSphere = new THREE.MeshBasicMaterial()
             materialSphere.color.set(sphereEntity.color)
             return new THREE.Mesh(new THREE.SphereGeometry(sphereEntity.radius, sphereEntity.widthSegments, sphereEntity.heightSegments), materialSphere)
+        case "BUFFER":
+            let bufferEntity = entity as BufferEntity
+            let bufferMaterial = new THREE.MeshBasicMaterial()
+            bufferMaterial.color.set(bufferEntity.color)
+            let geometry = new THREE.BufferGeometry()
+            geometry.setAttribute('position', new THREE.BufferAttribute(bufferEntity.positionVertices, 3))
+            geometry.setAttribute('normal', new THREE.BufferAttribute(bufferEntity.normalVertices, 3))
+            return new THREE.Mesh(geometry, bufferMaterial)
         default:
             let [elementA, elementB] = getOperationElementsFrom(entity as CompositeEntity)
             let meshComposite = (elementA && elementB) ? meshFromOperationBetweenElements(entity.type, elementA, elementB) : new THREE.Mesh();

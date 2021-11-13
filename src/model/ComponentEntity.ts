@@ -32,3 +32,9 @@ export type SphereEntity = {
 export type CompositeEntity = {
     baseElements : {elementA: ComponentEntity, elementB: ComponentEntity}
 } & ComponentEntity
+
+export type BufferEntity = {
+    positionVertices: Float32Array
+    normalVertices: Float32Array
+    uvVertices: Float32Array | undefined
+} & ComponentEntity

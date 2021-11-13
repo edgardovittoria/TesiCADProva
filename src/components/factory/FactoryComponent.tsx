@@ -1,8 +1,9 @@
-import { ComponentEntity, CompositeEntity, CubeEntity, SphereEntity } from "../../model/ComponentEntity";
+import {BufferEntity, ComponentEntity, CompositeEntity, CubeEntity, SphereEntity} from "../../model/ComponentEntity";
 import { Cube } from "../canvas/components/cube";
 import { FC, MutableRefObject } from "react";
 import { Composite } from "../canvas/components/composite";
 import { Sphere } from "../canvas/components/sphere";
+import {BufferComponent} from "../canvas/components/bufferComponent";
 
 interface FactoryComponentProps{
     entity: ComponentEntity,
@@ -17,6 +18,9 @@ export const FactoryComponent : FC<FactoryComponentProps> = ({entity, orbit}) =>
         case "SPHERE":
             let sphereEntity = entity as SphereEntity
             return <Sphere color={sphereEntity.color} heightSegments={sphereEntity.heightSegments} widthSegments={sphereEntity.widthSegments} radius={sphereEntity.radius} componentProps={{isSelected: entity.isSelected, keyComponent: entity.keyComponent, position: entity.position, rotation: entity.rotation, scale: entity.scale, orbit: orbit }}/>
+        case "BUFFER":
+            let bufferEntity = entity as BufferEntity
+            return <BufferComponent entity={bufferEntity} componentProps={{position: bufferEntity.position, keyComponent: bufferEntity.keyComponent, rotation: bufferEntity.rotation, scale: bufferEntity.scale, isSelected: bufferEntity.isSelected, orbit: orbit}}/>
         default:
             return <Composite entity={entity as CompositeEntity} componentProps={{isSelected: entity.isSelected, keyComponent: entity.keyComponent, position: entity.position, rotation: entity.rotation, scale: entity.scale, orbit: orbit }} />
             // let [elementA, elementB] = getOperationElementsFrom(entity as CompositeEntity)

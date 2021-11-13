@@ -1,13 +1,15 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Container, Nav, Navbar, NavDropdown, NavItem, NavLink} from "react-bootstrap";
 import {faCircle, faCube} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {getDefaultCube} from "../canvas/components/cube";
-import {addComponent, CanvasState, canvasStateSelector, importStateCanvas} from "../../store/canvasSlice";
+import {getDefaultCube } from "../canvas/components/cube";
+import {addComponent, canvasStateSelector} from "../../store/canvasSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {getDefaultSphere} from '../canvas/components/sphere';
-import {RootState, store} from '../../store/store';
+import {store} from '../../store/store';
 import './style/navBar.css';
+import {importFrom, importProjectFrom} from "../../auxiliaryFunctionsForImportAndExport/importFunctions";
+import {exportProjectFrom, exportToSTLFormatFrom} from "../../auxiliaryFunctionsForImportAndExport/exportFunctions";
 
 interface NavBarProps {
 }
@@ -16,12 +18,19 @@ interface NavBarProps {
 export const MyNavBar: React.FC<NavBarProps> = () => {
     const dispatch = useDispatch();
     const canvasState = useSelector(canvasStateSelector);
-    const inputRef = useRef(null)
+    const inputRefProject = useRef(null)
+    const inputRefSTL = useRef(null)
 
+    const onImportProjectClick = () => {
+        let input = inputRefProject.current
+        if (input) {
+            (input as HTMLInputElement).click()
+        }
 
-    const onImportClick = () => {
-        // `current` points to the mounted file input element
-        let input = inputRef.current
+    };
+
+    const onImportSTLClick = () => {
+        let input = inputRefSTL.current
         if (input) {
             (input as HTMLInputElement).click()
         }
@@ -33,6 +42,7 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
             <Navbar bg="dark" variant="dark">
                 <Container>
                     <Nav className="me-auto">
+                        {/*Start Components Dropdown*/}
                         <NavDropdown
                             id="nav-dropdown-dark-example"
                             title="Components"
@@ -43,44 +53,90 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
                                 dispatch(addComponent(cube))
 
                             }}>
-                                <FontAwesomeIcon icon={faCube} style={{marginRight: "5px"}}/>
-                                Cube
+                                <div className="dropdownItem">
+                                    <FontAwesomeIcon icon={faCube} style={{marginRight: "5px"}}/>
+                                    <span>Cube</span>
+                                </div>
+
                             </Nav.Link>
                             <Nav.Link onClick={() => {
                                 let sphere = getDefaultSphere(canvasState, dispatch);
                                 dispatch(addComponent(sphere))
 
                             }}>
-                                <FontAwesomeIcon icon={faCircle} style={{marginRight: "5px"}}/>
-                                Sphere
+                                <div className="dropdownItem">
+                                    <FontAwesomeIcon icon={faCircle} style={{marginRight: "5px"}}
+                                                     className="dropdownItem"/>
+                                    <span>Sphere</span>
+                                </div>
                             </Nav.Link>
                         </NavDropdown>
-                        <button className="importNavBar" onClick={onImportClick}>
-                            Import
-                            <input
-                                type="file"
-                                ref={inputRef}
-                                style={{display: "none"}}
-                                accept="application/json"
-                                onChange={(e) => {
-                                    let files = e.target.files;
-                                    (files) && files[0].text().then((value) => {
-                                        let storeState: RootState = JSON.parse(value)
-                                        dispatch(importStateCanvas(storeState.canvas))
-                                    })
-                                }}/>
-                        </button>
+                        {/*End Components Dropdown*/}
 
-                        <Nav.Link
-                            href={`data:text/json;charset=utf-8,${encodeURIComponent(
-                                JSON.stringify(store.getState())
-                            )}`}
-                            download="canvasState.json">Export</Nav.Link>
+                        {/*Start Import Dropdown*/}
+                        <NavDropdown
+                            id="nav-dropdown-dark-example"
+                            title="Import"
+                            menuVariant="dark"
+                        >
+                            <button className="dropdownItem" onClick={onImportProjectClick}>
+                                Project
+                                <input
+                                    type="file"
+                                    ref={inputRefProject}
+                                    style={{display: "none"}}
+                                    accept="application/json"
+                                    onChange={(e) => {
+                                        let files = e.target.files;
+                                        (files) && importProjectFrom(files[0], dispatch)
+                                    }}/>
+                            </button>
+                            <hr/>
+                            <button className="dropdownItem" onClick={onImportSTLClick}>
+                                STL file
+                                <input
+                                    type="file"
+                                    ref={inputRefSTL}
+                                    style={{display: "none"}}
+                                    accept=".stl"
+                                    onChange={(e) => {
+                                        let STLFiles = e.target.files;
+                                        (STLFiles) && importFrom(STLFiles[0], canvasState, dispatch)
+                                    }}/>
+                            </button>
+                        </NavDropdown>
+                        {/*End Import Dropdown*/}
+
+                        {/*Start Export Dropdown*/}
+                        <NavDropdown
+                            id="nav-dropdown-dark-example"
+                            title="Export"
+                            menuVariant="dark"
+                        >
+                            <Nav.Link
+                                href={`data:application/json;charset=utf-8,${encodeURIComponent(
+                                    exportProjectFrom(store)
+                                )}`}
+                                download="project.json">
+                                <span className="dropdownItem">Project</span>
+                            </Nav.Link>
+                            <hr/>
+                            <Nav.Link
+                                href={`data:text/plain;charset=utf-8,${encodeURIComponent(
+                                    exportToSTLFormatFrom(canvasState)
+                                )}`}
+                                download="model.stl">
+                                <span className="dropdownItem">STL Format</span>
+                            </Nav.Link>
+                        </NavDropdown>
+                        {/*End Export Dropdown*/}
                     </Nav>
-
                 </Container>
             </Navbar>
         </>
     )
 
 }
+
+
+
