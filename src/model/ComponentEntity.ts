@@ -59,3 +59,13 @@ export type TorusEntity = {
     tubularSegments?: number,
     centralAngle?: number
 } & ComponentEntity
+
+export type ConeEntity = {
+    radius: number,
+    height: number,
+    radialSegments?: number,
+    heightSegments?: number,
+    openEnded?: boolean,
+    thetaLength?: number,
+    thetaStart?: number 
+} & ComponentEntity

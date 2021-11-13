@@ -1,4 +1,4 @@
-import { BufferEntity, ComponentEntity, CompositeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity } from "../../model/ComponentEntity";
+import { BufferEntity, ComponentEntity, CompositeEntity, ConeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity } from "../../model/ComponentEntity";
 import { Cube } from "../canvas/components/cube";
 import { FC, MutableRefObject } from "react";
 import { Composite } from "../canvas/components/composite";
@@ -7,6 +7,7 @@ import { BufferComponent } from "../canvas/components/bufferComponent";
 import { Cylinder } from "../canvas/components/cylinder";
 import { Component } from "../canvas/components/Component";
 import { Torus } from "../canvas/components/torus";
+import { Cone } from "../canvas/components/cone";
 
 interface FactoryComponentProps {
     entity: ComponentEntity,
@@ -41,6 +42,11 @@ const factoryElements = (entity: ComponentEntity) => {
             let torusEntity = entity as TorusEntity
             return <Torus color={torusEntity.color} torusRadius={torusEntity.torusRadius} tubeRadius={torusEntity.tubeRadius}
                 centralAngle={torusEntity.centralAngle} radialSegments={torusEntity.radialSegments} tubularSegments={torusEntity.tubularSegments} />
+        case "CONE":
+            let coneEntity = entity as ConeEntity
+            return <Cone radius={coneEntity.radius} height={coneEntity.height}
+                color={coneEntity.color} heightSegments={coneEntity.heightSegments} radialSegments={coneEntity.radialSegments}
+                thetaStart={coneEntity.thetaStart} thetaLength={coneEntity.thetaLength} openEnded={coneEntity.openEnded} />
         default:
             return <Composite entity={entity as CompositeEntity} />
 

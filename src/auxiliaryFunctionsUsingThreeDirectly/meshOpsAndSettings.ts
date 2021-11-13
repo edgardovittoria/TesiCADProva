@@ -1,7 +1,7 @@
 import * as THREE from "three"
-import { CylinderGeometry, TorusGeometry } from "three"
+import { ConeGeometry, CylinderGeometry, TorusGeometry } from "three"
 import { CSG } from "three-csg-ts"
-import { BufferEntity, ComponentEntity, CompositeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity } from "../model/ComponentEntity"
+import { BufferEntity, ComponentEntity, CompositeEntity, ConeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity } from "../model/ComponentEntity"
 
 export const meshWithcomputedGeometryBoundingFrom = (mesh: THREE.Mesh) => {
     let meshCopy = mesh.clone(true)
@@ -81,6 +81,12 @@ export const meshFrom = (entity: ComponentEntity) => {
             torusMaterial.color.set(torusEntity.color)
             return new THREE.Mesh(new TorusGeometry(torusEntity.torusRadius, torusEntity.tubeRadius,
                 torusEntity.radialSegments, torusEntity.tubularSegments, torusEntity.centralAngle), torusMaterial)
+        case "CONE":
+            let coneEntity = entity as ConeEntity
+            let coneMaterial = new THREE.MeshBasicMaterial()
+            coneMaterial.color.set(coneEntity.color)
+            return new THREE.Mesh(new ConeGeometry(coneEntity.radius, coneEntity.height, coneEntity.radialSegments,
+                coneEntity.heightSegments, coneEntity.openEnded, coneEntity.thetaStart, coneEntity.thetaLength), coneMaterial)
         default:
             let [elementA, elementB] = getOperationElementsFrom(entity as CompositeEntity)
             let meshComposite = (elementA && elementB) ? meshFromOperationBetweenElements(entity.type, elementA, elementB) : new THREE.Mesh();

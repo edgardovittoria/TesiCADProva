@@ -12,6 +12,7 @@ import { importFrom, importProjectFrom } from "../../auxiliaryFunctionsForImport
 import { exportProjectFrom, exportToSTLFormatFrom } from "../../auxiliaryFunctionsForImportAndExport/exportFunctions";
 import { getDefaultCylinder } from '../canvas/components/cylinder';
 import { getDefaultTorus } from '../canvas/components/torus';
+import { getDefaultCone } from '../canvas/components/cone';
 
 interface NavBarProps {
 }
@@ -91,6 +92,17 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
                                 <div className="dropdownItem">
                                     <FontAwesomeIcon icon={faRing} style={{marginRight: "5px"}}/>
                                     <span>Torus</span>
+                                </div>
+
+                            </Nav.Link>
+                            <Nav.Link onClick={() => {
+                                let cone = getDefaultCone(canvasState, dispatch);
+                                dispatch(addComponent(cone))
+
+                            }}>
+                                <div className="dropdownItem">
+                                    {/* <FontAwesomeIcon icon={faRing} style={{marginRight: "5px"}}/> */}
+                                    <span>Cone</span>
                                 </div>
 
                             </Nav.Link>
