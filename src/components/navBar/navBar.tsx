@@ -1,15 +1,17 @@
-import React, {useEffect, useRef} from 'react';
-import {Container, Nav, Navbar, NavDropdown, NavItem, NavLink} from "react-bootstrap";
-import {faCircle, faCube} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {getDefaultCube } from "../canvas/components/cube";
-import {addComponent, canvasStateSelector} from "../../store/canvasSlice";
-import {useDispatch, useSelector} from "react-redux";
-import {getDefaultSphere} from '../canvas/components/sphere';
-import {store} from '../../store/store';
+import React, { useEffect, useRef } from 'react';
+import { Container, Nav, Navbar, NavDropdown, NavItem, NavLink } from "react-bootstrap";
+import { faCircle, faCube, faRing } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getDefaultCube } from "../canvas/components/cube";
+import { addComponent, canvasStateSelector } from "../../store/canvasSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getDefaultSphere } from '../canvas/components/sphere';
+import { store } from '../../store/store';
 import './style/navBar.css';
-import {importFrom, importProjectFrom} from "../../auxiliaryFunctionsForImportAndExport/importFunctions";
-import {exportProjectFrom, exportToSTLFormatFrom} from "../../auxiliaryFunctionsForImportAndExport/exportFunctions";
+import { importFrom, importProjectFrom } from "../../auxiliaryFunctionsForImportAndExport/importFunctions";
+import { exportProjectFrom, exportToSTLFormatFrom } from "../../auxiliaryFunctionsForImportAndExport/exportFunctions";
+import { getDefaultCylinder } from '../canvas/components/cylinder';
+import { getDefaultTorus } from '../canvas/components/torus';
 
 interface NavBarProps {
 }
@@ -54,7 +56,7 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
 
                             }}>
                                 <div className="dropdownItem">
-                                    <FontAwesomeIcon icon={faCube} style={{marginRight: "5px"}}/>
+                                    <FontAwesomeIcon icon={faCube} style={{ marginRight: "5px" }} />
                                     <span>Cube</span>
                                 </div>
 
@@ -65,10 +67,32 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
 
                             }}>
                                 <div className="dropdownItem">
-                                    <FontAwesomeIcon icon={faCircle} style={{marginRight: "5px"}}
-                                                     className="dropdownItem"/>
+                                    <FontAwesomeIcon icon={faCircle} style={{ marginRight: "5px" }}
+                                        className="dropdownItem" />
                                     <span>Sphere</span>
                                 </div>
+                            </Nav.Link>
+                            <Nav.Link onClick={() => {
+                                let cylinder = getDefaultCylinder(canvasState, dispatch);
+                                dispatch(addComponent(cylinder))
+
+                            }}>
+                                <div className="dropdownItem">
+                                    {/* <FontAwesomeIcon icon={faCircle} style={{marginRight: "5px"}}/> */}
+                                    <span>Cylinder</span>
+                                </div>
+
+                            </Nav.Link>
+                            <Nav.Link onClick={() => {
+                                let torus = getDefaultTorus(canvasState, dispatch);
+                                dispatch(addComponent(torus))
+
+                            }}>
+                                <div className="dropdownItem">
+                                    <FontAwesomeIcon icon={faRing} style={{marginRight: "5px"}}/>
+                                    <span>Torus</span>
+                                </div>
+
                             </Nav.Link>
                         </NavDropdown>
                         {/*End Components Dropdown*/}
@@ -84,25 +108,25 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
                                 <input
                                     type="file"
                                     ref={inputRefProject}
-                                    style={{display: "none"}}
+                                    style={{ display: "none" }}
                                     accept="application/json"
                                     onChange={(e) => {
                                         let files = e.target.files;
                                         (files) && importProjectFrom(files[0], dispatch)
-                                    }}/>
+                                    }} />
                             </button>
-                            <hr/>
+                            <hr />
                             <button className="dropdownItem" onClick={onImportSTLClick}>
                                 STL file
                                 <input
                                     type="file"
                                     ref={inputRefSTL}
-                                    style={{display: "none"}}
+                                    style={{ display: "none" }}
                                     accept=".stl"
                                     onChange={(e) => {
                                         let STLFiles = e.target.files;
                                         (STLFiles) && importFrom(STLFiles[0], canvasState, dispatch)
-                                    }}/>
+                                    }} />
                             </button>
                         </NavDropdown>
                         {/*End Import Dropdown*/}
@@ -120,7 +144,7 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
                                 download="project.json">
                                 <span className="dropdownItem">Project</span>
                             </Nav.Link>
-                            <hr/>
+                            <hr />
                             <Nav.Link
                                 href={`data:text/plain;charset=utf-8,${encodeURIComponent(
                                     exportToSTLFormatFrom(canvasState)

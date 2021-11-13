@@ -1,6 +1,7 @@
 import * as THREE from "three"
+import { CylinderGeometry, TorusGeometry } from "three"
 import { CSG } from "three-csg-ts"
-import {BufferEntity, ComponentEntity, CompositeEntity, CubeEntity, SphereEntity} from "../model/ComponentEntity"
+import { BufferEntity, ComponentEntity, CompositeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity } from "../model/ComponentEntity"
 
 export const meshWithcomputedGeometryBoundingFrom = (mesh: THREE.Mesh) => {
     let meshCopy = mesh.clone(true)
@@ -68,6 +69,18 @@ export const meshFrom = (entity: ComponentEntity) => {
             geometry.setAttribute('position', new THREE.BufferAttribute(bufferEntity.positionVertices, 3))
             geometry.setAttribute('normal', new THREE.BufferAttribute(bufferEntity.normalVertices, 3))
             return new THREE.Mesh(geometry, bufferMaterial)
+        case "CYLINDER":
+            let cylinderEntity = entity as CylinderEntity
+            let cylinderMaterial = new THREE.MeshBasicMaterial()
+            cylinderMaterial.color.set(cylinderEntity.color)
+            return new THREE.Mesh(new CylinderGeometry(cylinderEntity.topRadius, cylinderEntity.bottomRadius, cylinderEntity.height, cylinderEntity.radialSegments,
+                cylinderEntity.heightSegments, cylinderEntity.openEnded, cylinderEntity.thetaStart, cylinderEntity.thetaLength), cylinderMaterial)
+        case "TORUS":
+            let torusEntity = entity as TorusEntity
+            let torusMaterial = new THREE.MeshBasicMaterial()
+            torusMaterial.color.set(torusEntity.color)
+            return new THREE.Mesh(new TorusGeometry(torusEntity.torusRadius, torusEntity.tubeRadius,
+                torusEntity.radialSegments, torusEntity.tubularSegments, torusEntity.centralAngle), torusMaterial)
         default:
             let [elementA, elementB] = getOperationElementsFrom(entity as CompositeEntity)
             let meshComposite = (elementA && elementB) ? meshFromOperationBetweenElements(entity.type, elementA, elementB) : new THREE.Mesh();

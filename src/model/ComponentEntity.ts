@@ -1,3 +1,5 @@
+import { type } from "os"
+
 export type ComponentEntity = {
     name: string
     type: string //diventerà enum
@@ -37,4 +39,23 @@ export type BufferEntity = {
     positionVertices: Float32Array
     normalVertices: Float32Array
     uvVertices: Float32Array | undefined
+} & ComponentEntity
+
+export type CylinderEntity = {
+    topRadius: number,
+    bottomRadius: number,
+    height: number,
+    radialSegments?: number,
+    heightSegments?: number,
+    openEnded?: boolean,
+    thetaLength?: number,
+    thetaStart?: number 
+} & ComponentEntity
+
+export type TorusEntity = {
+    torusRadius: number, 
+    tubeRadius: number,
+    radialSegments?: number,
+    tubularSegments?: number,
+    centralAngle?: number
 } & ComponentEntity

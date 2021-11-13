@@ -4,15 +4,13 @@ import {
 } from "../../../store/canvasSlice";
 import { CubeEntity } from "../../../model/ComponentEntity";
 import { Dispatch } from "@reduxjs/toolkit";
-import { FC, useRef } from "react";
-import { Component, ComponentProps } from "./Component";
+import { FC } from "react";
 
 interface CubeProps {
     color: string,
     width: number,
     height: number,
-    depth: number,
-    componentProps: ComponentProps
+    depth: number
 }
 
 export function getNewKeys(canvasState: CanvasState, dispatch: Dispatch, numberOfKeyToGenerate = 1) {
@@ -51,14 +49,12 @@ export function getDefaultCube(canvasState: CanvasState, dispatch: Dispatch) {
 }
 
 export const Cube: FC<CubeProps> = (
-    { width, height, depth, color, componentProps }
+    { width, height, depth, color }
 ) => {
-    let meshRef = useRef(null)
-
-    return <Component orbit={componentProps.orbit} position={componentProps.position} rotation={componentProps.rotation} scale={componentProps.scale} keyComponent={componentProps.keyComponent} isSelected={componentProps.isSelected}>
-        <mesh ref={meshRef}>
+    return (
+        <>
             <boxGeometry args={[width, height, depth]} />
             <meshBasicMaterial color={color} />
-        </mesh>
-    </Component>
+        </>
+    )
 }

@@ -4,15 +4,13 @@ import { getNewKeys } from './cube';
 import {
     CanvasState
 } from "../../../store/canvasSlice";
-import { FC, useRef } from 'react';
-import { Component, ComponentProps } from './Component';
+import { FC } from 'react';
 
 interface SphereProps {
     radius: number,
     widthSegments: number,
     heightSegments: number,
     color: string
-    componentProps: ComponentProps
 }
 
 export function getDefaultSphere(canvasState: CanvasState, dispatch: Dispatch) {
@@ -40,18 +38,11 @@ export function getDefaultSphere(canvasState: CanvasState, dispatch: Dispatch) {
     return component
 }
 
-export const Sphere: FC<SphereProps> = ({ radius, widthSegments, heightSegments, color, componentProps }) => {
-    const meshRef = useRef(null)
-
+export const Sphere: FC<SphereProps> = ({ radius, widthSegments, heightSegments, color }) => {
     return (
         <>
-            <Component orbit={componentProps.orbit} position={componentProps.position} rotation={componentProps.rotation} scale={componentProps.scale} keyComponent={componentProps.keyComponent} isSelected={componentProps.isSelected}>
-                <mesh ref={meshRef}>
-                    <sphereGeometry args={[radius, widthSegments, heightSegments]} />
-                    <meshBasicMaterial color={color} />
-                </mesh>
-               
-            </Component>
+            <sphereGeometry args={[radius, widthSegments, heightSegments]} />
+            <meshBasicMaterial color={color} />
         </>
     )
 }

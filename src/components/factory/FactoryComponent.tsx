@@ -1,49 +1,49 @@
-import {BufferEntity, ComponentEntity, CompositeEntity, CubeEntity, SphereEntity} from "../../model/ComponentEntity";
+import { BufferEntity, ComponentEntity, CompositeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity } from "../../model/ComponentEntity";
 import { Cube } from "../canvas/components/cube";
 import { FC, MutableRefObject } from "react";
 import { Composite } from "../canvas/components/composite";
 import { Sphere } from "../canvas/components/sphere";
-import {BufferComponent} from "../canvas/components/bufferComponent";
+import { BufferComponent } from "../canvas/components/bufferComponent";
+import { Cylinder } from "../canvas/components/cylinder";
+import { Component } from "../canvas/components/Component";
+import { Torus } from "../canvas/components/torus";
 
-interface FactoryComponentProps{
+interface FactoryComponentProps {
     entity: ComponentEntity,
     orbit: MutableRefObject<null>
 }
 
-export const FactoryComponent : FC<FactoryComponentProps> = ({entity, orbit}) => {
+export const FactoryComponent: FC<FactoryComponentProps> = ({ entity, orbit }) => {
+    return (
+        <Component isSelected={entity.isSelected} keyComponent={entity.keyComponent} orbit={orbit} position={entity.position} rotation={entity.rotation} scale={entity.scale} >
+            {factoryElements(entity)}
+        </Component>
+    )
+}
+
+const factoryElements = (entity: ComponentEntity) => {
     switch (entity.type) {
         case "CUBE":
             let cubeEntity = entity as CubeEntity
-            return <Cube color={cubeEntity.color} width={cubeEntity.width} height={cubeEntity.height} depth={cubeEntity.depth} componentProps={{isSelected: cubeEntity.isSelected, keyComponent: cubeEntity.keyComponent, position: cubeEntity.position, rotation: cubeEntity.rotation, scale: cubeEntity.scale, orbit: orbit }}/>
+            return <Cube color={cubeEntity.color} width={cubeEntity.width} height={cubeEntity.height} depth={cubeEntity.depth} />
         case "SPHERE":
             let sphereEntity = entity as SphereEntity
-            return <Sphere color={sphereEntity.color} heightSegments={sphereEntity.heightSegments} widthSegments={sphereEntity.widthSegments} radius={sphereEntity.radius} componentProps={{isSelected: entity.isSelected, keyComponent: entity.keyComponent, position: entity.position, rotation: entity.rotation, scale: entity.scale, orbit: orbit }}/>
+            return <Sphere color={sphereEntity.color} heightSegments={sphereEntity.heightSegments} widthSegments={sphereEntity.widthSegments} radius={sphereEntity.radius} />
         case "BUFFER":
             let bufferEntity = entity as BufferEntity
-            return <BufferComponent entity={bufferEntity} componentProps={{position: bufferEntity.position, keyComponent: bufferEntity.keyComponent, rotation: bufferEntity.rotation, scale: bufferEntity.scale, isSelected: bufferEntity.isSelected, orbit: orbit}}/>
+            return <BufferComponent entity={bufferEntity} />
+        case "CYLINDER":
+            let cylinderEntity = entity as CylinderEntity
+            return <Cylinder topRadius={cylinderEntity.topRadius} bottomRadius={cylinderEntity.bottomRadius} height={cylinderEntity.height}
+                color={cylinderEntity.color} heightSegments={cylinderEntity.heightSegments} radialSegments={cylinderEntity.radialSegments}
+                thetaStart={cylinderEntity.thetaStart} thetaLength={cylinderEntity.thetaLength} openEnded={cylinderEntity.openEnded} />
+        case "TORUS":
+            let torusEntity = entity as TorusEntity
+            return <Torus color={torusEntity.color} torusRadius={torusEntity.torusRadius} tubeRadius={torusEntity.tubeRadius}
+                centralAngle={torusEntity.centralAngle} radialSegments={torusEntity.radialSegments} tubularSegments={torusEntity.tubularSegments} />
         default:
-            return <Composite entity={entity as CompositeEntity} componentProps={{isSelected: entity.isSelected, keyComponent: entity.keyComponent, position: entity.position, rotation: entity.rotation, scale: entity.scale, orbit: orbit }} />
-            // let [elementA, elementB] = getOperationElementsFrom(entity as CompositeEntity)
-            // let meshComposite = (elementA && elementB) ? meshFromOperationBetweenElements(entity.type, elementA, elementB) : emptyObject();
-            // (meshComposite.material as THREE.MeshBasicMaterial).color.set(entity.color)
-            // return meshComposite
+            return <Composite entity={entity as CompositeEntity} />
 
     }
 }
-
-// const getOperationElementsFrom = (compositeEntity: CompositeEntity) => {
-//     let [positionA, scaleA, rotationA] = [compositeEntity.baseElements.elementA.position, compositeEntity.baseElements.elementA.scale, compositeEntity.baseElements.elementA.rotation]
-//     let [positionB, scaleB, rotationB] = [compositeEntity.baseElements.elementB.position, compositeEntity.baseElements.elementB.scale, compositeEntity.baseElements.elementB.rotation]
-//     let elementA = meshWithPositionRotationScaleFromOldOne(FactoryComponent(compositeEntity.baseElements.elementA) as THREE.Mesh, positionA, rotationA, scaleA)
-//     let elementB = meshWithPositionRotationScaleFromOldOne(FactoryComponent(compositeEntity.baseElements.elementB) as THREE.Mesh, positionB, rotationB, scaleB)
-//     return [elementA, elementB]
-// }
-
-// const meshFromOperationBetweenElements = (operation: string, elementA: THREE.Mesh, elementB: THREE.Mesh) => {
-//     let newMesh: THREE.Mesh
-//     if (operation === "UNION") { newMesh = CSG.union(elementA, elementB) }
-//     else if (operation === "INTERSECTION") { newMesh = CSG.intersect(elementA, elementB) }
-//     else { newMesh = CSG.subtract(elementA, elementB) }
-//     return meshWithResetTransformationParamsFromOld(newMesh)
-// }
 
