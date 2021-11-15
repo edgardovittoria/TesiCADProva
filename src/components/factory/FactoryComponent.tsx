@@ -8,6 +8,7 @@ import { Cylinder } from "../canvas/components/cylinder";
 import { Component } from "../canvas/components/Component";
 import { Torus } from "../canvas/components/torus";
 import { Cone } from "../canvas/components/cone";
+import { Box } from "@react-three/drei";
 
 interface FactoryComponentProps {
     entity: ComponentEntity,

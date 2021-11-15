@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Container, Nav, Navbar, NavDropdown, NavItem, NavLink } from "react-bootstrap";
 import { faCircle, faCube, faRing } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,14 +15,17 @@ import { getDefaultTorus } from '../canvas/components/torus';
 import { getDefaultCone } from '../canvas/components/cone';
 
 interface NavBarProps {
+    setViewElementVisibility: Function
 }
 
 
-export const MyNavBar: React.FC<NavBarProps> = () => {
+export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
     const dispatch = useDispatch();
     const canvasState = useSelector(canvasStateSelector);
     const inputRefProject = useRef(null)
     const inputRefSTL = useRef(null)
+    const [sideBarChecked, setSideBarChecked] = useState(false)
+
 
     const onImportProjectClick = () => {
         let input = inputRefProject.current
@@ -45,6 +48,23 @@ export const MyNavBar: React.FC<NavBarProps> = () => {
             <Navbar bg="dark" variant="dark">
                 <Container>
                     <Nav className="me-auto">
+                        {/*Start View Dropdown*/}
+                        <NavDropdown
+                            id="nav-dropdown-dark-example"
+                            title="View"
+                            menuVariant="dark"
+                        >
+                            <Nav.Link>
+                                <div className="dropdownItem form-check" onClick={() => {
+                                    setSideBarChecked(!sideBarChecked)
+                                    setViewElementVisibility("SIDEBAR", !sideBarChecked)
+                                }}>
+                                    <input id="1" className="form-check-input" type="checkbox" checked={sideBarChecked}/>
+                                    <label className="form-check-label">SideBar</label>
+                                </div>
+                            </Nav.Link>
+                        </NavDropdown>
+                        {/*End View Dropdown*/}
                         {/*Start Components Dropdown*/}
                         <NavDropdown
                             id="nav-dropdown-dark-example"
