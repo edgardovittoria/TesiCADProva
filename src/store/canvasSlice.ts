@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Box3 } from "three";
 import { ComponentEntity, CompositeEntity } from "../model/ComponentEntity";
 export type CanvasState = {
+    binaryOperationExecuting: boolean
     components: ComponentEntity[],
     numberOfGeneratedKey: number,
 }
@@ -9,6 +10,7 @@ export type CanvasState = {
 export const CanvasSlice = createSlice({
     name: 'canvas',
     initialState: {
+        binaryOperationExecuting: false,
         components: [],
         numberOfGeneratedKey: 0,
     } as CanvasState,
@@ -65,6 +67,9 @@ export const CanvasSlice = createSlice({
             state.components = action.payload.components
             state.numberOfGeneratedKey = action.payload.numberOfGeneratedKey
 
+        },
+        setBinaryOperationExecuting(state: CanvasState, action: PayloadAction<boolean>){
+            state.binaryOperationExecuting = action.payload
         }
 
     },
@@ -78,11 +83,12 @@ export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
     addComponent, removeComponent, updatePosition, updateRotation,
     updateScale, updateBox3, selectComponent, incrementNumberOfGeneratedKey,
-    updateColor, updateName, importStateCanvas
+    updateColor, updateName, importStateCanvas, setBinaryOperationExecuting
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas;
 export const selectedComponentSelector = (state: { canvas: CanvasState }) => findSelectedComponent(state.canvas)
+export const binaryOperationExecution = (state: {canvas: CanvasState}) => state.canvas.binaryOperationExecuting
 
 const findSelectedComponent = (canvas: CanvasState) => canvas.components.filter(component => component.isSelected)[0]
 export const findComponentByKey = (canvas: CanvasState, key: number) => canvas.components.filter(component => component.keyComponent === key)[0]

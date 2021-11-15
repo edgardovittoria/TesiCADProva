@@ -4,7 +4,7 @@ import { Dispatch } from "redux";
 import { thereIsCollisionBetween } from "../auxiliaryFunctionsUsingThreeDirectly/thereIsCollisionBetween";
 import { getNewKeys } from "../components/canvas/components/cube";
 import { ComponentEntity, CompositeEntity } from "../model/ComponentEntity";
-import { addComponent, CanvasState, removeComponent } from "../store/canvasSlice";
+import {addComponent, CanvasState, removeComponent, setBinaryOperationExecuting} from "../store/canvasSlice";
 import { modalStateSelector, openModal } from "../store/modalSlice";
 
 
@@ -44,6 +44,7 @@ const arrayOfCollisionsBetween = (element: ComponentEntity, allElements: Compone
 }
 
 const makeBinaryOperation = (operation: string, collisions: [ComponentEntity, ComponentEntity][], canvasState: CanvasState, dispatch: Dispatch) => {
+    dispatch(setBinaryOperationExecuting(true))
     let newKeysSub = getNewKeys(canvasState, dispatch, 4 * collisions.length)
     switch (operation) {
         case "UNION":
@@ -56,6 +57,7 @@ const makeBinaryOperation = (operation: string, collisions: [ComponentEntity, Co
                 dispatch(removeComponent(elementB))
             })
             dispatch(addComponent(result))
+            dispatch(setBinaryOperationExecuting(false))
             break;
         case "SUBTRACTION":
             let resultSUB = collisions.map(([elementA, elementB], index) => {
@@ -73,6 +75,7 @@ const makeBinaryOperation = (operation: string, collisions: [ComponentEntity, Co
             })
             resultSUB.map(result => dispatch(addComponent(result)))
             dispatch(addComponent(elementACopy))
+            dispatch(setBinaryOperationExecuting(false))
             break;
         case "INTERSECTION":
             let resultINT = collisions.map(([elementA, elementB], index) => {
@@ -84,6 +87,7 @@ const makeBinaryOperation = (operation: string, collisions: [ComponentEntity, Co
                 dispatch(removeComponent(elementB))
             })
             resultINT.map(result => dispatch(addComponent(result)))
+            dispatch(setBinaryOperationExecuting(false))
             break;
     }
 }

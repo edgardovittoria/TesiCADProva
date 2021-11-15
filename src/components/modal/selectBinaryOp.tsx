@@ -6,6 +6,7 @@ import {
     modalStateSelector,
     updateLastValue
 } from "../../store/modalSlice";
+import {setBinaryOperationExecuting} from "../../store/canvasSlice";
 
 interface SelectBinaryOpProps {
 }
@@ -56,6 +57,7 @@ export const SelectBinaryOp: React.FC<SelectBinaryOpProps> = ({}) => {
                     </Button>*/}
                     <Button variant="primary" onClick={() => {
                         dispatch(updateLastValue({name: NAME, value: selectedOperation}))
+                        //dispatch(setBinaryOperationExecuting(true))
                         handleClose()
                     }}>
                         Procedi

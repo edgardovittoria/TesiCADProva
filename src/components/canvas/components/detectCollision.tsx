@@ -11,6 +11,6 @@ interface DetectCollisionProps{
 export const DetectCollision: FC<DetectCollisionProps> = ({keyComponent}) => {
     const canvasState = useSelector(canvasStateSelector)
    useDetectComponentsCollision(findComponentByKey(canvasState, keyComponent), canvasState)
-    // useDetectComponentsCollision2(keyComponent, canvasState)
+    //useDetectComponentsCollision2(keyComponent, canvasState)
     return null
 }

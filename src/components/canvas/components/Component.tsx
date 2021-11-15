@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect, useRef } from 'react';
+import React, {MutableRefObject, ReactNode, useEffect, useMemo, useRef, useState} from 'react';
 import { selectComponent, updateBox3 } from "../../../store/canvasSlice";
 import { useDispatch } from "react-redux";
 import { Transformations } from './transformations';
@@ -22,6 +22,7 @@ export const Component: React.FC<ComponentProps> = ({ children, orbit, position,
         dispatch(selectComponent(keyComponent))
     }, [])
 
+
     useEffect(() => {
         if (meshRef.current) {
             let meshTemp = meshWithcomputedGeometryBoundingFrom(meshRef.current);
@@ -42,9 +43,10 @@ export const Component: React.FC<ComponentProps> = ({ children, orbit, position,
             :
             <group key={keyComponent} userData={{ key: keyComponent }} onClick={() => dispatch(selectComponent(keyComponent))} position={position} rotation={rotation} scale={scale}>
                 <mesh ref={meshRef}>
-                {children}
+                    {children}
                 </mesh>
             </group>
+
     )
 
 }

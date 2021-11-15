@@ -1,11 +1,12 @@
 import React, {useEffect, useRef} from 'react';
 import {Provider, ReactReduxContext, useSelector} from "react-redux";
 import {canvasStateSelector} from "../../store/canvasSlice";
-import {Canvas, useThree} from "@react-three/fiber";
+import {Canvas, extend, useThree} from "@react-three/fiber";
 import {OrbitControls} from "@react-three/drei";
 import { Component } from './components/Component';
 import { Selection } from './components/selection';
 import { FactoryComponent } from '../factory/FactoryComponent';
+import {WheelSpinner} from "../../shared/spinners/wheelSpinner";
 
 
 
@@ -20,7 +21,6 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
 
     return (
         <div id="canvas-container" style={{height: "100vh", backgroundColor: "#171A21"}}>
-
             <ReactReduxContext.Consumer>
                 {({store}) => (
                     <>
@@ -38,7 +38,8 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                                 <gridHelper scale={[2.88, 1, 2.95]}/>
                                 <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
                                                removeEventListener={undefined} dispatchEvent={undefined} />
-                                {/* <Selection /> */}
+
+
                             </Provider>
                         </Canvas>
                     </>

@@ -28,6 +28,24 @@
   color: #61dafb;
 }
 
+.canvas-width-100{
+  width: 100%;
+  padding: 0;
+  float: left;
+}
+
+.canvas-width-75{
+  width: 75%;
+  padding: 0;
+  float: left;
+}
+
+.sidebar-width-25{
+  width: 25%;
+  padding: 0;
+  float: right;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
