@@ -6,7 +6,7 @@ import {
     modalStateSelector,
     updateLastValue
 } from "../../store/modalSlice";
-import {setBinaryOperationExecuting} from "../../store/canvasSlice";
+import {binaryOperationExecution, setBinaryOperationExecuting} from "../../store/canvasSlice";
 
 interface SelectBinaryOpProps {
 }
@@ -26,6 +26,10 @@ export const SelectBinaryOp: React.FC<SelectBinaryOpProps> = ({}) => {
     
     useEffect(() => {
         setShow(modal.currentOpen)
+        if(modal.currentOpen){
+            dispatch(setBinaryOperationExecuting(true))
+        }
+
     }, [modal.currentOpen]);
 
     
@@ -33,6 +37,7 @@ export const SelectBinaryOp: React.FC<SelectBinaryOpProps> = ({}) => {
     const handleClose = () => {
         setShow(false)
         dispatch(closeModal(NAME))
+
     };
 
     return(
@@ -52,12 +57,8 @@ export const SelectBinaryOp: React.FC<SelectBinaryOpProps> = ({}) => {
                     </FormSelect>
                 </Modal.Body>
                 <Modal.Footer>
-                    {/*<Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>*/}
                     <Button variant="primary" onClick={() => {
                         dispatch(updateLastValue({name: NAME, value: selectedOperation}))
-                        //dispatch(setBinaryOperationExecuting(true))
                         handleClose()
                     }}>
                         Procedi

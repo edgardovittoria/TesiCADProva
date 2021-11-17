@@ -1,6 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Box3 } from "three";
-import { ComponentEntity, CompositeEntity } from "../model/ComponentEntity";
+import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
+import {Box3} from "three";
+import {ComponentEntity} from "../model/ComponentEntity";
+import {makeBinaryOperation} from "../hooks/useDetectComponentsCollision";
+
 export type CanvasState = {
     binaryOperationExecuting: boolean
     components: ComponentEntity[],

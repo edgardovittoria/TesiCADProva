@@ -1,17 +1,26 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { thereIsCollisionBetween } from "../auxiliaryFunctionsUsingThreeDirectly/thereIsCollisionBetween";
-import { getNewKeys } from "../components/canvas/components/cube";
-import { ComponentEntity, CompositeEntity } from "../model/ComponentEntity";
-import {addComponent, CanvasState, removeComponent, setBinaryOperationExecuting} from "../store/canvasSlice";
-import { modalStateSelector, openModal } from "../store/modalSlice";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {Dispatch} from "redux";
+import {thereIsCollisionBetween} from "../auxiliaryFunctionsUsingThreeDirectly/thereIsCollisionBetween";
+import {getNewKeys} from "../components/canvas/components/cube";
+import {ComponentEntity, CompositeEntity} from "../model/ComponentEntity";
+import {
+    addComponent,
+    binaryOperationExecution,
+    CanvasState,
+    removeComponent,
+    setBinaryOperationExecuting
+} from "../store/canvasSlice";
+import {modalStateSelector, openModal} from "../store/modalSlice";
 
 
 export const useDetectComponentsCollision = (componentEntity: ComponentEntity, canvasState: CanvasState) => {
     let dispatch = useDispatch()
     let modal = useSelector(modalStateSelector).modals.filter(modal => modal.name === "BINARY_OP")[0]
     const [collisions, setCollisions] = useState<[ComponentEntity, ComponentEntity][]>([])
+    let visibility = useSelector(binaryOperationExecution)
+
+
 
     useEffect(() => {
         let collisionsSet = arrayOfCollisionsBetween(componentEntity, canvasState.components);
@@ -21,16 +30,18 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
                 && componentEntity.previousScale.every((val, index) => val === componentEntity.scale[index])
                 && componentEntity.previousRotation.every((val, index) => val === componentEntity.rotation[index])) {
                 removeEntityJustCreated(componentEntity, dispatch)
+            } else {
+                dispatch(openModal('BINARY_OP'))
             }
-            else { dispatch(openModal('BINARY_OP')) }
         }
     }, [componentEntity.box3Max, componentEntity.box3Min])
 
     useEffect(() => {
-        if (modal.previousOpen && !modal.currentOpen && collisions.length > 0) {
+        if (modal.previousOpen && !modal.currentOpen && collisions.length > 0 && visibility) {
             makeBinaryOperation(modal.lastValue, collisions, canvasState, dispatch)
+            dispatch(setBinaryOperationExecuting(false))
         }
-    }, [modal.previousOpen, modal.currentOpen]);
+    }, [modal.currentOpen, modal.currentOpen]);
 
 }
 
@@ -43,8 +54,7 @@ const arrayOfCollisionsBetween = (element: ComponentEntity, allElements: Compone
         }, [])
 }
 
-const makeBinaryOperation = (operation: string, collisions: [ComponentEntity, ComponentEntity][], canvasState: CanvasState, dispatch: Dispatch) => {
-    dispatch(setBinaryOperationExecuting(true))
+export const makeBinaryOperation = (operation: string, collisions: [ComponentEntity, ComponentEntity][], canvasState: CanvasState, dispatch: Dispatch) => {
     let newKeysSub = getNewKeys(canvasState, dispatch, 4 * collisions.length)
     switch (operation) {
         case "UNION":
@@ -57,25 +67,27 @@ const makeBinaryOperation = (operation: string, collisions: [ComponentEntity, Co
                 dispatch(removeComponent(elementB))
             })
             dispatch(addComponent(result))
-            dispatch(setBinaryOperationExecuting(false))
             break;
         case "SUBTRACTION":
             let resultSUB = collisions.map(([elementA, elementB], index) => {
                 let indexKey = 3 * index
                 return compositeEntityFromOperationBetweenTwoEntities(elementB, elementA, operation, newKeysSub, indexKey)
             })
-            let elementACopy: ComponentEntity = { ...collisions[0][0], box3Min: undefined, box3Max: undefined }
+            let elementACopy: ComponentEntity = {...collisions[0][0], box3Min: undefined, box3Max: undefined}
             elementACopy.keyComponent = newKeysSub[newKeysSub.length - 1];
-            if (elementACopy.lastTransformationType === "TRANSLATE") { elementACopy.position = elementACopy.previousPosition }
-            else if (elementACopy.lastTransformationType === "ROTATE") { elementACopy.rotation = elementACopy.previousRotation }
-            else { elementACopy.scale = elementACopy.previousScale }
+            if (elementACopy.lastTransformationType === "TRANSLATE") {
+                elementACopy.position = elementACopy.previousPosition
+            } else if (elementACopy.lastTransformationType === "ROTATE") {
+                elementACopy.rotation = elementACopy.previousRotation
+            } else {
+                elementACopy.scale = elementACopy.previousScale
+            }
             dispatch(removeComponent(collisions[0][0]))
             collisions.map(([, elementB]) => {
                 dispatch(removeComponent(elementB))
             })
             resultSUB.map(result => dispatch(addComponent(result)))
             dispatch(addComponent(elementACopy))
-            dispatch(setBinaryOperationExecuting(false))
             break;
         case "INTERSECTION":
             let resultINT = collisions.map(([elementA, elementB], index) => {
@@ -87,15 +99,18 @@ const makeBinaryOperation = (operation: string, collisions: [ComponentEntity, Co
                 dispatch(removeComponent(elementB))
             })
             resultINT.map(result => dispatch(addComponent(result)))
-            dispatch(setBinaryOperationExecuting(false))
             break;
     }
+    return "operation completed"
 }
 
 const compositeEntityFromOperationBetweenTwoEntities = (elementA: ComponentEntity, elementB: ComponentEntity, operation: string, newKeys: number[], offsetKeys: number) => {
     let compositeEntity: CompositeEntity = {
         ...elementA,
-        baseElements: { elementA: { ...elementA, keyComponent: newKeys[offsetKeys] }, elementB: { ...elementB, keyComponent: newKeys[1 + offsetKeys] } },
+        baseElements: {
+            elementA: {...elementA, keyComponent: newKeys[offsetKeys]},
+            elementB: {...elementB, keyComponent: newKeys[1 + offsetKeys]}
+        },
         type: operation,
         keyComponent: newKeys[2 + offsetKeys],
         lastTransformationType: undefined

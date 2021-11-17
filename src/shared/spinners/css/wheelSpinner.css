@@ -1,12 +1,13 @@
 .spinner {
     display: inline-block;
-    width: 50px;
-    height: 50px;
-    vertical-align: -.125em;
+    width: 30px;
+    height: 30px;
+    vertical-align: -.110em;
     background-color: currentColor;
     border-radius: 50%;
     opacity: 0;
     animation: .75s linear infinite spinner-grow;
+    color: white;
     position: fixed;
     z-index: 999;
     overflow: visible;

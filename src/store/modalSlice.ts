@@ -6,7 +6,7 @@ type Modal = {
     name: string,
     currentOpen: boolean,
     previousOpen: boolean,
-    lastValue: string
+    lastValue: string,
 }
 
 export type ModalState = {
@@ -20,7 +20,7 @@ export const ModalStateSlice = createSlice({
             name: "BINARY_OP",
             previousOpen: false,
             currentOpen: false,
-            lastValue: "SUBTRACTION"
+            lastValue: "SUBTRACTION",
         }]
     } as ModalState,
     reducers: {
