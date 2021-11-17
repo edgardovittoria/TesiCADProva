@@ -18,6 +18,7 @@ import {Component} from "../canvas/components/Component";
 import {Torus} from "../canvas/components/torus";
 import {Cone} from "../canvas/components/cone";
 import {Box} from "@react-three/drei";
+import { meshFrom } from "../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
 
 interface FactoryComponentProps {
     entity: ComponentEntity,

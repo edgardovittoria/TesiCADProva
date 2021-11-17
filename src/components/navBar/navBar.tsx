@@ -15,16 +15,16 @@ import { getDefaultTorus } from '../canvas/components/torus';
 import { getDefaultCone } from '../canvas/components/cone';
 
 interface NavBarProps {
-    setViewElementVisibility: Function
+   // setViewElementVisibility: Function
 }
 
 
-export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
+export const MyNavBar: React.FC<NavBarProps> = ({}) => {
     const dispatch = useDispatch();
     const canvasState = useSelector(canvasStateSelector);
     const inputRefProject = useRef(null)
     const inputRefSTL = useRef(null)
-    const [sideBarChecked, setSideBarChecked] = useState(false)
+   // const [sideBarChecked, setSideBarChecked] = useState(false)
 
 
     const onImportProjectClick = () => {
@@ -49,7 +49,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                 <Container>
                     <Nav className="me-auto">
                         {/*Start View Dropdown*/}
-                        <NavDropdown
+                        {/* <NavDropdown
                             id="nav-dropdown-dark-example"
                             title="View"
                             menuVariant="dark"
@@ -63,7 +63,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                     <label className="form-check-label">SideBar</label>
                                 </div>
                             </Nav.Link>
-                        </NavDropdown>
+                        </NavDropdown> */}
                         {/*End View Dropdown*/}
                         {/*Start Components Dropdown*/}
                         <NavDropdown

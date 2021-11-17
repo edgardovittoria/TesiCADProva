@@ -3,7 +3,7 @@ import {Provider, ReactReduxContext, useSelector} from "react-redux";
 import {canvasStateSelector} from "../../store/canvasSlice";
 import {Canvas} from "@react-three/fiber";
 import {OrbitControls} from "@react-three/drei";
-import { FactoryComponent } from '../factory/FactoryComponent';
+import { ComponentBuffer } from './components/componentBuffer';
 
 
 
@@ -30,7 +30,8 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                                 <pointLight position={[0, 50, 0]}/>
                                 {canvasState.components.map((component) => {
 
-                                    return <FactoryComponent key={component.keyComponent} entity={component} orbit={orbit} />
+                                    return <ComponentBuffer key={component.keyComponent} children={component} orbit={orbit}/> 
+                                    
 
                                 })}
                                 <gridHelper scale={[2.88, 1, 2.95]}/>

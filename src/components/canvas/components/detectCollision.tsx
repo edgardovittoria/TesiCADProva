@@ -2,15 +2,17 @@ import { FC } from "react";
 import { useSelector } from "react-redux";
 import { useDetectComponentsCollision } from "../../../hooks/useDetectComponentsCollision";
 import { useDetectComponentsCollision2 } from "../../../hooks/useDetectComponentsCollision2";
-import { canvasStateSelector, findComponentByKey } from "../../../store/canvasSlice";
+import { ComponentEntity } from "../../../model/ComponentEntity";
+import { CanvasState, canvasStateSelector, findComponentByKey } from "../../../store/canvasSlice";
 
 interface DetectCollisionProps{
-    keyComponent: number,
+    entity: ComponentEntity,
+    canvas: CanvasState
 }
 
-export const DetectCollision: FC<DetectCollisionProps> = ({keyComponent}) => {
-    const canvasState = useSelector(canvasStateSelector)
-   useDetectComponentsCollision(findComponentByKey(canvasState, keyComponent), canvasState)
+export const DetectCollision: FC<DetectCollisionProps> = ({entity, canvas}) => {
+   // const canvasState = useSelector(canvasStateSelector)
+   useDetectComponentsCollision(entity, canvas)
     //useDetectComponentsCollision2(keyComponent, canvasState)
     return null
 }
