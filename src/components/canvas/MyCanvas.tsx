@@ -29,12 +29,11 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                                 <ambientLight/>
                                 <pointLight position={[0, 50, 0]}/>
                                 {canvasState.components.map((component) => {
-
-                                    return <ComponentBuffer key={component.keyComponent} children={component} orbit={orbit}/> 
+                                    return <ComponentBuffer key={component.keyComponent} children={component} orbit={orbit}/>
                                     
 
                                 })}
-                                <gridHelper scale={[2.88, 1, 2.95]}/>
+                                <gridHelper scale={[2.88, 1, 1.6]}/>
                                 <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
                                                removeEventListener={undefined} dispatchEvent={undefined} />
 

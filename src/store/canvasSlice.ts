@@ -68,7 +68,6 @@ export const CanvasSlice = createSlice({
         importStateCanvas(state: CanvasState, action: PayloadAction<CanvasState>) {
             state.components = action.payload.components
             state.numberOfGeneratedKey = action.payload.numberOfGeneratedKey
-
         },
         setBinaryOperationExecuting(state: CanvasState, action: PayloadAction<boolean>){
             state.binaryOperationExecuting = action.payload

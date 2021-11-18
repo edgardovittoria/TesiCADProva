@@ -1,3 +1,7 @@
+.navbar{
+    background-color: #282c34;
+}
+
 .dropdownItem{
     color: #9B9D9E;
     background-color: transparent;
@@ -6,4 +10,19 @@
 
 .dropdownItem:hover{
     color: white;
+}
+
+.burgerMenu{
+    background-color: #171A21;
+    height: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.closeNavBar{
+    padding-left: 20px;
+}
+
+.form-check-input{
+    pointer-events: none;
 }

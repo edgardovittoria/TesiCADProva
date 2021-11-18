@@ -2,7 +2,8 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type TransformationItem = {
     type: string,
-    active: boolean
+    active: boolean,
+    icon: string
 }
 
 export type ToolbarTransformationState = {
@@ -15,15 +16,18 @@ export const ToolbarTransformationSlice = createSlice({
         transformation: [
             {
                 type: 'translate',
-                active: true
+                active: true,
+                icon: 'translationIcon.png'
             },
             {
                 type: 'rotate',
-                active: false
+                active: false,
+                icon: 'rotationIcon.png'
             },
             {
                 type: 'scale',
-                active: false
+                active: false,
+                icon: 'scaleIcon.png'
             }]
     } as ToolbarTransformationState,
     reducers: {

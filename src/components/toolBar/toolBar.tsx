@@ -2,6 +2,7 @@ import React from 'react';
 import "./toolbar.css";
 import {useDispatch, useSelector} from "react-redux";
 import {setTransformationActive, toolbarTransformationStateSelector} from "../../store/toolbarTransformationSlice";
+import {Button, Image, Tooltip} from "react-bootstrap";
 
 interface ToolBarProps {
 }
@@ -14,9 +15,12 @@ export const ToolBar: React.FC<ToolBarProps> = () => {
             <div id="toolbar" className="Panel">
                 {toolbarTransformationState.transformation.map((transformation, index) => {
                     return(
-                        <button key={index} className={(transformation.active) ? "Button selected" : "Button"} onClick={() => dispatch(setTransformationActive(transformation.type))}>
-                            {transformation.type}
-                        </button>
+                        <Tooltip title={transformation.type} key={index}>
+                            <button  className={(transformation.active) ? "Button selected" : "Button"} onClick={() => dispatch(setTransformationActive(transformation.type))}>
+                                <Image src={transformation.icon} alt={transformation.type} width={30} height={30}/>
+                            </button>
+                        </Tooltip>
+
                     )
                 })}
             </div>

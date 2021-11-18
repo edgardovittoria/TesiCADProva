@@ -2,8 +2,7 @@
     position: absolute;
     left: 10px;
     top: 70px;
-    width: 32px;
-    background: #eee;
+    width: 40px;
     text-align: center;
 }
 
@@ -13,7 +12,7 @@
 }
 
 #toolbar button, #toolbar input {
-    height: 32px;
+    height: 40px;
 }
 button.selected {
     background-color: #fff;
@@ -29,4 +28,19 @@ button {
     cursor: pointer;
     outline: none;
     position: relative;
+}
+
+.tooltip{
+    position: initial;
+    opacity: 1;
+}
+
+.tooltip-inner{
+    padding: 0;
+    background-color: #171A21;
+    max-width: 65px;
+}
+
+.tooltip-arrow{
+    visibility: hidden;
 }

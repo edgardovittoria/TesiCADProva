@@ -5,7 +5,7 @@ import { ComponentEntity } from "../../../model/ComponentEntity";
 import { DetectCollision } from './detectCollision';
 import { Transformations } from './transformations';
 import { meshWithColorFromOldOne, meshWithPositionRotationScaleFromOldOne, meshWithResetTransformationParamsFromOld, meshWithcomputedGeometryBoundingFrom } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
-import { meshFrom } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings.old';
+import { meshFrom } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
 
 interface ComponentBufferProps {
     orbit: MutableRefObject<null>

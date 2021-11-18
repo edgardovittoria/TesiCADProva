@@ -7,30 +7,33 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {ToolBar} from "./components/toolBar/toolBar";
 import {SelectBinaryOp} from "./components/modal/selectBinaryOp";
 import {WheelSpinner} from "./shared/spinners/wheelSpinner";
+import {useSelector} from "react-redux";
+import {binaryOperationExecution} from "./store/canvasSlice";
 
 function App() {
 
-    // const [sideBar, setSideBar] = useState(false);
+    const [sideBar, setSideBar] = useState(false);
 
-    // const showViewElementVisibility = (element: string, visibility: boolean) => {
-    //     switch (element) {
-    //         case "SIDEBAR" :
-    //             setSideBar(visibility)
-    //             break
-    //     }
-    // }
+    const showViewElementVisibility = (element: string, visibility: boolean) => {
+        switch (element) {
+            case "SIDEBAR" :
+                setSideBar(visibility)
+                break
+        }
+    }
+
 
     return (
         <>
-            <MyNavBar />
+            <MyNavBar setViewElementVisibility={showViewElementVisibility}/>
             <div style={{margin: "0px"}}>
-                <div className="canvas-width-75">
+                <div className={(sideBar) ? "canvas-width-75" : "canvas-width-100"}>
                     <WheelSpinner/>
                     <MyCanvas/>
                     <ToolBar/>
                     <SelectBinaryOp/>
                 </div>
-                <div className="sidebar-width-25" >
+                <div className="sidebar-width-25" hidden={!sideBar}>
                     <SideBar/>
                 </div>
 
