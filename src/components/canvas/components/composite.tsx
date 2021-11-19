@@ -9,6 +9,7 @@ interface CompositeProps {
 
 export const Composite: FC<CompositeProps> = ({ entity }) => {
     let compositeMesh = useMemo(() => meshFrom(entity), [entity.baseElements])
+    //let compositeMesh = meshFrom(entity)
 
     return (
         <>

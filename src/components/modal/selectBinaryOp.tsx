@@ -57,12 +57,12 @@ export const SelectBinaryOp: React.FC<SelectBinaryOpProps> = ({}) => {
                     </FormSelect>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={() => {
+                    <button onClick={() => {
                         dispatch(updateLastValue({name: NAME, value: selectedOperation}))
                         handleClose()
                     }}>
                         Procedi
-                    </Button>
+                    </button>
                 </Modal.Footer>
             </Modal>
         </>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useThree } from "react-three-fiber";
 import { Dispatch } from "redux";
 import { meshWithPositionRotationScaleFromOldOne } from "../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
 import { thereIsCollisionBetweenMeshes } from "../auxiliaryFunctionsUsingThreeDirectly/thereIsCollisionBetween";
@@ -8,8 +7,10 @@ import { getNewKeys } from "../components/canvas/components/cube";
 import { ComponentEntity, CompositeEntity } from "../model/ComponentEntity";
 import { addComponent, CanvasState, canvasStateSelector, findComponentByKey, removeComponent } from "../store/canvasSlice";
 import { modalStateSelector, openModal } from "../store/modalSlice";
+import {useThree} from "@react-three/fiber";
 
 
+/*
 export const useDetectComponentsCollision2 = (keySelectedComponent: number, canvasState: CanvasState) => {
     const { scene } = useThree()
     let dispatch = useDispatch()
@@ -126,3 +127,4 @@ const removeEntityJustCreated = (entity: ComponentEntity, dispatch: Dispatch) =>
     dispatch(removeComponent(entity))
     alert("Esiste già un componente nella stessa posizione. Spostalo prima di crearne uno nuovo!")
 }
+*/

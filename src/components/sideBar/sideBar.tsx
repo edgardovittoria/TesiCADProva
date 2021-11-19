@@ -32,7 +32,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
                 <Rotation selectedComponent={selectedComponent} dispatch={dispatch}/>
                 <Scale selectedComponent={selectedComponent} dispatch={dispatch}/>
                 <Color selectedComponent={selectedComponent} dispatch={dispatch}/>
-                <Button
+                <button
                     type="button"
                     className="btn btn-danger"
                     onClick={() => {
@@ -43,7 +43,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
                     style={{position: "absolute", bottom: 50, right:0}}
                 >
                     Elimina
-                </Button>
+                </button>
             </div>}
 
         </ProSidebar>

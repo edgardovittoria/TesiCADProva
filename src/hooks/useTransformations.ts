@@ -25,10 +25,15 @@ export const useTransformations = (
     useEffect(() => {
         if (transformation.current) {
             const controls: Object3DNode<any, any> = transformation.current
-
             controls.setMode(getActiveTransformationType(toolbarTransformationState))
+        }
+    }, [toolbarTransformationState.transformation])
+
+    useEffect(() => {
+        if(transformation.current){
+            const controls: Object3DNode<any, any> = transformation.current
             const callback = (event: any) => {
-                (orbit.current !== null) && ((orbit.current as Object3DNode<any, any>).enabled = !event.value)
+                //(orbit.current !== null) && ((orbit.current as Object3DNode<any, any>).enabled = !event.value)
                 if (!event.value) {
                     if (controls.getMode() === 'translate') {
                         manageTransformation(
@@ -53,9 +58,8 @@ export const useTransformations = (
             }
             controls.addEventListener("dragging-changed", callback)
             return () => controls.removeEventListener("dragging-changed", callback)
-
         }
-    }, [toolbarTransformationState.transformation])
+    }, [])
 
 }
 

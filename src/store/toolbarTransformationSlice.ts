@@ -45,3 +45,7 @@ export const {
 } = ToolbarTransformationSlice.actions
 
 export const toolbarTransformationStateSelector = (state: { toolbarTransformation: ToolbarTransformationState }) => state.toolbarTransformation
+export const activeTransformationSelector = (state: {toolbarTransformation: ToolbarTransformationState}) => state.toolbarTransformation.transformation.filter(transformation => transformation.active)[0]
+export const getIndexTransformationByName = (name: string, state: ToolbarTransformationState) => {
+    return state.transformation.indexOf(state.transformation.filter(transformation => transformation.type === name)[0])
+}

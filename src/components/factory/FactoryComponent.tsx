@@ -27,7 +27,7 @@ interface FactoryComponentProps {
 
 export const FactoryComponent: FC<FactoryComponentProps> = ({entity, orbit}) => {
     return (
-        <Component  keyComponent={entity.keyComponent} orbit={orbit}
+        <Component key={entity.keyComponent} keyComponent={entity.keyComponent} orbit={orbit}
                        position={entity.position} rotation={entity.rotation} scale={entity.scale}>
                 {factoryElements(entity)}
         </Component>

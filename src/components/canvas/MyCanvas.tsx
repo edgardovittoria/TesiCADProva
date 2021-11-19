@@ -1,9 +1,11 @@
-import React, {useRef} from 'react';
+import React, {FC, MutableRefObject, useRef} from 'react';
 import {Provider, ReactReduxContext, useSelector} from "react-redux";
-import {componentseSelector} from "../../store/canvasSlice";
-import {Canvas} from "@react-three/fiber";
-import {OrbitControls} from "@react-three/drei";
+import {componentseSelector, findComponentByKey, keySelectedComponenteSelector} from "../../store/canvasSlice";
+import {Canvas, useThree} from "@react-three/fiber";
+import {OrbitControls, TransformControls} from "@react-three/drei";
 import { FactoryComponent } from '../factory/FactoryComponent';
+import {useTransformations} from "../../hooks/useTransformations";
+import {DetectCollision} from "./components/detectCollision";
 
 
 
@@ -16,6 +18,7 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
 
     const components = useSelector(componentseSelector);
     const orbit = useRef(null);
+    const keySelectedComponent = useSelector(keySelectedComponenteSelector)
 
     return (
         <div id="canvas-container" style={{height: "100vh", backgroundColor: "#171A21"}}>
@@ -29,14 +32,10 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                                 <ambientLight/>
                                 <pointLight position={[0, 50, 0]}/>
                                 {components.map((component) => {
-                                    return <FactoryComponent entity={component} orbit={orbit}/>
-                                    
-
+                                    return <FactoryComponent key={component.keyComponent} entity={component} orbit={orbit}/>
                                 })}
                                 <gridHelper scale={[2.88, 1, 1.6]}/>
-                                <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
-                                               removeEventListener={undefined} dispatchEvent={undefined} makeDefault/>
-
+                                <Controls orbit={orbit} keySelectedComponent={keySelectedComponent}/>
 
                             </Provider>
                         </Canvas>
@@ -47,5 +46,23 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
 
     )
 
+}
+
+
+const Controls: FC<{orbit: MutableRefObject<null>, keySelectedComponent: number}> = ({orbit, keySelectedComponent}) => {
+    const {scene} = useThree()
+    console.log(scene)
+    const transformation = useRef(null);
+    useTransformations(transformation, orbit)
+
+    return(
+        <>
+            <TransformControls ref={transformation} children={<></>} object={scene.getObjectByName(keySelectedComponent.toString())}
+                showX={(keySelectedComponent !== 0)} showY={(keySelectedComponent !== 0)} showZ={(keySelectedComponent !== 0)}
+            />
+            <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
+                           removeEventListener={undefined} dispatchEvent={undefined} makeDefault/>
+        </>
+    )
 }
 
