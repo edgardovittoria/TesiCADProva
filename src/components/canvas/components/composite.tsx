@@ -12,12 +12,11 @@ export const Composite: FC<CompositeProps> = ({ entity }) => {
 
     return (
         <>
-            {/* <bufferGeometry>
+            <bufferGeometry>
                 <bufferAttribute attachObject={["attributes", "position"]} itemSize={3}
                                  array={compositeMesh.geometry.attributes.position.array}
                                  count={compositeMesh.geometry.attributes.position.array.length / 3}/>
-            </bufferGeometry> */}
-            <primitive object={compositeMesh.geometry} attach="geometry" />
+            </bufferGeometry>
             <meshBasicMaterial color={entity.color}/>
         </>
     )

@@ -28,7 +28,6 @@ export function getDefaultSphere(canvasState: CanvasState, dispatch: Dispatch) {
         widthSegments: 20,
         heightSegments: 20,
         color: '#ffcc00',
-        isSelected: false,
         previousPosition: [0, 0, 0],
         previousRotation: [0, 0, 0],
         previousScale: [1, 1, 1],

@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { Object3DNode } from "@react-three/fiber";
 import {
-    canvasStateSelector,
-    selectedComponentSelector,
     updatePosition,
     updateRotation,
     updateScale
@@ -22,7 +20,6 @@ export const useTransformations = (
 
     const dispatch = useDispatch();
     const toolbarTransformationState = useSelector(toolbarTransformationStateSelector);
-    const selectedComponent = useSelector(selectedComponentSelector)
 
 
     useEffect(() => {
@@ -58,7 +55,7 @@ export const useTransformations = (
             return () => controls.removeEventListener("dragging-changed", callback)
 
         }
-    }, [toolbarTransformationState.transformation, selectedComponent.position, selectedComponent.rotation, selectedComponent.scale])
+    }, [toolbarTransformationState.transformation])
 
 }
 

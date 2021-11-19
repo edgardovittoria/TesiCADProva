@@ -14,7 +14,6 @@ export type ComponentEntity = {
     box3Max: [number,number,number] | undefined
     color: string
     keyComponent: number
-    isSelected: boolean
     lastTransformationType : string | undefined
 }
 

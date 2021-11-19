@@ -26,7 +26,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
     return (
         <ProSidebar style={{height: "100vh", width: "100%", backgroundColor: "#212529", padding: "20px"}}>
             <Outliner canvasState={canvasState}/>
-            {(canvasState.components.filter(component => component.isSelected).length > 0) &&
+            {(canvasState.components.filter(component => component.keyComponent === canvasState.selectedComponentKey).length > 0) &&
             <div style={{height: "90%", marginTop: "20px"}}>
                 <Position selectedComponent={selectedComponent} dispatch={dispatch}/>
                 <Rotation selectedComponent={selectedComponent} dispatch={dispatch}/>

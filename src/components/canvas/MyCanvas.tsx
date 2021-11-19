@@ -1,9 +1,9 @@
 import React, {useRef} from 'react';
 import {Provider, ReactReduxContext, useSelector} from "react-redux";
-import {canvasStateSelector} from "../../store/canvasSlice";
+import {componentseSelector} from "../../store/canvasSlice";
 import {Canvas} from "@react-three/fiber";
 import {OrbitControls} from "@react-three/drei";
-import { ComponentBuffer } from './components/componentBuffer';
+import { FactoryComponent } from '../factory/FactoryComponent';
 
 
 
@@ -14,7 +14,7 @@ interface MyCanvasProps {
 
 export const MyCanvas: React.FC<MyCanvasProps> = () => {
 
-    const canvasState = useSelector(canvasStateSelector);
+    const components = useSelector(componentseSelector);
     const orbit = useRef(null);
 
     return (
@@ -28,14 +28,14 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                             <Provider store={store}>
                                 <ambientLight/>
                                 <pointLight position={[0, 50, 0]}/>
-                                {canvasState.components.map((component) => {
-                                    return <ComponentBuffer key={component.keyComponent} children={component} orbit={orbit}/>
+                                {components.map((component) => {
+                                    return <FactoryComponent entity={component} orbit={orbit}/>
                                     
 
                                 })}
                                 <gridHelper scale={[2.88, 1, 1.6]}/>
                                 <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
-                                               removeEventListener={undefined} dispatchEvent={undefined} />
+                                               removeEventListener={undefined} dispatchEvent={undefined} makeDefault/>
 
 
                             </Provider>

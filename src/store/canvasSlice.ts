@@ -7,6 +7,7 @@ export type CanvasState = {
     binaryOperationExecuting: boolean
     components: ComponentEntity[],
     numberOfGeneratedKey: number,
+    selectedComponentKey: number
 }
 
 export const CanvasSlice = createSlice({
@@ -15,6 +16,7 @@ export const CanvasSlice = createSlice({
         binaryOperationExecuting: false,
         components: [],
         numberOfGeneratedKey: 0,
+        selectedComponentKey: 0,
     } as CanvasState,
     reducers: {
         //qui vanno inserite le azioni
@@ -27,19 +29,19 @@ export const CanvasSlice = createSlice({
             })
         },
         updatePosition(state: CanvasState, action: PayloadAction<[number, number, number]>) {
-            let selectedComponent = findSelectedComponent(state)
+            let selectedComponent = findComponentByKey(state, state.selectedComponentKey)
             selectedComponent.previousPosition = selectedComponent.position
             selectedComponent.position = action.payload
             selectedComponent.lastTransformationType = "TRANSLATE"
         },
         updateRotation(state: CanvasState, action: PayloadAction<[number, number, number]>) {
-            let selectedComponent = findSelectedComponent(state)
+            let selectedComponent = findComponentByKey(state, state.selectedComponentKey)
             selectedComponent.previousRotation = selectedComponent.rotation
             selectedComponent.rotation = action.payload
             selectedComponent.lastTransformationType = "ROTATE"
         },
         updateScale(state: CanvasState, action: PayloadAction<[number, number, number]>) {
-            let selectedComponent = findSelectedComponent(state)
+            let selectedComponent = findComponentByKey(state, state.selectedComponentKey)
             selectedComponent.previousScale = selectedComponent.scale
             selectedComponent.scale = action.payload
             selectedComponent.lastTransformationType = "SCALE"
@@ -50,9 +52,7 @@ export const CanvasSlice = createSlice({
             component.box3Max = [action.payload.box3.max.x, action.payload.box3.max.y, action.payload.box3.max.z]
         },
         selectComponent(state: CanvasState, action: PayloadAction<number>) {
-            state.components.map(component => {
-                (component.keyComponent === action.payload) ? component.isSelected = true : component.isSelected = false
-            })
+            state.selectedComponentKey = action.payload
         },
         incrementNumberOfGeneratedKey(state: CanvasState, action: PayloadAction<number>) {
             state.numberOfGeneratedKey += action.payload;
@@ -88,9 +88,10 @@ export const {
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas;
-export const selectedComponentSelector = (state: { canvas: CanvasState }) => findSelectedComponent(state.canvas)
+export const componentseSelector = (state: { canvas: CanvasState }) => state.canvas.components;
+export const keySelectedComponenteSelector = (state: { canvas: CanvasState }) => state.canvas.selectedComponentKey;
+export const selectedComponentSelector = (state: { canvas: CanvasState }) => findComponentByKey(state.canvas, state.canvas.selectedComponentKey)
 export const binaryOperationExecution = (state: {canvas: CanvasState}) => state.canvas.binaryOperationExecuting
 
-const findSelectedComponent = (canvas: CanvasState) => canvas.components.filter(component => component.isSelected)[0]
 export const findComponentByKey = (canvas: CanvasState, key: number) => canvas.components.filter(component => component.keyComponent === key)[0]
 

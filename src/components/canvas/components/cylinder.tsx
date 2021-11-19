@@ -29,7 +29,6 @@ export function getDefaultCylinder(canvasState: CanvasState, dispatch: Dispatch)
         box3Max: undefined,
         height: 1,
         color: '#ec2626',
-        isSelected: false,
         previousPosition: [0, 0, 0],
         previousRotation: [0, 0, 0],
         previousScale: [1, 1, 1],

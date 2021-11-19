@@ -10,7 +10,7 @@ export const Outliner: React.FC<OutlinerProps> = ({canvasState}) => {
 
     const [optionActive, setOptionActive] = useState("");
     useEffect(() => {
-        let selectedComponent = canvasState.components.filter(component => component.isSelected)[0]
+        let selectedComponent = canvasState.components.filter(component => component.keyComponent === canvasState.selectedComponentKey)[0]
         if (selectedComponent !== undefined) {
             setOptionActive(selectedComponent.keyComponent.toString())
         }
@@ -28,7 +28,7 @@ export const Outliner: React.FC<OutlinerProps> = ({canvasState}) => {
                 </div>
                 {canvasState.components.map(component => {
                     return (
-                        <OutlinerItem key={component.keyComponent + component.name} keyComponent={component.keyComponent} nameComponent={component.name} isSelelctedComponent={component.isSelected} />
+                        <OutlinerItem key={component.keyComponent + component.name} keyComponent={component.keyComponent} nameComponent={component.name} isSelelctedComponent={component.keyComponent === canvasState.selectedComponentKey} />
                     )
                 })}
             </div>
