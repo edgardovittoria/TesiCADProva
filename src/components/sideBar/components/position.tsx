@@ -77,8 +77,7 @@ export const Position: React.FC<PositionProps> = ({selectedComponent, dispatch})
 
     return(
         <>
-            <div className="Row transformation">
-                <span className="Text" style={{cursor: "default", display: "inline-block", width: "90px"}}>Position</span>
+            <div className="Row transformation" style={{ width: "100%", right: 0}}>
                 <InputElement id="translateX" axisName="x" x={x} y={y} z={z} dispatch={dispatch}/>
                 <InputElement id="translateY" axisName="y" x={x} y={y} z={z} dispatch={dispatch}/>
                 <InputElement id="translateZ" axisName="z" x={x} y={y} z={z} dispatch={dispatch}/>

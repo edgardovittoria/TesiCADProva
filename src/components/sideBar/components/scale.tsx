@@ -78,8 +78,7 @@ export const Scale: React.FC<ScaleProps> = ({ selectedComponent, dispatch }) => 
 
     return (
         <>
-            <div className="Row transformation">
-                <span className="Text" style={{ cursor: "default", display: "inline-block", width: "90px" }}>Scale</span>
+            <div className="Row transformation" style={{ width: "100%"}}>
                 <InputElement id="scaleX" axisName="x" x={x} y={y} z={z} dispatch={dispatch}/>
                 <InputElement id="scaleY" axisName="y" x={x} y={y} z={z} dispatch={dispatch}/>
                 <InputElement id="scaleZ" axisName="z" x={x} y={y} z={z} dispatch={dispatch}/>

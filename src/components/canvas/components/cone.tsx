@@ -46,7 +46,7 @@ export const Cone: FC<ConeProps> = (
     return (
         <>
             <coneGeometry args={[radius, height, radialSegments, heightSegments, openEnded, thetaStart, thetaLength]} />
-            <meshBasicMaterial color={color} />
+            <meshPhongMaterial color={color} />
         </>
     )
 }

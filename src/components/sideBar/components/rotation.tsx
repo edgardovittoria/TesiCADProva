@@ -78,8 +78,7 @@ export const Rotation: React.FC<RotationProps> = ({selectedComponent, dispatch})
 
     return(
         <>
-            <div className="Row transformation">
-                <span className="Text" style={{cursor: "default", display: "inline-block", width: "90px"}}>Rotation</span>
+            <div className="Row transformation" style={{ width: "100%"}}>
                 <InputElement id="rotationX" axisName="x" x={x} y={y} z={z} dispatch={dispatch}/>
                 <InputElement id="rotationY" axisName="y" x={x} y={y} z={z} dispatch={dispatch}/>
                 <InputElement id="rotationY" axisName="z" x={x} y={y} z={z} dispatch={dispatch}/>

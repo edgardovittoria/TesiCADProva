@@ -48,7 +48,7 @@ export const Cylinder: FC<CylinderProps> = (
     return (
         <>
             <cylinderGeometry args={[topRadius, bottomRadius, height, radialSegments, heightSegments, openEnded, thetaStart, thetaLength]} />
-            <meshBasicMaterial color={color} />
+            <meshPhongMaterial color={color} />
         </>
     )
 }

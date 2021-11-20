@@ -41,7 +41,7 @@ export const Torus: FC<TorusProps> = ({torusRadius, tubeRadius, radialSegments, 
     return (
         <>
             <torusGeometry args={[torusRadius, tubeRadius, radialSegments, tubularSegments, centralAngle]}/>
-            <meshBasicMaterial color={color} />
+            <meshPhongMaterial color={color} />
         </>
     )
 }

@@ -4,6 +4,7 @@
     top: 70px;
     width: 40px;
     text-align: center;
+    box-shadow: -2px 2px 5px #000000;
 }
 
 .Panel {
@@ -43,4 +44,8 @@ button {
 
 .tooltip-arrow{
     visibility: hidden;
+}
+
+.bs-tooltip-end{
+    padding: 0;
 }

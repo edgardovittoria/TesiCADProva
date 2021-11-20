@@ -9,6 +9,7 @@ import {SelectBinaryOp} from "./components/modal/selectBinaryOp";
 import {WheelSpinner} from "./shared/spinners/wheelSpinner";
 import {useSelector} from "react-redux";
 import {binaryOperationExecution} from "./store/canvasSlice";
+import {DraggableComponent} from "./components/utility/draggableComponent";
 
 function App() {
 
@@ -25,16 +26,18 @@ function App() {
 
     return (
         <>
-            <MyNavBar setViewElementVisibility={showViewElementVisibility}/>
             <div style={{margin: "0px"}}>
-                <div className={(sideBar) ? "canvas-width-75" : "canvas-width-100"}>
+                <MyNavBar setViewElementVisibility={showViewElementVisibility}/>
+                <div className="canvas-width-100">
                     <WheelSpinner/>
                     <MyCanvas/>
                     <ToolBar/>
                     <SelectBinaryOp/>
-                </div>
-                <div className="sidebar-width-25" hidden={!sideBar}>
-                    <SideBar/>
+                    <DraggableComponent hidden={!sideBar}>
+                        <div className="sidebar-width-25" >
+                            <SideBar/>
+                        </div>
+                    </DraggableComponent>
                 </div>
 
             </div>

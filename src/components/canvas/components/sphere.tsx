@@ -41,7 +41,7 @@ export const Sphere: FC<SphereProps> = ({ radius, widthSegments, heightSegments,
     return (
         <>
             <sphereGeometry args={[radius, widthSegments, heightSegments]} />
-            <meshBasicMaterial color={color} />
+            <meshPhongMaterial color={color} />
         </>
     )
 }

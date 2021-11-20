@@ -53,7 +53,7 @@ export const Cube: FC<CubeProps> = (
     return (
         <>
             <boxGeometry args={[width, height, depth]} />
-            <meshBasicMaterial color={color} />
+            <meshPhongMaterial color={color} />
         </>
     )
 }
