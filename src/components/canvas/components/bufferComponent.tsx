@@ -15,8 +15,11 @@ export const BufferComponent: FC<BufferComponentProps> = ({entity}) => {
                 <bufferAttribute attachObject={["attributes", "position"]} itemSize={3}
                                  array={compositeMesh.geometry.attributes.position.array}
                                  count={compositeMesh.geometry.attributes.position.array.length / 3}/>
+                <bufferAttribute attachObject={["attributes", "normal"]} itemSize={3}
+                                 array={compositeMesh.geometry.attributes.normal.array}
+                                 count={compositeMesh.geometry.attributes.normal.array.length / 3}/>
             </bufferGeometry>
-            <meshBasicMaterial color={entity.color}/>
+            <meshPhongMaterial color={entity.color}/>
         </>
     )
 }
