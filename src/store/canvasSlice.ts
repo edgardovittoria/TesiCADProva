@@ -94,4 +94,3 @@ export const selectedComponentSelector = (state: { canvas: CanvasState }) => fin
 export const binaryOperationExecution = (state: {canvas: CanvasState}) => state.canvas.binaryOperationExecuting
 
 export const findComponentByKey = (components: ComponentEntity[], key: number) => components.filter(component => component.keyComponent === key)[0]
-

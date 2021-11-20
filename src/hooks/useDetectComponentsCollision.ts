@@ -8,7 +8,7 @@ import {
     addComponent,
     binaryOperationExecution,
     CanvasState,
-    removeComponent,
+    removeComponent, selectComponent,
     setBinaryOperationExecuting
 } from "../store/canvasSlice";
 import {modalStateSelector, openModal} from "../store/modalSlice";
@@ -29,7 +29,7 @@ export const useDetectComponentsCollision = (componentEntity: ComponentEntity, c
             if (componentEntity.previousPosition.every((val, index) => val === componentEntity.position[index])
                 && componentEntity.previousScale.every((val, index) => val === componentEntity.scale[index])
                 && componentEntity.previousRotation.every((val, index) => val === componentEntity.rotation[index])) {
-                removeEntityJustCreated(componentEntity, dispatch)
+                removeEntityJustCreated(componentEntity, dispatch, canvasState)
             } else {
                 dispatch(openModal('BINARY_OP'))
             }
@@ -118,7 +118,8 @@ const compositeEntityFromOperationBetweenTwoEntities = (elementA: ComponentEntit
     return compositeEntity
 }
 
-const removeEntityJustCreated = (entity: ComponentEntity, dispatch: Dispatch) => {
+const removeEntityJustCreated = (entity: ComponentEntity, dispatch: Dispatch, canvasState: CanvasState) => {
+    dispatch(selectComponent(canvasState.components[canvasState.components.length - 2].keyComponent))
     dispatch(removeComponent(entity))
     alert("Esiste già un componente nella stessa posizione. Spostalo prima di crearne uno nuovo!")
 }

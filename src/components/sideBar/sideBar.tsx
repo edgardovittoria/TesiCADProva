@@ -2,7 +2,12 @@ import React, {} from 'react';
 import {ProSidebar} from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {useDispatch, useSelector} from "react-redux";
-import {canvasStateSelector, removeComponent, selectedComponentSelector} from "../../store/canvasSlice";
+import {
+    canvasStateSelector,
+    removeComponent,
+    selectComponent,
+    selectedComponentSelector
+} from "../../store/canvasSlice";
 import "./css/outliner.css"
 import {Outliner} from "./components/outliner";
 import {Position} from "./components/position";
@@ -37,7 +42,8 @@ export const SideBar: React.FC<SideBarProps> = () => {
                     className="btn btn-danger"
                     onClick={() => {
                         if(window.confirm(`Sei sicuro di voler eliminare il componente ${selectedComponent.name} ?`)){
-                            dispatch(removeComponent(selectedComponent))
+                            dispatch(selectComponent(0))
+                            dispatch(removeComponent(selectedComponent));
                         }
                     }}
                     style={{position: "absolute", bottom: 50, right:0}}

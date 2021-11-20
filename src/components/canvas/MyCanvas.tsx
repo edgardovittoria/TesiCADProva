@@ -6,6 +6,7 @@ import {OrbitControls, TransformControls} from "@react-three/drei";
 import { FactoryComponent } from '../factory/FactoryComponent';
 import {useTransformations} from "../../hooks/useTransformations";
 import {DetectCollision} from "./components/detectCollision";
+import {ComponentEntity} from "../../model/ComponentEntity";
 
 
 
@@ -35,7 +36,7 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                                     return <FactoryComponent key={component.keyComponent} entity={component} orbit={orbit}/>
                                 })}
                                 <gridHelper scale={[2.88, 1, 1.6]}/>
-                                <Controls orbit={orbit} keySelectedComponent={keySelectedComponent}/>
+                                <Controls orbit={orbit} keySelectedComponent={keySelectedComponent} components={components}/>
 
                             </Provider>
                         </Canvas>
@@ -49,16 +50,20 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
 }
 
 
-const Controls: FC<{orbit: MutableRefObject<null>, keySelectedComponent: number}> = ({orbit, keySelectedComponent}) => {
+const Controls: FC<{orbit: MutableRefObject<null>, keySelectedComponent: number, components: ComponentEntity[]}> = ({orbit, keySelectedComponent, components}) => {
     const {scene} = useThree()
-    console.log(scene)
     const transformation = useRef(null);
     useTransformations(transformation, orbit)
 
     return(
         <>
-            <TransformControls ref={transformation} children={<></>} object={scene.getObjectByName(keySelectedComponent.toString())}
-                showX={(keySelectedComponent !== 0)} showY={(keySelectedComponent !== 0)} showZ={(keySelectedComponent !== 0)}
+            <TransformControls
+                ref={transformation}
+                children={<></>}
+                object={scene.getObjectByName(keySelectedComponent.toString())}
+                showX={(keySelectedComponent !== 0)}
+                showY={(keySelectedComponent !== 0)}
+                showZ={(keySelectedComponent !== 0)}
             />
             <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
                            removeEventListener={undefined} dispatchEvent={undefined} makeDefault/>
