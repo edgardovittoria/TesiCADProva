@@ -63,7 +63,7 @@ function InputElement(props: any){
 }
 
 export const Rotation: React.FC<RotationProps> = ({selectedComponent, dispatch}) => {
-    let rotation: [number,number,number] = [0,0,0]
+    
     const [x,setX] = useState(0);
     const [y,setY] = useState(0);
     const [z,setZ] = useState(0);
@@ -74,7 +74,7 @@ export const Rotation: React.FC<RotationProps> = ({selectedComponent, dispatch})
             setY(rotation[1])
             setZ(rotation[2])
         }
-    }, [rotation]);
+    }, [selectedComponent, selectedComponent?.rotation]);
 
     return(
         <>

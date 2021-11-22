@@ -63,7 +63,7 @@ function InputElement(props: any) {
 }
 
 export const Scale: React.FC<ScaleProps> = ({ selectedComponent, dispatch }) => {
-    let scale: [number, number, number] = [1, 1, 1]
+    
     const [x, setX] = useState(1);
     const [y, setY] = useState(1);
     const [z, setZ] = useState(1);
@@ -74,7 +74,7 @@ export const Scale: React.FC<ScaleProps> = ({ selectedComponent, dispatch }) => 
             setY(scale[1])
             setZ(scale[2])
         }
-    }, [scale]);
+    }, [selectedComponent, selectedComponent?.scale]);
 
     return (
         <>

@@ -15,7 +15,7 @@ import {Rotation} from "./components/rotation";
 import {Scale} from "./components/scale";
 import "./css/transformation.css"
 import {Color} from "./components/color";
-import {Button, Col, Container, Row} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 
 
 interface SideBarProps {

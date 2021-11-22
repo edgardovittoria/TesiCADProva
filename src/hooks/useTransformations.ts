@@ -5,8 +5,7 @@ import {
     updateRotation,
     updateScale
 } from "../store/canvasSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { ToolbarTransformationState, toolbarTransformationStateSelector } from "../store/toolbarTransformationSlice";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 
 export const useTransformations = (
@@ -14,21 +13,8 @@ export const useTransformations = (
     orbit: React.MutableRefObject<null>
 ) => {
 
-    function getActiveTransformationType(toolbarTranformationState: ToolbarTransformationState): string {
-        return toolbarTranformationState.transformation.filter(transformation => transformation.active)[0].type;
-    }
-
     const dispatch = useDispatch();
-    const toolbarTransformationState = useSelector(toolbarTransformationStateSelector);
-
-
-    useEffect(() => {
-        if (transformation.current) {
-            const controls: Object3DNode<any, any> = transformation.current
-            controls.setMode(getActiveTransformationType(toolbarTransformationState))
-        }
-    }, [toolbarTransformationState.transformation])
-
+    
     useEffect(() => {
         if(transformation.current){
             const controls: Object3DNode<any, any> = transformation.current

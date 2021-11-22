@@ -62,18 +62,18 @@ function InputElement(props: any){
 }
 
 export const Position: React.FC<PositionProps> = ({selectedComponent, dispatch}) => {
-    let position: [number, number, number] = [0,0,0];
+    
     const [x,setX] = useState(0);
     const [y,setY] = useState(0);
     const [z,setZ] = useState(0);
     useEffect(() => {
         if(selectedComponent !== undefined){
-            position = selectedComponent?.position as [number, number, number]
+           let position = selectedComponent?.position as [number, number, number]
              setX(position[0])
              setY(position[1])
              setZ(position[2])
         }
-    }, [position]);
+    }, [selectedComponent, selectedComponent?.position]);
 
     return(
         <>
