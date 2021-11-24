@@ -1,9 +1,12 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {CanvasState} from "../../../store/canvasSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {ComponentEntity} from "../../../model/ComponentEntity";
-import {manageTransformation} from "../../../hooks/useTransformations";
 import {Dispatch} from "@reduxjs/toolkit";
+import { manageTransformation } from '../../canvas/MyCanvas';
+import { useThree } from '@react-three/fiber';
+import { keySelectedComponenteSelector } from '../../../store/canvasSlice.old';
+import { meshWithcomputedGeometryBoundingFrom } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings.old.old';
 
 interface PositionProps {
     selectedComponent: ComponentEntity
@@ -22,6 +25,7 @@ function InputElement(props: any){
         }
     }
 
+    
     function onChangeInputValue (e: ChangeEvent<HTMLInputElement>){
         if(props.axisName === "x"){
             manageTransformation(

@@ -1,9 +1,11 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { CanvasState } from "../../../store/canvasSlice";
-import { useDispatch } from "react-redux";
-import { manageTransformation } from "../../../hooks/useTransformations";
-import {ComponentEntity} from "../../../model/ComponentEntity";
-import {Dispatch} from "@reduxjs/toolkit";
+import { CanvasState, keySelectedComponenteSelector } from "../../../store/canvasSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { ComponentEntity } from "../../../model/ComponentEntity";
+import { Dispatch } from "@reduxjs/toolkit";
+import { manageTransformation } from '../../canvas/MyCanvas';
+import { meshWithcomputedGeometryBoundingFrom } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings.old.old';
+import { useThree } from '@react-three/fiber';
 
 interface ScaleProps {
     selectedComponent: ComponentEntity
@@ -23,7 +25,9 @@ function InputElement(props: any) {
         }
     }
 
+
     function onChangeInputValue(e: ChangeEvent<HTMLInputElement>) {
+
         if (props.axisName === "x") {
             manageTransformation(
                 'scale',
@@ -63,7 +67,7 @@ function InputElement(props: any) {
 }
 
 export const Scale: React.FC<ScaleProps> = ({ selectedComponent, dispatch }) => {
-    
+
     const [x, setX] = useState(1);
     const [y, setY] = useState(1);
     const [z, setZ] = useState(1);
@@ -78,10 +82,10 @@ export const Scale: React.FC<ScaleProps> = ({ selectedComponent, dispatch }) => 
 
     return (
         <>
-            <div className="Row transformation" style={{ width: "100%"}}>
-                <InputElement id="scaleX" axisName="x" x={x} y={y} z={z} dispatch={dispatch}/>
-                <InputElement id="scaleY" axisName="y" x={x} y={y} z={z} dispatch={dispatch}/>
-                <InputElement id="scaleZ" axisName="z" x={x} y={y} z={z} dispatch={dispatch}/>
+            <div className="Row transformation" style={{ width: "100%" }}>
+                <InputElement id="scaleX" axisName="x" x={x} y={y} z={z} dispatch={dispatch} />
+                <InputElement id="scaleY" axisName="y" x={x} y={y} z={z} dispatch={dispatch} />
+                <InputElement id="scaleZ" axisName="z" x={x} y={y} z={z} dispatch={dispatch} />
             </div>
 
         </>

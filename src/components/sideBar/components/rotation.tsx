@@ -1,9 +1,11 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
-import {CanvasState} from "../../../store/canvasSlice";
-import {useDispatch} from "react-redux";
-import {manageTransformation} from "../../../hooks/useTransformations";
-import {ComponentEntity} from "../../../model/ComponentEntity";
-import {Dispatch} from "@reduxjs/toolkit";
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { CanvasState, keySelectedComponenteSelector } from "../../../store/canvasSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { ComponentEntity } from "../../../model/ComponentEntity";
+import { Dispatch } from "@reduxjs/toolkit";
+import { manageTransformation } from '../../canvas/MyCanvas';
+import { useThree } from '@react-three/fiber';
+import { meshWithcomputedGeometryBoundingFrom } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings.old.old';
 
 interface RotationProps {
     selectedComponent: ComponentEntity
@@ -11,64 +13,66 @@ interface RotationProps {
 }
 
 
-function InputElement(props: any){
+function InputElement(props: any) {
 
-    function getValue(): number{
-        if(props.axisName === "x"){
+    function getValue(): number {
+        if (props.axisName === "x") {
             return props.x
-        }else if(props.axisName === "y"){
+        } else if (props.axisName === "y") {
             return props.y
-        }else{
+        } else {
             return props.z
         }
     }
 
-    function onChangeInputValueRotation (e: ChangeEvent<HTMLInputElement>){
-        if(props.axisName === "x"){
+
+    function onChangeInputValueRotation(e: ChangeEvent<HTMLInputElement>) {
+
+        if (props.axisName === "x") {
             manageTransformation(
                 'rotate',
-                [parseFloat(e.target.value),props.y, props.z],
+                [parseFloat(e.target.value), props.y, props.z],
                 props.dispatch
             )
-            
-        }else if(props.axisName === "y"){
+
+        } else if (props.axisName === "y") {
             manageTransformation(
                 'rotate',
-                [props.x,parseFloat(e.target.value),props.z],
+                [props.x, parseFloat(e.target.value), props.z],
                 props.dispatch
             )
-            
-        }else{
+
+        } else {
             manageTransformation(
                 'rotate',
-                [props.x,props.y,parseFloat(e.target.value)],
+                [props.x, props.y, parseFloat(e.target.value)],
                 props.dispatch
             )
-            
+
         }
     }
 
-    return(
+    return (
         <input type="number"
-               id={props.id}
-               step="0.1"
-               className="Number"
-               autoComplete="off"
-               value={getValue()}
-               onChange={(e) => {
-                   onChangeInputValueRotation(e);
-               }}
+            id={props.id}
+            step="0.1"
+            className="Number"
+            autoComplete="off"
+            value={getValue()}
+            onChange={(e) => {
+                onChangeInputValueRotation(e);
+            }}
         />
     )
 }
 
-export const Rotation: React.FC<RotationProps> = ({selectedComponent, dispatch}) => {
-    
-    const [x,setX] = useState(0);
-    const [y,setY] = useState(0);
-    const [z,setZ] = useState(0);
+export const Rotation: React.FC<RotationProps> = ({ selectedComponent, dispatch }) => {
+
+    const [x, setX] = useState(0);
+    const [y, setY] = useState(0);
+    const [z, setZ] = useState(0);
     useEffect(() => {
-        if(selectedComponent !== undefined){
+        if (selectedComponent !== undefined) {
             let rotation = selectedComponent?.rotation as [number, number, number]
             setX(rotation[0])
             setY(rotation[1])
@@ -76,12 +80,12 @@ export const Rotation: React.FC<RotationProps> = ({selectedComponent, dispatch})
         }
     }, [selectedComponent, selectedComponent?.rotation]);
 
-    return(
+    return (
         <>
-            <div className="Row transformation" style={{ width: "100%"}}>
-                <InputElement id="rotationX" axisName="x" x={x} y={y} z={z} dispatch={dispatch}/>
-                <InputElement id="rotationY" axisName="y" x={x} y={y} z={z} dispatch={dispatch}/>
-                <InputElement id="rotationY" axisName="z" x={x} y={y} z={z} dispatch={dispatch}/>
+            <div className="Row transformation" style={{ width: "100%" }}>
+                <InputElement id="rotationX" axisName="x" x={x} y={y} z={z} dispatch={dispatch} />
+                <InputElement id="rotationY" axisName="y" x={x} y={y} z={z} dispatch={dispatch} />
+                <InputElement id="rotationY" axisName="z" x={x} y={y} z={z} dispatch={dispatch} />
             </div>
 
         </>

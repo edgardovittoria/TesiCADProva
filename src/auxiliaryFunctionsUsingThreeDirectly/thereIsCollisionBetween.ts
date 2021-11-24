@@ -17,7 +17,6 @@ export const thereIsCollisionBetween = (firstComponentEntity: ComponentEntity, s
 export const thereIsCollisionBetweenMeshes = (firstComponentEntity: THREE.Mesh, secondComponentEntity: THREE.Mesh) => {
     let mesh2 = meshWithcomputedGeometryBoundingFrom(secondComponentEntity);
     let mesh1 = meshWithcomputedGeometryBoundingFrom(firstComponentEntity)
-    console.log(mesh1, mesh2)
     return (mesh1.geometry.boundingBox && mesh2.geometry.boundingBox)
         ? mesh1.geometry.boundingBox.intersectsBox(mesh2.geometry.boundingBox)
         : false

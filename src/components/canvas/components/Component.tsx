@@ -1,13 +1,9 @@
 import React, {MutableRefObject, useEffect, useRef} from 'react';
-import {canvasStateSelector, findComponentByKey, selectComponent, updateBox3} from "../../../store/canvasSlice";
+import {canvasStateSelector, findComponentByKey, selectComponent} from "../../../store/canvasSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {DetectCollision} from './detectCollision';
 import {
-    meshWithcomputedGeometryBoundingFrom,
-    meshWithPositionRotationScaleFromOldOne
-} from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
-import {TransformControls} from '@react-three/drei';
-import {useTransformations} from '../../../hooks/useTransformations';
+    meshWithcomputedGeometryBoundingFrom} from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
 import {
     activeTransformationSelector,
     getIndexTransformationByName,
@@ -31,20 +27,8 @@ export const Component: React.FC<ComponentProps> = ({children, orbit, position, 
     const toolbarTransformation = useSelector(toolbarTransformationStateSelector)
 
 
-    useEffect(() => {
-        dispatch(selectComponent(keyComponent))
-    }, [])
+ 
 
-
-    useEffect(() => {
-        if (meshRef.current) {
-            let meshTemp = meshWithcomputedGeometryBoundingFrom(meshRef.current);
-            (meshTemp.geometry.boundingBox) && dispatch(updateBox3({
-                key: keyComponent,
-                box3: meshTemp.geometry.boundingBox
-            }))
-        }
-    }, [position, rotation, scale])
 
     return (
         <>
@@ -61,8 +45,8 @@ export const Component: React.FC<ComponentProps> = ({children, orbit, position, 
             >
                 {children}
             </mesh>
-            {/* {(keyComponent === canvas.selectedComponentKey) &&
-            <DetectCollision entity={findComponentByKey(canvas.components, keyComponent)}/>} */}
+            {(keyComponent === canvas.selectedComponentKey) &&
+            <DetectCollision entity={findComponentByKey(canvas.components, keyComponent)}/>}
         </>
 
 

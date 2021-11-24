@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/t
 import {Box3} from "three";
 import {ComponentEntity} from "../model/ComponentEntity";
 import {makeBinaryOperation} from "../hooks/useDetectComponentsCollision";
+import { StateWithHistory } from 'redux-undo';
 
 export type CanvasState = {
     binaryOperationExecuting: boolean
@@ -22,6 +23,7 @@ export const CanvasSlice = createSlice({
         //qui vanno inserite le azioni
         addComponent(state: CanvasState, action: PayloadAction<ComponentEntity>) {
             state.components.push(action.payload);
+            state.selectedComponentKey = action.payload.keyComponent
         },
         removeComponent(state: CanvasState, action: PayloadAction<ComponentEntity>) {
             state.components = state.components.filter(component => {
@@ -32,25 +34,31 @@ export const CanvasSlice = createSlice({
             let selectedComponent = findComponentByKey(state.components, state.selectedComponentKey)
             selectedComponent.previousPosition = selectedComponent.position
             selectedComponent.position = action.payload
+            // selectedComponent.box3Min = [action.payload.box3.min.x, action.payload.box3.min.y, action.payload.box3.min.z]
+            // selectedComponent.box3Max = [action.payload.box3.max.x, action.payload.box3.max.y, action.payload.box3.max.z]
             selectedComponent.lastTransformationType = "TRANSLATE"
         },
         updateRotation(state: CanvasState, action: PayloadAction<[number, number, number]>) {
             let selectedComponent = findComponentByKey(state.components, state.selectedComponentKey)
             selectedComponent.previousRotation = selectedComponent.rotation
             selectedComponent.rotation = action.payload
+            // selectedComponent.box3Min = [action.payload.box3.min.x, action.payload.box3.min.y, action.payload.box3.min.z]
+            // selectedComponent.box3Max = [action.payload.box3.max.x, action.payload.box3.max.y, action.payload.box3.max.z]
             selectedComponent.lastTransformationType = "ROTATE"
         },
         updateScale(state: CanvasState, action: PayloadAction<[number, number, number]>) {
             let selectedComponent = findComponentByKey(state.components, state.selectedComponentKey)
             selectedComponent.previousScale = selectedComponent.scale
             selectedComponent.scale = action.payload
+            // selectedComponent.box3Min = [action.payload.box3.min.x, action.payload.box3.min.y, action.payload.box3.min.z]
+            // selectedComponent.box3Max = [action.payload.box3.max.x, action.payload.box3.max.y, action.payload.box3.max.z]
             selectedComponent.lastTransformationType = "SCALE"
         },
-        updateBox3(state: CanvasState, action: PayloadAction<{ key: number, box3: Box3 }>) {
-            let component = findComponentByKey(state.components, action.payload.key)
-            component.box3Min = [action.payload.box3.min.x, action.payload.box3.min.y, action.payload.box3.min.z]
-            component.box3Max = [action.payload.box3.max.x, action.payload.box3.max.y, action.payload.box3.max.z]
-        },
+        // updateBox3(state: CanvasState, action: PayloadAction<{ key: number, box3: Box3 }>) {
+        //     let component = findComponentByKey(state.components, action.payload.key)
+        //     component.box3Min = [action.payload.box3.min.x, action.payload.box3.min.y, action.payload.box3.min.z]
+        //     component.box3Max = [action.payload.box3.max.x, action.payload.box3.max.y, action.payload.box3.max.z]
+        // },
         selectComponent(state: CanvasState, action: PayloadAction<number>) {
             state.selectedComponentKey = action.payload
         },
@@ -83,14 +91,14 @@ export const CanvasSlice = createSlice({
 export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
     addComponent, removeComponent, updatePosition, updateRotation,
-    updateScale, updateBox3, selectComponent, incrementNumberOfGeneratedKey,
+    updateScale, selectComponent, incrementNumberOfGeneratedKey,
     updateColor, updateName, importStateCanvas, setBinaryOperationExecuting
 } = CanvasSlice.actions
 
-export const canvasStateSelector = (state: { canvas: CanvasState }) => state.canvas;
-export const componentseSelector = (state: { canvas: CanvasState }) => state.canvas.components;
-export const keySelectedComponenteSelector = (state: { canvas: CanvasState }) => state.canvas.selectedComponentKey;
-export const selectedComponentSelector = (state: { canvas: CanvasState }) => findComponentByKey(state.canvas.components, state.canvas.selectedComponentKey)
-export const binaryOperationExecution = (state: {canvas: CanvasState}) => state.canvas.binaryOperationExecuting
+export const canvasStateSelector = (state: { canvas: StateWithHistory<CanvasState> }) => state.canvas.present;
+export const componentseSelector = (state: { canvas: StateWithHistory<CanvasState> }) => state.canvas.present.components;
+export const keySelectedComponenteSelector = (state: { canvas: StateWithHistory<CanvasState> }) => state.canvas.present.selectedComponentKey;
+export const selectedComponentSelector = (state: { canvas: StateWithHistory<CanvasState> }) => findComponentByKey(state.canvas.present.components, state.canvas.present.selectedComponentKey)
+export const binaryOperationExecution = (state: {canvas: StateWithHistory<CanvasState>}) => state.canvas.present.binaryOperationExecuting
 
 export const findComponentByKey = (components: ComponentEntity[], key: number) => components.filter(component => component.keyComponent === key)[0]

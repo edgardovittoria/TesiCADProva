@@ -8,7 +8,7 @@ import {getNewKeys} from "../components/canvas/components/cube";
 export const importProjectFrom = (file: File, dispatch: Dispatch) => {
     file.text().then((value) => {
         let storeState: RootState = JSON.parse(value)
-        dispatch(importStateCanvas(storeState.canvas))
+        dispatch(importStateCanvas(storeState.canvas.present))
     })
 }
 
