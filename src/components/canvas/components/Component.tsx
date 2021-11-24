@@ -3,8 +3,6 @@ import {canvasStateSelector, findComponentByKey, selectComponent} from "../../..
 import {useDispatch, useSelector} from "react-redux";
 import {DetectCollision} from './detectCollision';
 import {
-    meshWithcomputedGeometryBoundingFrom} from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
-import {
     activeTransformationSelector,
     getIndexTransformationByName,
     setTransformationActive,
@@ -26,6 +24,9 @@ export const Component: React.FC<ComponentProps> = ({children, orbit, position, 
     const activeTransformation = useSelector(activeTransformationSelector)
     const toolbarTransformation = useSelector(toolbarTransformationStateSelector)
 
+    useEffect(() => {
+        dispatch(selectComponent(keyComponent))
+    },[])
 
  
 

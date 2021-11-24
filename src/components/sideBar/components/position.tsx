@@ -1,12 +1,7 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {CanvasState} from "../../../store/canvasSlice";
-import {useDispatch, useSelector} from "react-redux";
 import {ComponentEntity} from "../../../model/ComponentEntity";
 import {Dispatch} from "@reduxjs/toolkit";
 import { manageTransformation } from '../../canvas/MyCanvas';
-import { useThree } from '@react-three/fiber';
-import { keySelectedComponenteSelector } from '../../../store/canvasSlice.old';
-import { meshWithcomputedGeometryBoundingFrom } from '../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings.old.old';
 
 interface PositionProps {
     selectedComponent: ComponentEntity
