@@ -6,21 +6,15 @@ import {binaryOperationExecution, canvasStateSelector} from "../../store/canvasS
 import {modalStateSelector} from "../../store/modalSlice";
 
 interface WheelSpinnerProps {
-
+    spinnerVisibility: boolean
 }
 
-export const WheelSpinner: React.FC<WheelSpinnerProps> = ({}) => {
+export const WheelSpinner: React.FC<WheelSpinnerProps> = ({spinnerVisibility}) => {
 
-    const [show, setShow] = useState(false);
-
-    let visibility = useSelector(binaryOperationExecution);
-    useEffect(() => {
-        setShow(visibility)
-    }, [visibility]);
+    
 
 
-    if(show){
-        console.log(show)
+    if(spinnerVisibility){
         return <Spinner className="spinner" animation="grow"/>
     }else{
         return <></>

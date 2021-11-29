@@ -46,8 +46,8 @@ export const Component: React.FC<ComponentProps> = ({children, orbit, position, 
             >
                 {children}
             </mesh>
-            {(keyComponent === canvas.selectedComponentKey) &&
-            <DetectCollision entity={findComponentByKey(canvas.components, keyComponent)}/>}
+            {/* {(keyComponent === canvas.selectedComponentKey) &&
+            <DetectCollision entity={findComponentByKey(canvas.components, keyComponent)}/>} */}
         </>
 
 

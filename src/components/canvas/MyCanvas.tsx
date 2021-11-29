@@ -1,6 +1,6 @@
 import React, { FC, MutableRefObject, useEffect, useRef } from 'react';
 import { Provider, ReactReduxContext, useDispatch, useSelector } from "react-redux";
-import { componentseSelector, keySelectedComponenteSelector, updatePosition, updateRotation, updateScale } from "../../store/canvasSlice";
+import { componentseSelector, findComponentByKey, keySelectedComponenteSelector, updatePosition, updateRotation, updateScale } from "../../store/canvasSlice";
 import { Canvas, Object3DNode, useThree } from "@react-three/fiber";
 import { OrbitControls, TransformControls } from "@react-three/drei";
 import { FactoryComponent } from '../factory/FactoryComponent';
@@ -8,13 +8,14 @@ import * as THREE from 'three'
 import { ToolbarTransformationState, toolbarTransformationStateSelector } from '../../store/toolbarTransformationSlice';
 import { Dispatch } from '@reduxjs/toolkit';
 import { meshWithcomputedGeometryBoundingFrom } from '../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
+import { DetectCollision } from './components/detectCollision';
 
 
 interface MyCanvasProps {
-
+    setModalCollisions: Function
 }
 
-export const MyCanvas: React.FC<MyCanvasProps> = () => {
+export const MyCanvas: React.FC<MyCanvasProps> = ({setModalCollisions}) => {
 
     const components = useSelector(componentseSelector);
     const orbit = useRef(null);
@@ -35,7 +36,8 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                                 {components.map((component) => {
                                     return <FactoryComponent key={component.keyComponent} entity={component} orbit={orbit} />
                                 })}
-
+                                {(keySelectedComponent !== 0) &&
+                                    <DetectCollision entity={findComponentByKey(components, keySelectedComponent)} setModalCollisions={setModalCollisions} />}
                                 <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]} />
                                 <Controls orbit={orbit} keySelectedComponent={keySelectedComponent} />
                             </Provider>

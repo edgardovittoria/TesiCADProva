@@ -6,11 +6,12 @@ import { CanvasState, canvasStateSelector, findComponentByKey } from "../../../s
 
 interface DetectCollisionProps{
     entity: ComponentEntity,
+    setModalCollisions: Function
 }
 
-export const DetectCollision: FC<DetectCollisionProps> = ({entity}) => {
+export const DetectCollision: FC<DetectCollisionProps> = ({entity, setModalCollisions}) => {
    const canvasState = useSelector(canvasStateSelector)
   // useDetectComponentsCollision(entity, canvasState)
-    useDetectComponentsCollision2(entity.keyComponent, canvasState)
+    useDetectComponentsCollision2(entity.keyComponent, canvasState, setModalCollisions)
     return null
 }

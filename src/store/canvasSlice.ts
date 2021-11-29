@@ -1,7 +1,5 @@
-import { createAsyncThunk, createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
-import { Box3 } from "three";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ComponentEntity } from "../model/ComponentEntity";
-import { makeBinaryOperation } from "../hooks/useDetectComponentsCollision";
 import { StateWithHistory } from 'redux-undo';
 
 export type CanvasState = {
