@@ -10,6 +10,7 @@ import {WheelSpinner} from "./shared/spinners/wheelSpinner";
 import {useSelector} from "react-redux";
 import {binaryOperationExecution} from "./store/canvasSlice";
 import {DraggableComponent} from "./components/utility/draggableComponent";
+import { UndoRedo } from './components/canvas/undoRedo/undoRedo';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
                     <WheelSpinner/>
                     <MyCanvas/>
                     <ToolBar/>
+                    <UndoRedo />
                     <SelectBinaryOp/>
                     <DraggableComponent hidden={!sideBar}>
                         <div className="sidebar-width-25" >
