@@ -10,19 +10,32 @@ interface UndoRedoProps {
 export const UndoRedo: React.FC<UndoRedoProps> = () => {
     const dispatch = useDispatch();
     const canvasAllStates = useSelector(canvasAllStateSelector)
+    console.log(canvasAllStates)
     return (
         <>
-            <div id="undoredo" >
+            <div className="absolute top-5 right-5 flex flex-row">
 
-                <Tooltip title="Undo last action">
-                    <button onClick={() => dispatch(ActionCreators.undo())}>
-                        <Image src="" alt="undo last action" width={30} height={30} />
-                    </button>
+                <Tooltip title="Undo last action" className="shadow-cad">
+                    {canvasAllStates.past.length > 0 ?
+                        <button className="hover:bg-white" onClick={() => dispatch(ActionCreators.undo())}>
+                            <Image src="/undo.png" alt="undo last action" width={45} height={30}/>
+                        </button>
+                        :
+                        <button className="disabled:opacity-90" disabled>
+                            <Image src="/undoDisabled.png" alt="undo last action" width={45} height={30}/>
+                        </button>
+                    }
                 </Tooltip>
-                <Tooltip title="Redo last action">
-                    <button onClick={() => dispatch(ActionCreators.redo())}>
-                        <Image src="" alt="redo last action" width={30} height={30} />
-                    </button>
+                <Tooltip title="Redo last action" className="shadow-cad hover:bg-white">
+                    {canvasAllStates.future.length > 0 ?
+                        <button className="hover:bg-white" onClick={() => dispatch(ActionCreators.redo())}>
+                            <Image src="/redo.png" alt="redo last action" width={45} height={30}/>
+                        </button>
+                        :
+                        <button className="disabled:opacity-90" disabled>
+                            <Image src="/redoDisabled.png" alt="redo last action" width={45} height={30}/>
+                        </button>
+                    }
                 </Tooltip>
 
             </div>
