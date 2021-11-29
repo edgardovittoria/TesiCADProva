@@ -1,60 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { FormSelect, Modal } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useEffect, useState} from 'react';
+import {FormSelect, Modal} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
 import {
     modalStateSelector
 } from "../../store/modalSlice";
-import { addComponent, CanvasState, findComponentByKey, removeComponent, selectComponent } from "../../store/canvasSlice";
+import {addComponent, CanvasState, findComponentByKey, removeComponent, selectComponent} from "../../store/canvasSlice";
 import * as THREE from "three"
-import { canvasStateSelector } from '../../store/canvasSlice';
-import { ComponentEntity, CompositeEntity } from '../../model/ComponentEntity';
-import { getNewKeys } from '../canvas/components/cube';
-import { Dispatch } from '@reduxjs/toolkit';
+import {canvasStateSelector} from '../../store/canvasSlice';
+import {ComponentEntity, CompositeEntity} from '../../model/ComponentEntity';
+import {getNewKeys} from '../canvas/components/cube';
+import {Dispatch} from '@reduxjs/toolkit';
+import {WheelSpinner} from "../../shared/spinners/wheelSpinner";
 
 interface SelectBinaryOpProps {
     collisions: [THREE.Mesh, THREE.Mesh][],
     setCollisions: Function,
-    spinnerVisibility: boolean,
-    setSpinnerVisibility: Function
 }
 
 
-
-export const SelectBinaryOp: React.FC<SelectBinaryOpProps> = ({ collisions, setCollisions, setSpinnerVisibility, spinnerVisibility }) => {
-    const NAME = "BINARY_OP";
+export const SelectBinaryOp: React.FC<SelectBinaryOpProps> = (
+    {
+        collisions,
+        setCollisions,
+    }) => {
     const dispatch = useDispatch();
 
 
-
-    const modalState = useSelector(modalStateSelector);
-    let modal = modalState.modals.filter(modal => modal.name === NAME)[0];
-    const [selectedOperation, setSelectedOperation] = useState(modal.lastValue);
+    const [selectedOperation, setSelectedOperation] = useState("SUBTRACTION");
     const [show, setShow] = useState(false)
+    const [spinner, setSpinner] = useState(false);
     const canvas = useSelector(canvasStateSelector)
 
 
-
-
-
-
     const handleClose = () => {
-        setShow(false)
-        setSpinnerVisibility(true)
-
+        dispatch(selectComponent(0))
+        setSpinner(true)
     };
 
     useEffect(() => {
         setShow(collisions.length > 0)
-    },[collisions])
+    }, [collisions])
 
     useEffect(() => {
-        if (spinnerVisibility) {
-            dispatch(selectComponent(0))
+        if (spinner) {
             makeBinaryOperation(selectedOperation, collisions, canvas, dispatch)
             setCollisions([])
-            setSpinnerVisibility(false)
+            setSpinner(false)
         }
-    }, [spinnerVisibility])
+    }, [spinner])
 
     return (
         <>
@@ -65,7 +58,7 @@ export const SelectBinaryOp: React.FC<SelectBinaryOpProps> = ({ collisions, setC
                 <Modal.Body>
                     <FormSelect
                         onChange={(event) => setSelectedOperation(event.currentTarget.value)}
-                        defaultValue={modal.lastValue}
+                        defaultValue="SUBTRACTION"
                     >
                         <option value="SUBTRACTION">SUBTRACTION</option>
                         <option value="INTERSECTION">INTERSECTION</option>
@@ -73,12 +66,22 @@ export const SelectBinaryOp: React.FC<SelectBinaryOpProps> = ({ collisions, setC
                     </FormSelect>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button onClick={() => {
-                        handleClose()
-
-                    }}>
-                        Procedi
-                    </button>
+                    {spinner
+                        ?
+                        <button type="button" className="bg-indigo-400 flex flex-row text-white" disabled>
+                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                            </svg>
+                            Processing
+                        </button>
+                        :
+                        <button className="bg-indigo-400 text-white" onClick={() => {
+                            handleClose()
+                        }}>
+                            Proceed
+                        </button>
+                    }
                 </Modal.Footer>
             </Modal>
         </>
@@ -89,7 +92,10 @@ export const SelectBinaryOp: React.FC<SelectBinaryOpProps> = ({ collisions, setC
 const compositeEntityFromOperationBetweenTwoEntities = (elementA: ComponentEntity, elementB: ComponentEntity, operation: string, newKeys: number[], offsetKeys: number) => {
     let compositeEntity: CompositeEntity = {
         ...elementA,
-        baseElements: { elementA: { ...elementA, keyComponent: newKeys[offsetKeys] }, elementB: { ...elementB, keyComponent: newKeys[1 + offsetKeys] } },
+        baseElements: {
+            elementA: {...elementA, keyComponent: newKeys[offsetKeys]},
+            elementB: {...elementB, keyComponent: newKeys[1 + offsetKeys]}
+        },
         type: operation,
         keyComponent: newKeys[2 + offsetKeys],
         lastTransformationType: undefined
@@ -119,11 +125,19 @@ const makeBinaryOperation = (operation: string, collisions: [THREE.Mesh, THREE.M
                 let indexKey = 3 * index
                 return compositeEntityFromOperationBetweenTwoEntities(entityB, entityA, operation, newKeysSub, indexKey)
             })
-            let elementACopy: ComponentEntity = { ...findComponentByKey(canvasState.components, parseInt(collisions[0][0].name)), box3Min: undefined, box3Max: undefined }
+            let elementACopy: ComponentEntity = {
+                ...findComponentByKey(canvasState.components, parseInt(collisions[0][0].name)),
+                box3Min: undefined,
+                box3Max: undefined
+            }
             elementACopy.keyComponent = newKeysSub[newKeysSub.length - 1];
-            if (elementACopy.lastTransformationType === "TRANSLATE") { elementACopy.position = elementACopy.previousPosition }
-            else if (elementACopy.lastTransformationType === "ROTATE") { elementACopy.rotation = elementACopy.previousRotation }
-            else { elementACopy.scale = elementACopy.previousScale }
+            if (elementACopy.lastTransformationType === "TRANSLATE") {
+                elementACopy.position = elementACopy.previousPosition
+            } else if (elementACopy.lastTransformationType === "ROTATE") {
+                elementACopy.rotation = elementACopy.previousRotation
+            } else {
+                elementACopy.scale = elementACopy.previousScale
+            }
             dispatch(removeComponent(findComponentByKey(canvasState.components, parseInt(collisions[0][0].name))))
             collisions.map(([, elementB]) => {
                 dispatch(removeComponent(findComponentByKey(canvasState.components, parseInt(elementB.name))))

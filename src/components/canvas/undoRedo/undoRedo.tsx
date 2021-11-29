@@ -10,7 +10,6 @@ interface UndoRedoProps {
 export const UndoRedo: React.FC<UndoRedoProps> = () => {
     const dispatch = useDispatch();
     const canvasAllStates = useSelector(canvasAllStateSelector)
-    console.log(canvasAllStates)
     return (
         <>
             <div className="absolute top-5 right-5 flex flex-row">

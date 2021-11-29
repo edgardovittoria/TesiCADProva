@@ -15,7 +15,7 @@ export const WheelSpinner: React.FC<WheelSpinnerProps> = ({spinnerVisibility}) =
 
 
     if(spinnerVisibility){
-        return <Spinner className="spinner" animation="grow"/>
+        return <Spinner className="h-5 w-5 mr-3 animate-spin" animation="border"/>
     }else{
         return <></>
     }
