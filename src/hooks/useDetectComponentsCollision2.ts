@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { meshWithPositionRotationScaleFromOldOne } from "../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
 import { thereIsCollisionBetweenMeshes } from "../auxiliaryFunctionsUsingThreeDirectly/thereIsCollisionBetween";
-import { getNewKeys } from "../components/canvas/components/cube";
-import { ComponentEntity, CompositeEntity } from "../model/ComponentEntity";
-import { addComponent, binaryOperationExecution, CanvasState, canvasStateSelector, findComponentByKey, removeComponent, selectComponent, setBinaryOperationExecuting } from "../store/canvasSlice";
-import { modalStateSelector, openModal } from "../store/modalSlice";
+import { ComponentEntity } from "../model/ComponentEntity";
+import { CanvasState, findComponentByKey, removeComponent, selectComponent } from "../store/canvasSlice";
 import {useThree} from "@react-three/fiber";
 
 

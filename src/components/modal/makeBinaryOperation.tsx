@@ -1,24 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {FormSelect, Modal} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    modalStateSelector
-} from "../../store/modalSlice";
 import {addComponent, CanvasState, findComponentByKey, removeComponent, selectComponent} from "../../store/canvasSlice";
 import * as THREE from "three"
 import {canvasStateSelector} from '../../store/canvasSlice';
 import {ComponentEntity, CompositeEntity} from '../../model/ComponentEntity';
 import {getNewKeys} from '../canvas/components/cube';
 import {Dispatch} from '@reduxjs/toolkit';
-import {WheelSpinner} from "../../shared/spinners/wheelSpinner";
 
-interface SelectBinaryOpProps {
+interface MakeBinaryOpProps {
     collisions: [THREE.Mesh, THREE.Mesh][],
     setCollisions: Function,
 }
 
 
-export const SelectBinaryOp: React.FC<SelectBinaryOpProps> = (
+export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
     {
         collisions,
         setCollisions,

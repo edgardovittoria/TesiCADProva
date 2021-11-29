@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import './App.css';
 import './index.css'
 import {SideBar} from "./components/sideBar/sideBar";
@@ -6,9 +6,9 @@ import {MyCanvas} from "./components/canvas/MyCanvas";
 import {MyNavBar} from "./components/navBar/navBar"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {ToolBar} from "./components/toolBar/toolBar";
-import {SelectBinaryOp} from "./components/modal/makeBinaryOperation";
 import {DraggableComponent} from "./components/utility/draggableComponent";
 import { UndoRedo } from './components/canvas/undoRedo/undoRedo';
+import { MakeBinaryOp } from './components/modal/makeBinaryOperation';
 
 function App() {
 
@@ -32,7 +32,7 @@ function App() {
                     <MyCanvas setModalCollisions={setCollisions}/>
                     <ToolBar/>
                     <UndoRedo />
-                    <SelectBinaryOp collisions={collisions} setCollisions={setCollisions} />
+                    <MakeBinaryOp collisions={collisions} setCollisions={setCollisions} />
                     <DraggableComponent hidden={!sideBar}>
                         <div className="sidebar-width-25" >
                              <SideBar/>

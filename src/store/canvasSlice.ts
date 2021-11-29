@@ -3,7 +3,6 @@ import { ComponentEntity } from "../model/ComponentEntity";
 import { StateWithHistory } from 'redux-undo';
 
 export type CanvasState = {
-    binaryOperationExecuting: boolean
     components: ComponentEntity[],
     numberOfGeneratedKey: number,
     selectedComponentKey: number
@@ -12,7 +11,6 @@ export type CanvasState = {
 export const CanvasSlice = createSlice({
     name: 'canvas',
     initialState: {
-        binaryOperationExecuting: false,
         components: [],
         numberOfGeneratedKey: 0,
         selectedComponentKey: 0,
@@ -64,9 +62,6 @@ export const CanvasSlice = createSlice({
             state.components = action.payload.components
             state.numberOfGeneratedKey = action.payload.numberOfGeneratedKey
         },
-        setBinaryOperationExecuting(state: CanvasState, action: PayloadAction<boolean>) {
-            state.binaryOperationExecuting = action.payload
-        }
 
     },
     extraReducers: {
@@ -79,7 +74,7 @@ export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
     addComponent, removeComponent, updatePosition, updateRotation,
     updateScale, selectComponent, incrementNumberOfGeneratedKey,
-    updateColor, updateName, importStateCanvas, setBinaryOperationExecuting
+    updateColor, updateName, importStateCanvas
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: StateWithHistory<CanvasState> }) => state.canvas.present;
@@ -87,6 +82,5 @@ export const canvasAllStateSelector = (state: { canvas: StateWithHistory<CanvasS
 export const componentseSelector = (state: { canvas: StateWithHistory<CanvasState> }) => state.canvas.present.components;
 export const keySelectedComponenteSelector = (state: { canvas: StateWithHistory<CanvasState> }) => state.canvas.present.selectedComponentKey;
 export const selectedComponentSelector = (state: { canvas: StateWithHistory<CanvasState> }) => findComponentByKey(state.canvas.present.components, state.canvas.present.selectedComponentKey)
-export const binaryOperationExecution = (state: { canvas: StateWithHistory<CanvasState> }) => state.canvas.present.binaryOperationExecuting
 
 export const findComponentByKey = (components: ComponentEntity[], key: number) => components.filter(component => component.keyComponent === key)[0]
