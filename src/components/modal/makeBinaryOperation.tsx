@@ -1,7 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {FormSelect, Modal} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {addComponent, CanvasState, findComponentByKey, removeComponent, selectComponent} from "../../store/canvasSlice";
+import {
+    addComponent,
+    CanvasState,
+    findComponentByKey, intersection,
+    removeComponent,
+    selectComponent,
+    subtraction, union
+} from "../../store/canvasSlice";
 import * as THREE from "three"
 import {canvasStateSelector} from '../../store/canvasSlice';
 import {ComponentEntity, CompositeEntity} from '../../model/ComponentEntity';
@@ -108,11 +115,11 @@ const makeBinaryOperation = (operation: string, collisions: [THREE.Mesh, THREE.M
                 let indexKey = 3 * index
                 return compositeEntityFromOperationBetweenTwoEntities(componentResult, entityB, operation, newKeysSub, indexKey)
             }, findComponentByKey(canvasState.components, parseInt(collisions[0][0].name)) as CompositeEntity)
-            dispatch(removeComponent(findComponentByKey(canvasState.components, parseInt(collisions[0][0].name))))
+            let elementsToRemoveUnion : number[] = [parseInt(collisions[0][0].name)]
             collisions.map(([, elementB]) => {
-                dispatch(removeComponent(findComponentByKey(canvasState.components, parseInt(elementB.name))))
+                elementsToRemoveUnion.push(parseInt(elementB.name))
             })
-            dispatch(addComponent(result))
+            dispatch(union({elementsToRemove: elementsToRemoveUnion, newEntity: result}))
             break;
         case "SUBTRACTION":
             let resultSUB = collisions.map(([elementA, elementB], index) => {
@@ -134,12 +141,11 @@ const makeBinaryOperation = (operation: string, collisions: [THREE.Mesh, THREE.M
             } else {
                 elementACopy.scale = elementACopy.previousScale
             }
-            dispatch(removeComponent(findComponentByKey(canvasState.components, parseInt(collisions[0][0].name))))
+            let elementsToRemove : number[] = [parseInt(collisions[0][0].name)]
             collisions.map(([, elementB]) => {
-                dispatch(removeComponent(findComponentByKey(canvasState.components, parseInt(elementB.name))))
+                elementsToRemove.push(parseInt(elementB.name))
             })
-            resultSUB.map(result => dispatch(addComponent(result)))
-            dispatch(addComponent(elementACopy))
+            dispatch(subtraction({elementsToRemove: elementsToRemove, newEntity: resultSUB, selectedEntityCopy: elementACopy}))
             break;
         case "INTERSECTION":
             let resultINT = collisions.map(([elementA, elementB], index) => {
@@ -148,11 +154,11 @@ const makeBinaryOperation = (operation: string, collisions: [THREE.Mesh, THREE.M
                 let indexKey = 3 * index
                 return compositeEntityFromOperationBetweenTwoEntities(entityB, entityA, operation, newKeysSub, indexKey)
             })
-            dispatch(removeComponent(findComponentByKey(canvasState.components, parseInt(collisions[0][0].name))))
+            let elementsToRemoveIntersection : number[] = [parseInt(collisions[0][0].name)]
             collisions.map(([, elementB]) => {
-                dispatch(removeComponent(findComponentByKey(canvasState.components, parseInt(elementB.name))))
+                elementsToRemoveIntersection.push(parseInt(elementB.name))
             })
-            resultINT.map(result => dispatch(addComponent(result)))
+            dispatch(intersection({elementsToRemove: elementsToRemoveIntersection, newEntity: resultINT}))
             break;
     }
     return "operation completed"

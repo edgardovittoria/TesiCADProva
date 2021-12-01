@@ -72,7 +72,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
                             className="btn btn-danger"
                             onClick={() => {
                                 if (window.confirm(`Sei sicuro di voler eliminare il componente ${selectedComponent.name} ?`)) {
-                                    dispatch(selectComponent(0))
+                                    //dispatch(selectComponent(0))
                                     dispatch(removeComponent(selectedComponent));
                                 }
                             }}

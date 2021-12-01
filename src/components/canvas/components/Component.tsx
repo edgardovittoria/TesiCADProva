@@ -24,9 +24,9 @@ export const Component: React.FC<ComponentProps> = ({children, orbit, position, 
     const activeTransformation = useSelector(activeTransformationSelector)
     const toolbarTransformation = useSelector(toolbarTransformationStateSelector)
 
-    useEffect(() => {
+    /*useEffect(() => {
         dispatch(selectComponent(keyComponent))
-    },[])
+    },[])*/
 
  
 

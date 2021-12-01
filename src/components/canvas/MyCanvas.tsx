@@ -1,14 +1,21 @@
-import React, { FC, MutableRefObject, useEffect, useRef } from 'react';
-import { Provider, ReactReduxContext, useDispatch, useSelector } from "react-redux";
-import { componentseSelector, findComponentByKey, keySelectedComponenteSelector, updatePosition, updateRotation, updateScale } from "../../store/canvasSlice";
-import { Canvas, Object3DNode, useThree } from "@react-three/fiber";
-import { OrbitControls, TransformControls } from "@react-three/drei";
-import { FactoryComponent } from '../factory/FactoryComponent';
+import React, {FC, MutableRefObject, useEffect, useRef} from 'react';
+import {Provider, ReactReduxContext, useDispatch, useSelector} from "react-redux";
+import {
+    componentseSelector,
+    findComponentByKey,
+    keySelectedComponenteSelector,
+    updatePosition,
+    updateRotation,
+    updateScale
+} from "../../store/canvasSlice";
+import {Canvas, Object3DNode, useThree} from "@react-three/fiber";
+import {OrbitControls, TransformControls} from "@react-three/drei";
+import {FactoryComponent} from '../factory/FactoryComponent';
 import * as THREE from 'three'
-import { ToolbarTransformationState, toolbarTransformationStateSelector } from '../../store/toolbarTransformationSlice';
-import { Dispatch } from '@reduxjs/toolkit';
-import { meshWithcomputedGeometryBoundingFrom } from '../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
-import { DetectCollision } from './components/detectCollision';
+import {ToolbarTransformationState, toolbarTransformationStateSelector} from '../../store/toolbarTransformationSlice';
+import {Dispatch} from '@reduxjs/toolkit';
+import {meshWithcomputedGeometryBoundingFrom} from '../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
+import {DetectCollision} from './components/detectCollision';
 
 
 interface MyCanvasProps {
@@ -22,25 +29,33 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({setModalCollisions}) => {
     const keySelectedComponent = useSelector(keySelectedComponenteSelector)
 
     return (
-        <div id="canvas-container" style={{ height: "95vh", backgroundImage: "linear-gradient(to top, #b9b9b9, #ffffff)" }}>
+        <div id="canvas-container"
+             style={{height: "95vh", backgroundImage: "linear-gradient(to top, #b9b9b9, #ffffff)"}}>
 
             <ReactReduxContext.Consumer>
-                {({ store }) => (
+                {({store}) => (
                     <>
-                        <Canvas id="myCanvas" style={{ width: "100%", height: "100%" }}
-                            camera={{ position: [0, 50, 0], fov: 20, far: 1000, near: 0.1 }}>
+                        <Canvas id="myCanvas" style={{width: "100%", height: "100%"}}
+                                camera={{position: [0, 50, 0], fov: 20, far: 1000, near: 0.1}}>
                             <Provider store={store}>
-                                <pointLight position={[100, 100, 100]} intensity={0.8} />
-                                <hemisphereLight color="#ffffff" groundColor={new THREE.Color("#b9b9b9")} position={[-7, 25, 13]} intensity={0.85} />
+                                <pointLight position={[100, 100, 100]} intensity={0.8}/>
+                                <hemisphereLight color="#ffffff" groundColor={new THREE.Color("#b9b9b9")}
+                                                 position={[-7, 25, 13]} intensity={0.85}/>
 
                                 {components.map((component) => {
-                                    return <FactoryComponent key={component.keyComponent} entity={component} orbit={orbit} />
+                                    return <FactoryComponent key={component.keyComponent} entity={component}
+                                                             orbit={orbit}/>
                                 })}
 
                                 {(keySelectedComponent !== 0) &&
-                                    <DetectCollision entity={findComponentByKey(components, keySelectedComponent)} setModalCollisions={setModalCollisions} />}
-                                <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]} />
-                                <Controls orbit={orbit} keySelectedComponent={keySelectedComponent} />
+                                <>
+                                    <DetectCollision entity={findComponentByKey(components, keySelectedComponent)}
+                                                     setModalCollisions={setModalCollisions}/>
+                                </>
+                                }
+                                <Controls orbit={orbit} keySelectedComponent={keySelectedComponent}/>
+                                <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]}/>
+
                             </Provider>
                         </Canvas>
                     </>
@@ -53,8 +68,11 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({setModalCollisions}) => {
 }
 
 
-const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number }> = ({ orbit, keySelectedComponent }) => {
-    const { scene, camera } = useThree()
+const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number }> = ({
+                                                                                           orbit,
+                                                                                           keySelectedComponent
+                                                                                       }) => {
+    const {scene, camera} = useThree()
     const transformation = useRef(null);
     const toolbarTransformationState = useSelector(toolbarTransformationStateSelector);
     //useTransformations(transformation, orbit)
@@ -114,9 +132,11 @@ const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number
                 mode={getActiveTransformationType(toolbarTransformationState)}
             />
             <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
-                removeEventListener={undefined} dispatchEvent={undefined} makeDefault />
+                           removeEventListener={undefined} dispatchEvent={undefined} makeDefault/>
         </>
     )
+
+
 }
 
 export function manageTransformation(

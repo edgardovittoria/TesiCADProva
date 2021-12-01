@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ComponentEntity } from "../model/ComponentEntity";
 import { StateWithHistory } from 'redux-undo';
+import * as THREE from "three";
 
 export type CanvasState = {
     components: ComponentEntity[],
@@ -22,6 +23,7 @@ export const CanvasSlice = createSlice({
             //state.selectedComponentKey = action.payload.keyComponent
         },
         removeComponent(state: CanvasState, action: PayloadAction<ComponentEntity>) {
+            state.selectedComponentKey = 0
             state.components = state.components.filter(component => {
                 return component.keyComponent !== action.payload.keyComponent;
             })
@@ -62,6 +64,23 @@ export const CanvasSlice = createSlice({
             state.components = action.payload.components
             state.numberOfGeneratedKey = action.payload.numberOfGeneratedKey
         },
+        subtraction(state: CanvasState, action: PayloadAction<{elementsToRemove: number[], newEntity: ComponentEntity[], selectedEntityCopy: ComponentEntity}>){
+            localStorage.setItem("lastAction", "subtraction")
+            state.components = state.components.filter(component => !action.payload.elementsToRemove.includes(component.keyComponent))
+            action.payload.newEntity.map(entity => state.components.push(entity))
+            state.components.push(action.payload.selectedEntityCopy)
+        },
+        union(state: CanvasState, action: PayloadAction<{elementsToRemove: number[], newEntity: ComponentEntity}>){
+            localStorage.setItem("lastAction", "union")
+            state.components = state.components.filter(component => !action.payload.elementsToRemove.includes(component.keyComponent))
+            state.components.push(action.payload.newEntity)
+        },
+        intersection(state: CanvasState, action: PayloadAction<{elementsToRemove: number[], newEntity: ComponentEntity[]}>){
+            localStorage.setItem("lastAction", "intersection")
+            state.components = state.components.filter(component => !action.payload.elementsToRemove.includes(component.keyComponent))
+            action.payload.newEntity.map(entity => state.components.push(entity))
+        }
+
 
     },
     extraReducers: {
@@ -74,7 +93,7 @@ export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
     addComponent, removeComponent, updatePosition, updateRotation,
     updateScale, selectComponent, incrementNumberOfGeneratedKey,
-    updateColor, updateName, importStateCanvas
+    updateColor, updateName, importStateCanvas, subtraction, union, intersection
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: StateWithHistory<CanvasState> }) => state.canvas.present;
