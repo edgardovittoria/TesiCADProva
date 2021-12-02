@@ -1,11 +1,11 @@
 :root{
     --navPrimaryColor: #1F2937;
     --navSecondaryColor: #3c5068;
-    --cubeColor: #ff0000;
-    --sphereColor: #FFFF00;
-    --cylinderColor: #FFA500;
-    --torusColor: #0000CD;
-    --coneColor: #008000;
+    --cubeColor: #420202;
+    --sphereColor: #6b5d10;
+    --cylinderColor: #5e3507;
+    --torusColor: #06065e;
+    --coneColor: #065c06;
     --canvasPrimaryColor: #d1d5db;
     --canvasSecondaryColor: #ffffff;
 }
