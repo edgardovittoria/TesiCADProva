@@ -1,19 +1,66 @@
 .navbar{
-    background-color: #505153;
+    background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
+}
+
+.navbarBeforeOpen{
+    background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
+    padding-left: 0px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+}
+
+.navbarBeforeOpenIcon{
+    background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
+    color: #ffffff;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #ffffff !important;
+}
+
+.dropdown-menu{
+    background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
 }
 
 .dropdownItem{
-    color: #9B9D9E;
+    color: #ffffff;
     background-color: transparent;
     text-transform: capitalize;
 }
 
 .dropdownItem:hover{
-    color: white;
+    color: rgba(255, 255, 255, 0.87);
+}
+
+.dropdownItemCube:hover{
+    color: var(--cubeColor);
+}
+
+.dropdownItemSphere:hover{
+    color: var(--sphereColor);
+}
+
+.dropdownItemCylinder:hover{
+    color: var(--cylinderColor);
+}
+.dropdownItemTorus:hover{
+    color:  var(--torusColor);
+}
+.dropdownItemCone:hover{
+    color:  var(--coneColor);
+}
+
+.form-check-input:checked {
+    background-color: #6ca7e4 !important;
+    border-color: #6ca7e4 !important;
+}
+
+hr{
+    color: #ffffff !important;
 }
 
 .burgerMenu{
-    background-color: #171A21;
+    background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
     height: 50px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -21,6 +68,7 @@
 
 .closeNavBar{
     padding-left: 20px;
+    color: #ffffff !important;
 }
 
 .form-check-input{

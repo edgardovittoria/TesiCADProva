@@ -6,6 +6,10 @@ module.exports = {
       boxShadow: {
         'cad': '-2px 2px 5px #000000',
       },
+      backgroundColor: {
+        'navbarPrimary': '#1F2937',
+        'navbarSecondary': '#3c5068',
+      },
     },
   },
   variants: {

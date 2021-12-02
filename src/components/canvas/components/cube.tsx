@@ -38,7 +38,7 @@ export function getDefaultCube(canvasState: CanvasState, dispatch: Dispatch) {
         width: 1,
         depth: 1,
         height: 1,
-        color: '#ec2626',
+        color: getComputedStyle(document.documentElement).getPropertyValue('--cubeColor') ,
         previousPosition: [0, 0, 0],
         previousRotation: [0, 0, 0],
         previousScale: [1, 1, 1],

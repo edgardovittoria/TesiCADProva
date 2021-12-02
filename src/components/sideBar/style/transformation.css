@@ -1,10 +1,10 @@
 input.Number {
     cursor: ns-resize;
-    background-color: white;
+    background: linear-gradient(#D1D5DB, #e6e6e6);
     text-align: center;
     width: 30%;
     margin-right: 10px;
-    color: #6e6a6a !important;
+    color: #000000 !important;
     font-size: 20px;
     border: 1px solid white;
     padding: 2px;

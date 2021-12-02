@@ -1,5 +1,5 @@
 import React from 'react';
-import "./toolbar.css";
+import "./style/toolbar.css";
 import {useDispatch, useSelector} from "react-redux";
 import {setTransformationActive, toolbarTransformationStateSelector} from "../../store/toolbarTransformationSlice";
 import {Image, Tooltip} from "react-bootstrap";

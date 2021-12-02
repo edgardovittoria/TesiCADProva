@@ -28,7 +28,7 @@ export const Outliner: React.FC<OutlinerProps> = ({canvasState}) => {
                 </div>
                 {canvasState.components.map(component => {
                     return (
-                        <OutlinerItem key={component.keyComponent + component.name} keyComponent={component.keyComponent} nameComponent={component.name} isSelelctedComponent={component.keyComponent === canvasState.selectedComponentKey} />
+                        <OutlinerItem key={component.keyComponent + component.name} keyComponent={component.keyComponent} nameComponent={component.name} colorComponent={component.color} isSelelctedComponent={component.keyComponent === canvasState.selectedComponentKey} />
                     )
                 })}
             </div>

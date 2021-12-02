@@ -3,6 +3,8 @@ import {ComponentEntity} from "../../../model/ComponentEntity";
 import {Dispatch} from "@reduxjs/toolkit";
 import {updateColor} from "../../../store/canvasSlice";
 
+import "../style/color.css"
+
 interface ColorProps {
     selectedComponent: ComponentEntity
     dispatch: Dispatch
@@ -10,10 +12,10 @@ interface ColorProps {
 
 export const Color: React.FC<ColorProps> = ({selectedComponent, dispatch}) => {
     return (
-        <div className="Row" style={{marginTop: "20px"}}>
-            <span className="Text" style={{cursor: "default", display: "inline-block", width: "90px"}}>Color</span>
+        <div className="Row colorRow">
+            <span className="colorText">Color</span>
             <input type="Color"
-                   style={{cursor: "ns-resize", backgroundColor: "transparent", width: "50px"}}
+                   className="colorInput"
                    autoComplete="off"
                    value={selectedComponent.color}
                    onChange={(e) => {

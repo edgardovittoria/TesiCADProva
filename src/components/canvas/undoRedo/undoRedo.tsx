@@ -16,7 +16,7 @@ export const UndoRedo: React.FC<UndoRedoProps> = () => {
 
                 <Tooltip title="Undo last action" className="shadow-cad">
                     {canvasAllStates.past.length > 0 ?
-                        <button className="hover:bg-white" onClick={() => {
+                        <button className="hover:bg-navbarPrimary" onClick={() => {
                             if(localStorage.getItem('lastAction') === 'subtraction' || 'union' || 'intersection'){
                                 dispatch(ActionCreators.jump(-4))
                             }
@@ -32,7 +32,7 @@ export const UndoRedo: React.FC<UndoRedoProps> = () => {
                 </Tooltip>
                 <Tooltip title="Redo last action" className="shadow-cad hover:bg-white">
                     {canvasAllStates.future.length > 0 ?
-                        <button className="hover:bg-white" onClick={() => {
+                        <button className="hover:bg-navbarPrimary" onClick={() => {
                             if(localStorage.getItem('lastAction') === 'subtraction' || 'union' || 'intersection'){
                                 dispatch(ActionCreators.jump(4))
                             }

@@ -17,6 +17,7 @@ import {Dispatch} from '@reduxjs/toolkit';
 import {meshWithcomputedGeometryBoundingFrom} from '../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
 import {DetectCollision} from './components/detectCollision';
 
+import './style/canvas.css'
 
 interface MyCanvasProps {
     setModalCollisions: Function
@@ -29,13 +30,12 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({setModalCollisions}) => {
     const keySelectedComponent = useSelector(keySelectedComponenteSelector)
 
     return (
-        <div id="canvas-container"
-             style={{height: "95vh", backgroundImage: "linear-gradient(to top, #b9b9b9, #ffffff)"}}>
+        <div id="canvas-container">
 
             <ReactReduxContext.Consumer>
                 {({store}) => (
                     <>
-                        <Canvas id="myCanvas" style={{width: "100%", height: "100%"}}
+                        <Canvas id="myCanvas"
                                 camera={{position: [0, 50, 0], fov: 20, far: 1000, near: 0.1}}>
                             <Provider store={store}>
                                 <pointLight position={[100, 100, 100]} intensity={0.8}/>

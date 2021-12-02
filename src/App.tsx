@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import './App.css';
+import './GlobalColors.css'
 import './index.css'
 import {SideBar} from "./components/sideBar/sideBar";
 import {MyCanvas} from "./components/canvas/MyCanvas";

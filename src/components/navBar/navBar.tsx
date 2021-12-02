@@ -48,9 +48,9 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
 
     if (!navBarOpen) {
         return (
-            <div className="burgerMenu">
+            <div className="navbarBeforeOpen">
                 <Tooltip title="Open Navbar" onClick={() => setNavBarOpen(!navBarOpen)}>
-                    <FontAwesomeIcon icon={faBars} size="2x"/>
+                    <FontAwesomeIcon className="navbarBeforeOpenIcon" icon={faBars} size="2x"/>
                 </Tooltip>
             </div>
 
@@ -58,7 +58,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
     } else {
         return (
             <>
-                <Navbar variant="dark">
+                <Navbar variant="light">
                     <div className="closeNavBar">
                         <Tooltip title="Close NavBar" onClick={() => setNavBarOpen(!navBarOpen)}>
                             <FontAwesomeIcon icon={faTimes} size="1x"/>
@@ -70,7 +70,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                             <NavDropdown
                                 id="nav-dropdown-dark-example"
                                 title="View"
-                                menuVariant="dark"
+                                menuVariant="light"
                             >
                                 <Nav.Link>
                                     <div className="dropdownItem form-check" onClick={() => {
@@ -98,7 +98,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                     dispatch(addComponent(cube))
 
                                 }}>
-                                    <div className="dropdownItem">
+                                    <div className="dropdownItemCube dropdownItem">
                                         <FontAwesomeIcon icon={faCube} style={{marginRight: "5px"}}/>
                                         <span>Cube</span>
                                     </div>
@@ -109,9 +109,8 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                     dispatch(addComponent(sphere))
 
                                 }}>
-                                    <div className="dropdownItem">
-                                        <FontAwesomeIcon icon={faCircle} style={{marginRight: "5px"}}
-                                                         className="dropdownItem"/>
+                                    <div className="dropdownItemSphere dropdownItem">
+                                        <FontAwesomeIcon icon={faCircle} style={{marginRight: "5px"}}/>
                                         <span>Sphere</span>
                                     </div>
                                 </Nav.Link>
@@ -120,7 +119,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                     dispatch(addComponent(cylinder))
 
                                 }}>
-                                    <div className="dropdownItem">
+                                    <div className="dropdownItemCylinder dropdownItem">
                                         <FontAwesomeIcon icon={faCircle} style={{marginRight: "5px"}}/>
                                         <span>Cylinder</span>
                                     </div>
@@ -131,7 +130,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                     dispatch(addComponent(torus))
 
                                 }}>
-                                    <div className="dropdownItem">
+                                    <div className="dropdownItemTorus dropdownItem">
                                         <FontAwesomeIcon icon={faRing} style={{marginRight: "5px"}}/>
                                         <span>Torus</span>
                                     </div>
@@ -142,7 +141,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                     dispatch(addComponent(cone))
 
                                 }}>
-                                    <div className="dropdownItem">
+                                    <div className="dropdownItemCone dropdownItem">
                                         {/* <FontAwesomeIcon icon={faRing} style={{marginRight: "5px"}}/> */}
                                         <FontAwesomeIcon icon={faCaretDown} size="lg" style={{marginRight: "5px"}}/>
                                         <span>Cone</span>

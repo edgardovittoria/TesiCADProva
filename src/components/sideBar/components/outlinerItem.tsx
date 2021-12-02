@@ -5,10 +5,11 @@ import { selectComponent, updateName } from "../../../store/canvasSlice";
 interface OutlinerItemProps{
     keyComponent : number,
     nameComponent : string,
+    colorComponent: string,
     isSelelctedComponent: boolean
 }
 
-export const OutlinerItem : FC<OutlinerItemProps> = ({keyComponent, nameComponent, isSelelctedComponent}) => {
+export const OutlinerItem : FC<OutlinerItemProps> = ({keyComponent, nameComponent, isSelelctedComponent, colorComponent}) => {
 
     const [outlinerItemVisibility, setOutlinerItemVisibility] = useState(true);
     const [inputItemVisibility, setInputItemVisibility] = useState(false);
@@ -29,7 +30,7 @@ export const OutlinerItem : FC<OutlinerItemProps> = ({keyComponent, nameComponen
                 hidden={!outlinerItemVisibility}
             >
                 <span className="opener"/>
-                <span className="type Mesh"/>
+                <span className="type" style={{color: colorComponent }}/>
                 {nameComponent}
             </div>
             <div key={keyComponent + "_input"} hidden={!inputItemVisibility}>
