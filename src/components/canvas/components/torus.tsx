@@ -24,7 +24,7 @@ export function getDefaultTorus(canvasState: CanvasState, dispatch: Dispatch) {
         scale: [1, 1, 1],
         box3Min: undefined,
         box3Max: undefined,
-        color: getComputedStyle(document.documentElement).getPropertyValue('--torusColor'),
+        color: getComputedStyle(document.documentElement).getPropertyValue('--torusColor').replace(' ', ''),
         previousPosition: [0, 0, 0],
         previousRotation: [0, 0, 0],
         previousScale: [1, 1, 1],

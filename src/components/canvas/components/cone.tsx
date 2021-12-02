@@ -27,7 +27,7 @@ export function getDefaultCone(canvasState: CanvasState, dispatch: Dispatch) {
         box3Min: undefined,
         box3Max: undefined,
         height: 1,
-        color: getComputedStyle(document.documentElement).getPropertyValue('--coneColor'),
+        color: getComputedStyle(document.documentElement).getPropertyValue('--coneColor').replace(' ', ''),
         previousPosition: [0, 0, 0],
         previousRotation: [0, 0, 0],
         previousScale: [1, 1, 1],
