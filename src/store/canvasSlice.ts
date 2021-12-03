@@ -23,7 +23,7 @@ export const CanvasSlice = createSlice({
             //state.selectedComponentKey = action.payload.keyComponent
         },
         removeComponent(state: CanvasState, action: PayloadAction<ComponentEntity>) {
-            state.selectedComponentKey = 0
+            resetSelectedComponent(state)
             state.components = state.components.filter(component => {
                 return component.keyComponent !== action.payload.keyComponent;
             })
@@ -66,17 +66,20 @@ export const CanvasSlice = createSlice({
         },
         subtraction(state: CanvasState, action: PayloadAction<{elementsToRemove: number[], newEntity: ComponentEntity[], selectedEntityCopy: ComponentEntity}>){
             localStorage.setItem("lastAction", "subtraction")
+            resetSelectedComponent(state)
             state.components = state.components.filter(component => !action.payload.elementsToRemove.includes(component.keyComponent))
             action.payload.newEntity.map(entity => state.components.push(entity))
             state.components.push(action.payload.selectedEntityCopy)
         },
         union(state: CanvasState, action: PayloadAction<{elementsToRemove: number[], newEntity: ComponentEntity}>){
             localStorage.setItem("lastAction", "union")
+            resetSelectedComponent(state)
             state.components = state.components.filter(component => !action.payload.elementsToRemove.includes(component.keyComponent))
             state.components.push(action.payload.newEntity)
         },
         intersection(state: CanvasState, action: PayloadAction<{elementsToRemove: number[], newEntity: ComponentEntity[]}>){
             localStorage.setItem("lastAction", "intersection")
+            resetSelectedComponent(state)
             state.components = state.components.filter(component => !action.payload.elementsToRemove.includes(component.keyComponent))
             action.payload.newEntity.map(entity => state.components.push(entity))
         }
@@ -103,3 +106,4 @@ export const keySelectedComponenteSelector = (state: { canvas: StateWithHistory<
 export const selectedComponentSelector = (state: { canvas: StateWithHistory<CanvasState> }) => findComponentByKey(state.canvas.present.components, state.canvas.present.selectedComponentKey)
 
 export const findComponentByKey = (components: ComponentEntity[], key: number) => components.filter(component => component.keyComponent === key)[0]
+const resetSelectedComponent = (state: CanvasState) => state.selectedComponentKey = 0

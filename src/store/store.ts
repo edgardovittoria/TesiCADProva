@@ -9,7 +9,7 @@ import undoable, {excludeAction, groupByActionTypes} from 'redux-undo';
 const rootReducer = combineReducers({
     canvas: undoable(CanvasSlice.reducer, {
         filter: excludeAction(CanvasSlice.actions.incrementNumberOfGeneratedKey.type),
-        groupBy: groupByActionTypes([CanvasSlice.actions.subtraction.type, CanvasSlice.actions.incrementNumberOfGeneratedKey.type, CanvasSlice.actions.selectComponent.type, CanvasSlice.actions.updatePosition.type ])
+        // groupBy: groupByActionTypes([CanvasSlice.actions. ])
     }),
     toolbarTransformation: ToolbarTransformationSlice.reducer,
 });

@@ -18,7 +18,7 @@ export const UndoRedo: React.FC<UndoRedoProps> = () => {
                     {canvasAllStates.past.length > 0 ?
                         <button className="hover:bg-navbarPrimary" onClick={() => {
                             if(localStorage.getItem('lastAction') === 'subtraction' || 'union' || 'intersection'){
-                                dispatch(ActionCreators.jump(-4))
+                                dispatch(ActionCreators.jump(-2))
                             }
                             dispatch(ActionCreators.undo())
                         }}>
@@ -34,7 +34,7 @@ export const UndoRedo: React.FC<UndoRedoProps> = () => {
                     {canvasAllStates.future.length > 0 ?
                         <button className="hover:bg-navbarPrimary" onClick={() => {
                             if(localStorage.getItem('lastAction') === 'subtraction' || 'union' || 'intersection'){
-                                dispatch(ActionCreators.jump(4))
+                                dispatch(ActionCreators.jump(2))
                             }
                             dispatch(ActionCreators.redo())
                         }}>
