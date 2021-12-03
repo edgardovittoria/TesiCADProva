@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Container, InputGroup, Nav, Navbar, NavDropdown, NavItem, NavLink, Tooltip} from "react-bootstrap";
+import {Container, Form, InputGroup, Nav, Navbar, NavDropdown, NavItem, NavLink, Tooltip} from "react-bootstrap";
 import {faBars, faCaretDown, faCircle, faCube, faRing, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {getDefaultCube} from "../canvas/components/cube";
@@ -72,8 +72,17 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                 title="View"
                                 menuVariant="light"
                             >
-                                <Nav.Link>
-                                    <div className="dropdownItem form-check" onClick={() => {
+                                <Nav.Link onClick={() => {
+                                    setSideBarChecked(!sideBarChecked)
+                                    setViewElementVisibility("SIDEBAR", !sideBarChecked)
+                                }}>
+                                    <Form.Check
+                                        type="switch"
+                                        id="custom-switch"
+                                        label="SideBar"
+                                        checked={sideBarChecked}
+                                    />
+                                    {/*<div className="dropdownItem form-check" onClick={() => {
                                         setSideBarChecked(!sideBarChecked)
                                         setViewElementVisibility("SIDEBAR", !sideBarChecked)
                                     }}>
@@ -83,7 +92,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                         />
 
                                         <label className="form-check-label">SideBar</label>
-                                    </div>
+                                    </div>*/}
                                 </Nav.Link>
                             </NavDropdown>
                             {/*End View Dropdown*/}

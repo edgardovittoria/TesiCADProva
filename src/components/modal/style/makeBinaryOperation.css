@@ -1,0 +1,9 @@
+.modalContent{
+    background: var(--modalBackground);
+    color: #ffffff;
+}
+
+.selectOperation{
+    background-color: #D1D5DB;
+    color: #000000;
+}

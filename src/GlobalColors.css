@@ -8,4 +8,6 @@
     --coneColor: #065c06;
     --canvasPrimaryColor: #d1d5db;
     --canvasSecondaryColor: #ffffff;
+
+    --modalBackground: linear-gradient(to bottom right, #1F2937, #a5763c)
 }

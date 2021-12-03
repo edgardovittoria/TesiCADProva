@@ -15,6 +15,8 @@ import {ComponentEntity, CompositeEntity} from '../../model/ComponentEntity';
 import {getNewKeys} from '../canvas/components/cube';
 import {Dispatch} from '@reduxjs/toolkit';
 
+import './style/makeBinaryOperation.css'
+
 interface MakeBinaryOpProps {
     collisions: [THREE.Mesh, THREE.Mesh][],
     setCollisions: Function,
@@ -36,7 +38,6 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
 
 
     const handleClose = () => {
-        dispatch(selectComponent(0))
         setSpinner(true)
     };
 
@@ -55,37 +56,41 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
     return (
         <>
             <Modal show={show}>
-                <Modal.Header>
-                    <Modal.Title>Select Operation</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <FormSelect
-                        onChange={(event) => setSelectedOperation(event.currentTarget.value)}
-                        defaultValue={(selectedOperation) ? selectedOperation : "SUBTRACTION"}
-                    >
-                        <option value="SUBTRACTION">SUBTRACTION</option>
-                        <option value="INTERSECTION">INTERSECTION</option>
-                        <option value="UNION">UNION</option>
-                    </FormSelect>
-                </Modal.Body>
-                <Modal.Footer>
-                    {spinner
-                        ?
-                        <button type="button" className="bg-indigo-400 flex flex-row text-white" disabled>
-                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
-                            </svg>
-                            Processing
-                        </button>
-                        :
-                        <button className="bg-indigo-400 text-white" onClick={() => {
-                            handleClose()
-                        }}>
-                            Proceed
-                        </button>
-                    }
-                </Modal.Footer>
+                <div className="modalContent">
+                    <Modal.Header>
+                        <Modal.Title>Select Operation</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <FormSelect
+                            onChange={(event) => setSelectedOperation(event.currentTarget.value)}
+                            defaultValue={(selectedOperation) ? selectedOperation : "SUBTRACTION"}
+                            className="selectOperation"
+                        >
+                            <option value="SUBTRACTION">SUBTRACTION</option>
+                            <option value="INTERSECTION">INTERSECTION</option>
+                            <option value="UNION">UNION</option>
+                        </FormSelect>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        {spinner
+                            ?
+                            <button type="button" className="bg-navbarSecondary hover:bg-navbarPrimary flex flex-row text-white rounded-sm" disabled>
+                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                                </svg>
+                                Processing
+                            </button>
+                            :
+                            <button className="bg-navbarSecondary hover:bg-navbarPrimary text-white rounded-sm" onClick={() => {
+                                handleClose()
+                            }}>
+                                Proceed
+                            </button>
+                        }
+                    </Modal.Footer>
+                </div>
+
             </Modal>
         </>
     )
