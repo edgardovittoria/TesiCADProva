@@ -1,11 +1,7 @@
 import {FC, useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import { useDetectComponentsCollision } from "../../../hooks/useDetectComponentsCollision";
+import {useDispatch} from "react-redux";
 import { ComponentEntity } from "../../../model/ComponentEntity";
 import {
-    CanvasState,
-    canvasStateSelector,
-    findComponentByKey,
     removeComponent,
     selectComponent
 } from "../../../store/canvasSlice";
