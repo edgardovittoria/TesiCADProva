@@ -16,7 +16,7 @@ export const ToolBar: React.FC<ToolBarProps> = () => {
                 {toolbarTransformationState.transformation.map((transformation, index) => {
                     return(
                         <Tooltip title={transformation.type} key={index}>
-                            <button  className={(transformation.active) ? "Button selected" : "Button"} onClick={() => dispatch(setTransformationActive(transformation.type))}>
+                            <button  className={(transformation.active) ? "btn-toolbar-selected" : "btn-toolbar"} onClick={() => dispatch(setTransformationActive(transformation.type))}>
                                 <Image src={transformation.icon} alt={transformation.type} width={30} height={30}/>
                             </button>
                         </Tooltip>

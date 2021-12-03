@@ -58,7 +58,6 @@ export const CanvasSlice = createSlice({
             state.selectedComponentKey = action.payload
         },
         incrementNumberOfGeneratedKey(state: CanvasState, action: PayloadAction<number>) {
-            addActionToHistory(state, action.type)
             state.numberOfGeneratedKey += action.payload;
         },
         updateColor(state: CanvasState, action: PayloadAction<{ key: number, color: string }>) {

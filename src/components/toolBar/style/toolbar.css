@@ -15,11 +15,19 @@
 #toolbar button, #toolbar input {
     height: 40px;
 }
-button.selected {
+.btn-toolbar-selected {
+    color: #555;
     background-color: var(--navPrimaryColor);
+    border: 0px;
+    margin: 0px;
+    padding: 5px 8px;
+    text-transform: uppercase;
+    cursor: pointer;
+    outline: none;
+    position: relative;
 }
 
-button {
+.btn-toolbar {
     color: #555;
     background-color: var(--navSecondaryColor);
     border: 0px;
@@ -31,7 +39,7 @@ button {
     position: relative;
 }
 
-button:hover{
+.btn-toolbar:hover{
     background-color: var(--navPrimaryColor);
 }
 
