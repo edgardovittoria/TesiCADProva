@@ -7,3 +7,18 @@
     background-color: #D1D5DB;
     color: #000000;
 }
+
+.btn-modal{
+    background-color: var(--navSecondaryColor);
+    display: flex;
+    flex-direction: row;
+    color: white;
+}
+
+.btn-modal:hover{
+    background-color: var(--navPrimaryColor);
+}
+
+.spinner-modal{
+    margin-right: 5px;
+}
