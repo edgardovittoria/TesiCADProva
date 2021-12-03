@@ -46,13 +46,8 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({setModalCollisions}) => {
                                     return <FactoryComponent key={component.keyComponent} entity={component}
                                                              orbit={orbit}/>
                                 })}
-
-                                {(keySelectedComponent !== 0) &&
-                                <>
-                                    <DetectCollision entity={findComponentByKey(components, keySelectedComponent)}
-                                                     setModalCollisions={setModalCollisions}/>
-                                </>
-                                }
+                                <DetectCollision entity={findComponentByKey(components, keySelectedComponent)}
+                                                 setModalCollisions={setModalCollisions}/>
                                 <Controls orbit={orbit} keySelectedComponent={keySelectedComponent}/>
                                 <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]}/>
 
