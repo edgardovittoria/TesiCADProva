@@ -2,22 +2,24 @@ import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Image, Tooltip } from "react-bootstrap";
 import { ActionCreators } from "redux-undo"
-import { canvasAllStateSelector } from '../../../store/canvasSlice';
+import { actionHistorySelector, lengthFutureStateSelector, lengthPastStateSelector } from '../../../store/canvasSlice';
 
 interface UndoRedoProps {
 }
 
 export const UndoRedo: React.FC<UndoRedoProps> = () => {
     const dispatch = useDispatch();
-    const canvasAllStates = useSelector(canvasAllStateSelector)
+    const pastStateLength = useSelector(lengthPastStateSelector)
+    const futureStateLength = useSelector(lengthFutureStateSelector)
+    const actionHistory = useSelector(actionHistorySelector)
     return (
         <>
             <div className="absolute top-5 right-5 flex flex-row">
 
                 <Tooltip title="Undo last action" className="shadow-cad">
-                    {canvasAllStates.past.length > 0 ?
+                    {pastStateLength > 0 ?
                         <button className="hover:bg-navbarPrimary" onClick={() => {
-                            if(localStorage.getItem('lastAction') === 'subtraction' || 'union' || 'intersection'){
+                            if(actionHistory[actionHistory.length -1] === 'subtraction' || 'union' || 'intersection'){
                                 dispatch(ActionCreators.jump(-2))
                             }
                             dispatch(ActionCreators.undo())
@@ -31,9 +33,9 @@ export const UndoRedo: React.FC<UndoRedoProps> = () => {
                     }
                 </Tooltip>
                 <Tooltip title="Redo last action" className="shadow-cad hover:bg-white">
-                    {canvasAllStates.future.length > 0 ?
+                    {futureStateLength > 0 ?
                         <button className="hover:bg-navbarPrimary" onClick={() => {
-                            if(localStorage.getItem('lastAction') === 'subtraction' || 'union' || 'intersection'){
+                            if(actionHistory[actionHistory.length -1] === 'subtraction' || 'union' || 'intersection'){
                                 dispatch(ActionCreators.jump(2))
                             }
                             dispatch(ActionCreators.redo())

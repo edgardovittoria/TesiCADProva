@@ -14,7 +14,6 @@ import {FactoryComponent} from '../factory/FactoryComponent';
 import * as THREE from 'three'
 import {ToolbarTransformationState, toolbarTransformationStateSelector} from '../../store/toolbarTransformationSlice';
 import {Dispatch} from '@reduxjs/toolkit';
-import {meshWithcomputedGeometryBoundingFrom} from '../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
 import {DetectCollision} from './components/detectCollision';
 
 import './style/canvas.css'
