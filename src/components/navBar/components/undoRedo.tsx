@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { Image, Tooltip } from "react-bootstrap";
+import {Nav} from "react-bootstrap";
 import { ActionCreators } from "redux-undo"
 import { lastActionTypeSelector, lengthFutureStateSelector, lengthPastStateSelector } from '../../../store/canvasSlice';
 
-import './style/undoRedo.css'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faRedo, faUndo} from "@fortawesome/free-solid-svg-icons";
 
 interface UndoRedoProps {
 }
@@ -17,11 +18,8 @@ export const UndoRedo: React.FC<UndoRedoProps> = () => {
     const [undoActions, setundoActions] = useState<string[]>([])
     return (
         <>
-            <div className="container-undo-redo">
-
-                <Tooltip title="Undo last action" className="shadow-undo-redo">
                     {pastStateLength > 0 ?
-                        <button className="btn-undo-redo" onClick={() => {
+                        <Nav.Link onClick={() => {
 
                             if (lastActionType === 'canvas/subtraction'
                                 || lastActionType === 'canvas/union'
@@ -36,17 +34,22 @@ export const UndoRedo: React.FC<UndoRedoProps> = () => {
 
                             }
                         }}>
-                            <Image src="/undo.png" alt="undo last action" width={45} height={30} />
-                        </button>
+                            <div className="dropdownItem">
+                                <FontAwesomeIcon icon={faUndo} style={{marginRight: "5px"}}/>
+                                <span>Undo Last Action</span>
+                            </div>
+                        </Nav.Link>
                         :
-                        <button className="btn-undo-redo-disabled" disabled>
-                            <Image src="/undoDisabled.png" alt="undo last action" width={45} height={30} />
-                        </button>
+                        <Nav.Link>
+                            <div className="dropdownItemDisabled">
+                                <FontAwesomeIcon icon={faUndo} style={{marginRight: "5px"}}/>
+                                <span>Undo Last Action</span>
+                            </div>
+                        </Nav.Link>
                     }
-                </Tooltip>
-                <Tooltip title="Redo last action" className="shadow-undo-redo">
+
                     {futureStateLength > 0 ?
-                        <button className="btn-undo-redo" onClick={() => {
+                        <Nav.Link onClick={() => {
                             let newUndoActions = [...undoActions]
                             newUndoActions.pop()
                             if (undoActions[undoActions.length - 1] === 'canvas/subtraction'
@@ -62,16 +65,20 @@ export const UndoRedo: React.FC<UndoRedoProps> = () => {
                                 dispatch(ActionCreators.redo())
                             }
                         }}>
-                            <Image src="/redo.png" alt="redo last action" width={45} height={30} />
-                        </button>
+                            <div className="dropdownItem">
+                                <FontAwesomeIcon icon={faRedo} style={{marginRight: "5px"}}/>
+                                <span>Redo Last Action</span>
+                            </div>
+                        </Nav.Link>
                         :
-                        <button className="btn-undo-redo-disabled" disabled>
-                            <Image src="/redoDisabled.png" alt="redo last action" width={45} height={30} />
-                        </button>
+                        <Nav.Link>
+                            <div className="dropdownItemDisabled">
+                                <FontAwesomeIcon icon={faRedo} style={{marginRight: "5px"}}/>
+                                <span>Redo Last Action</span>
+                            </div>
+                        </Nav.Link>
                     }
-                </Tooltip>
 
-            </div>
         </>
     )
 

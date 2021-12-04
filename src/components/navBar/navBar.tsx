@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Container, Form, InputGroup, Nav, Navbar, NavDropdown, NavItem, NavLink, Tooltip} from "react-bootstrap";
-import {faBars, faCaretDown, faCircle, faCube, faRing, faTimes} from "@fortawesome/free-solid-svg-icons";
+import {faBars, faCaretDown, faCircle, faCube, faRing, faTimes, faUndo} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {getDefaultCube} from "../canvas/components/cube";
 import {addComponent, canvasStateSelector} from "../../store/canvasSlice";
@@ -13,6 +13,8 @@ import {exportProjectFrom, exportToSTLFormatFrom} from "../../auxiliaryFunctions
 import {getDefaultCylinder} from '../canvas/components/cylinder';
 import {getDefaultTorus} from '../canvas/components/torus';
 import {getDefaultCone} from '../canvas/components/cone';
+import {ActionCreators} from "redux-undo";
+import {UndoRedo} from "./components/undoRedo";
 
 interface NavBarProps {
     setViewElementVisibility: Function
@@ -48,11 +50,11 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
 
     if (!navBarOpen) {
         return (
-            <div className="navbarBeforeOpen">
-                <Tooltip title="Open Navbar" onClick={() => setNavBarOpen(!navBarOpen)}>
+
+                <Tooltip title="Open Navbar" className="burgerMenu" onClick={() => setNavBarOpen(!navBarOpen)}>
                     <FontAwesomeIcon className="navbarBeforeOpenIcon" icon={faBars} size="2x"/>
                 </Tooltip>
-            </div>
+
 
         )
     } else {
@@ -82,20 +84,18 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                         label="SideBar"
                                         checked={sideBarChecked}
                                     />
-                                    {/*<div className="dropdownItem form-check" onClick={() => {
-                                        setSideBarChecked(!sideBarChecked)
-                                        setViewElementVisibility("SIDEBAR", !sideBarChecked)
-                                    }}>
-                                        <input id="1" className="form-check-input" type="checkbox"
-                                               checked={sideBarChecked}
-                                               onChange={() => {}}
-                                        />
-
-                                        <label className="form-check-label">SideBar</label>
-                                    </div>*/}
                                 </Nav.Link>
                             </NavDropdown>
                             {/*End View Dropdown*/}
+                            {/*Start Edit Menu*/}
+                            <NavDropdown
+                                id="nav-dropdown-dark-example"
+                                title="Edit"
+                                menuVariant="dark"
+                            >
+                                <UndoRedo/>
+                            </NavDropdown>
+                            {/*End Edit Menu*/}
                             {/*Start Components Dropdown*/}
                             <NavDropdown
                                 id="nav-dropdown-dark-example"
@@ -166,8 +166,8 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                 title="Import"
                                 menuVariant="dark"
                             >
-                                <button className="dropdownItem" onClick={onImportProjectClick}>
-                                    Project
+                                <button className="btn-export" onClick={onImportProjectClick}>
+                                    <span className="dropdownItem">Project</span>
                                     <input
                                         type="file"
                                         ref={inputRefProject}
@@ -179,8 +179,8 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                         }}/>
                                 </button>
                                 <hr/>
-                                <button className="dropdownItem" onClick={onImportSTLClick}>
-                                    STL file
+                                <button className="btn-export" onClick={onImportSTLClick}>
+                                    <span className="dropdownItem">STL file</span>
                                     <input
                                         type="file"
                                         ref={inputRefSTL}

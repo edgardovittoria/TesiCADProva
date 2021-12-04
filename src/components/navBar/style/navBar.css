@@ -4,7 +4,7 @@
 
 .navbarBeforeOpen{
     background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
-    padding-left: 0px;
+    padding-left: 0;
     padding-top: 13px;
     padding-bottom: 13px;
 }
@@ -12,10 +12,32 @@
 .navbarBeforeOpenIcon{
     background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
     color: #ffffff;
+    margin-top: 9px;
 }
 
 .navbar-light .navbar-nav .nav-link {
     color: #ffffff !important;
+}
+
+.navbar-expand .navbar-nav .dropdown-menu {
+    width: max-content;
+}
+
+.burgerMenu{
+    background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
+    width: 50px;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    height: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.btn-export{
+    border: 0;
+    padding: 7px;
+    background-color: transparent;
 }
 
 .dropdown-menu{
@@ -24,8 +46,11 @@
 
 .dropdownItem{
     color: #ffffff;
-    background-color: transparent;
     text-transform: capitalize;
+}
+
+.dropdownItemDisabled{
+    color: #69819a;
 }
 
 .dropdownItem:hover{
@@ -59,12 +84,6 @@ hr{
     color: #ffffff !important;
 }
 
-.burgerMenu{
-    background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
-    height: 50px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
 
 .closeNavBar{
     padding-left: 20px;

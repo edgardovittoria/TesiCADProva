@@ -7,7 +7,7 @@ import {MyNavBar} from "./components/navBar/navBar"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {ToolBar} from "./components/toolBar/toolBar";
 import {DraggableComponent} from "./components/utility/draggableComponent";
-import { UndoRedo } from './components/canvas/undoRedo/undoRedo';
+import { UndoRedo } from './components/navBar/components/undoRedo';
 import { MakeBinaryOp } from './components/modal/makeBinaryOperation';
 
 function App() {
@@ -31,7 +31,6 @@ function App() {
                 <div className="canvas-width-100">
                     <MyCanvas setModalCollisions={setCollisions}/>
                     <ToolBar/>
-                    <UndoRedo />
                     <MakeBinaryOp collisions={collisions} setCollisions={setCollisions} />
                     <DraggableComponent hidden={!sideBar}>
                         <div className="sidebar-width-25" >
