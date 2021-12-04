@@ -3,7 +3,6 @@ import {useDispatch} from "react-redux";
 import { ComponentEntity } from "../../../model/ComponentEntity";
 import {
     removeComponent,
-    selectComponent
 } from "../../../store/canvasSlice";
 import {useThree} from "@react-three/fiber";
 import {Dispatch} from "redux";
@@ -39,12 +38,12 @@ const SetCollision: FC<{ componentEntity: ComponentEntity, setModalCollisions: F
                 setModalCollisions(collisionsSet)
             }
         }
-    }, [componentEntity.position, componentEntity.rotation, componentEntity.scale])
-    return null
+        return () => {collisionsSet = []}
+    }, [componentEntity.position, componentEntity.rotation, componentEntity.scale, componentEntity, scene.children, dispatch, setModalCollisions])
+    return <></>
 }
 
 const removeEntityJustCreated = (entity: ComponentEntity, dispatch: Dispatch) => {
-    dispatch(selectComponent(0))
     dispatch(removeComponent(entity))
     alert("Esiste già un componente nella stessa posizione. Spostalo prima di crearne uno nuovo!")
 }
@@ -64,7 +63,6 @@ const arrayOfCollisionsBetween = (element: number, allElements: THREE.Mesh[]) =>
                 [component.rotation.x, component.rotation.y, component.rotation.z],
                 [component.scale.x, component.scale.y, component.scale.z],
             );
-            console.log(component.position);
             (thereIsCollisionBetweenMeshes(compSelected, comp)) && results.push([meshSelected, component])
             return results
         }, [])

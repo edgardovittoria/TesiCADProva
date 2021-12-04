@@ -1,5 +1,5 @@
-import React, {FC, MutableRefObject, useEffect, useRef} from 'react';
-import {Provider, ReactReduxContext, useDispatch, useSelector} from "react-redux";
+import React, { FC, MutableRefObject, useEffect, useRef } from 'react';
+import { Provider, ReactReduxContext, useDispatch, useSelector } from "react-redux";
 import {
     componentseSelector,
     findComponentByKey,
@@ -8,13 +8,13 @@ import {
     updateRotation,
     updateScale
 } from "../../store/canvasSlice";
-import {Canvas, Object3DNode, useThree} from "@react-three/fiber";
-import {OrbitControls, TransformControls} from "@react-three/drei";
-import {FactoryComponent} from '../factory/FactoryComponent';
+import { Canvas, Object3DNode, useThree } from "@react-three/fiber";
+import { OrbitControls, TransformControls } from "@react-three/drei";
+import { FactoryComponent } from '../factory/FactoryComponent';
 import * as THREE from 'three'
-import {ToolbarTransformationState, toolbarTransformationStateSelector} from '../../store/toolbarTransformationSlice';
-import {Dispatch} from '@reduxjs/toolkit';
-import {DetectCollision} from './components/detectCollision';
+import { ToolbarTransformationState, toolbarTransformationStateSelector } from '../../store/toolbarTransformationSlice';
+import { Dispatch } from '@reduxjs/toolkit';
+import { DetectCollision } from './components/detectCollision';
 
 import './style/canvas.css'
 
@@ -22,7 +22,7 @@ interface MyCanvasProps {
     setModalCollisions: Function
 }
 
-export const MyCanvas: React.FC<MyCanvasProps> = ({setModalCollisions}) => {
+export const MyCanvas: React.FC<MyCanvasProps> = ({ setModalCollisions }) => {
 
     const components = useSelector(componentseSelector);
     const orbit = useRef(null);
@@ -32,23 +32,23 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({setModalCollisions}) => {
         <div id="canvas-container">
 
             <ReactReduxContext.Consumer>
-                {({store}) => (
+                {({ store }) => (
                     <>
                         <Canvas id="myCanvas"
-                                camera={{position: [0, 50, 0], fov: 20, far: 1000, near: 0.1}}>
+                            camera={{ position: [0, 50, 0], fov: 20, far: 1000, near: 0.1 }}>
                             <Provider store={store}>
-                                <pointLight position={[100, 100, 100]} intensity={0.8}/>
+                                <pointLight position={[100, 100, 100]} intensity={0.8} />
                                 <hemisphereLight color="#ffffff" groundColor={new THREE.Color("#b9b9b9")}
-                                                 position={[-7, 25, 13]} intensity={0.85}/>
+                                    position={[-7, 25, 13]} intensity={0.85} />
 
                                 {components.map((component) => {
                                     return <FactoryComponent key={component.keyComponent} entity={component}
-                                                             orbit={orbit}/>
+                                        orbit={orbit} />
                                 })}
                                 <DetectCollision entity={findComponentByKey(components, keySelectedComponent)}
-                                                 setModalCollisions={setModalCollisions}/>
-                                <Controls orbit={orbit} keySelectedComponent={keySelectedComponent}/>
-                                <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]}/>
+                                    setModalCollisions={setModalCollisions} />
+                                <Controls orbit={orbit} keySelectedComponent={keySelectedComponent} />
+                                <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]} />
 
                             </Provider>
                         </Canvas>
@@ -63,10 +63,10 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({setModalCollisions}) => {
 
 
 const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number }> = ({
-                                                                                           orbit,
-                                                                                           keySelectedComponent
-                                                                                       }) => {
-    const {scene, camera} = useThree()
+    orbit,
+    keySelectedComponent
+}) => {
+    const { scene, camera } = useThree()
     const transformation = useRef(null);
     const toolbarTransformationState = useSelector(toolbarTransformationStateSelector);
     //useTransformations(transformation, orbit)
@@ -124,9 +124,10 @@ const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number
                 showY={(keySelectedComponent !== 0)}
                 showZ={(keySelectedComponent !== 0)}
                 mode={getActiveTransformationType(toolbarTransformationState)}
+                
             />
             <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
-                           removeEventListener={undefined} dispatchEvent={undefined} makeDefault/>
+                removeEventListener={undefined} dispatchEvent={undefined} makeDefault />
         </>
     )
 

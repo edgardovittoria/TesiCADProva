@@ -36,13 +36,10 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
     const [spinner, setSpinner] = useState(false);
     const canvas = useSelector(canvasStateSelector)
 
-    const handleClose = () => {
-        setSpinner(true)
-    };
 
     useEffect(() => {
         setShow(collisions.length > 0)
-    }, [collisions])
+    }, [collisions.length])
 
     useEffect(() => {
         if (spinner) {
@@ -82,7 +79,7 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
                             :
                             <button className="btn-modal"
                                     onClick={() => {
-                                        handleClose()
+                                        setSpinner(true)
                                     }}>
                                 Proceed
                             </button>

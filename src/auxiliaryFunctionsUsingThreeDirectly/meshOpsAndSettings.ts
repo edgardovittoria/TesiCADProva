@@ -6,7 +6,7 @@ import { BufferEntity, ComponentEntity, CompositeEntity, ConeEntity, CubeEntity,
 export const meshWithcomputedGeometryBoundingFrom = (mesh: THREE.Mesh) => {
     let meshCopy = mesh.clone(true)
     meshCopy.geometry.computeBoundingBox()
-    meshCopy.geometry.boundingBox?.applyMatrix4(meshCopy.matrixWorld)
+    meshCopy.geometry.boundingBox?.applyMatrix4(meshCopy.matrix)
     return meshCopy
 }
 

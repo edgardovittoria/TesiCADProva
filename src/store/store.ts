@@ -4,12 +4,11 @@ import { Action,
     ThunkAction } from '@reduxjs/toolkit';
 import {CanvasSlice} from "./canvasSlice";
 import {ToolbarTransformationSlice} from "./toolbarTransformationSlice";
-import undoable, {excludeAction, groupByActionTypes} from 'redux-undo';
+import undoable, {excludeAction} from 'redux-undo';
 
 const rootReducer = combineReducers({
     canvas: undoable(CanvasSlice.reducer, {
         filter: excludeAction(CanvasSlice.actions.incrementNumberOfGeneratedKey.type),
-        // groupBy: groupByActionTypes([CanvasSlice.actions. ])
     }),
     toolbarTransformation: ToolbarTransformationSlice.reducer,
 });
