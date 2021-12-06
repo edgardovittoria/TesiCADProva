@@ -2,11 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {FormSelect, Modal, Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    addComponent,
     CanvasState,
     findComponentByKey, intersection,
-    removeComponent,
-    selectComponent,
     subtraction, union
 } from "../../store/canvasSlice";
 import * as THREE from "three"
@@ -32,14 +29,9 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
 
 
     const [selectedOperation, setSelectedOperation] = useState("SUBTRACTION");
-    const [show, setShow] = useState(false)
     const [spinner, setSpinner] = useState(false);
     const canvas = useSelector(canvasStateSelector)
 
-
-    useEffect(() => {
-        setShow(collisions.length > 0)
-    }, [collisions.length])
 
     useEffect(() => {
         if (spinner) {
@@ -51,7 +43,7 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
 
     return (
         <>
-            <Modal show={show}>
+            <Modal>
                 <div className="modalContent">
                     <Modal.Header>
                         <Modal.Title>Select Operation</Modal.Title>

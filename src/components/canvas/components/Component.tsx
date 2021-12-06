@@ -1,7 +1,6 @@
-import React, {MutableRefObject, useEffect, useRef} from 'react';
-import {canvasStateSelector, findComponentByKey, selectComponent} from "../../../store/canvasSlice";
+import React, {MutableRefObject, useRef} from 'react';
+import {selectComponent} from "../../../store/canvasSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {DetectCollision} from './detectCollision';
 import {
     activeTransformationSelector,
     getIndexTransformationByName,
@@ -20,15 +19,8 @@ export interface ComponentProps {
 export const Component: React.FC<ComponentProps> = ({children, orbit, position, rotation, scale, keyComponent}) => {
     const dispatch = useDispatch();
     const meshRef = useRef<THREE.Mesh>(null)
-    const canvas = useSelector(canvasStateSelector)
     const activeTransformation = useSelector(activeTransformationSelector)
     const toolbarTransformation = useSelector(toolbarTransformationStateSelector)
-
-    /*useEffect(() => {
-        dispatch(selectComponent(keyComponent))
-    },[])*/
-
- 
 
 
     return (
@@ -46,8 +38,6 @@ export const Component: React.FC<ComponentProps> = ({children, orbit, position, 
             >
                 {children}
             </mesh>
-            {/* {(keyComponent === canvas.selectedComponentKey) &&
-            <DetectCollision entity={findComponentByKey(canvas.components, keyComponent)}/>} */}
         </>
 
 

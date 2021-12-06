@@ -69,7 +69,6 @@ const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number
     const { scene, camera } = useThree()
     const transformation = useRef(null);
     const toolbarTransformationState = useSelector(toolbarTransformationStateSelector);
-    //useTransformations(transformation, orbit)
     const dispatch = useDispatch()
 
     function getActiveTransformationType(toolbarTranformationState: ToolbarTransformationState): string {
