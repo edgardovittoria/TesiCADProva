@@ -52,7 +52,7 @@ const arrayOfCollisionsBetween = (element: number, allElements: THREE.Mesh[]) =>
     let meshSelected = allElements.filter(el => el.name === element.toString())[0]
     return allElements
         .filter(component => component.name !== element.toString())
-        .reduce((results: [THREE.Mesh, THREE.Mesh][], component) => {
+        .reduce((results: [number, number][], component) => {
             let compSelected = meshWithPositionRotationScaleFromOldOne(meshSelected,
                 [meshSelected.position.x, meshSelected.position.y, meshSelected.position.z],
                 [meshSelected.rotation.x, meshSelected.rotation.y, meshSelected.rotation.z],
@@ -63,7 +63,7 @@ const arrayOfCollisionsBetween = (element: number, allElements: THREE.Mesh[]) =>
                 [component.rotation.x, component.rotation.y, component.rotation.z],
                 [component.scale.x, component.scale.y, component.scale.z],
             );
-            (thereIsCollisionBetweenMeshes(compSelected, comp)) && results.push([meshSelected, component])
+            (thereIsCollisionBetweenMeshes(compSelected, comp)) && results.push([parseInt(meshSelected.name), parseInt(component.name)])
             return results
         }, [])
 }
