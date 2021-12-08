@@ -24,8 +24,6 @@ export const importFrom = (STLFile: File, canvasState: CanvasState, dispatch: Di
             position: [0, 0, 0],
             rotation: [0, 0, 0],
             scale: [1, 1, 1],
-            box3Min: undefined,
-            box3Max: undefined,
             color: '#ec2626',
             previousPosition: [0, 0, 0],
             previousRotation: [0, 0, 0],
@@ -35,6 +33,7 @@ export const importFrom = (STLFile: File, canvasState: CanvasState, dispatch: Di
             normalVertices: res.attributes.normal.array as Float32Array,
             uvVertices: undefined
         }
+
         dispatch(addComponent(entity))
     })
 }

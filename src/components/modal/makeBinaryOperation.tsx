@@ -123,8 +123,6 @@ const makeBinaryOperation = (operation: string, collisions: [number, number][], 
             })
             let elementACopy: ComponentEntity = {
                 ...findComponentByKey(canvasState.components, collisions[0][0]),
-                box3Min: undefined,
-                box3Max: undefined
             }
             elementACopy.keyComponent = newKeysSub[newKeysSub.length - 1];
             if (elementACopy.lastTransformationType === "TRANSLATE") {

@@ -22,8 +22,6 @@ export function getDefaultSphere(canvasState: CanvasState, dispatch: Dispatch) {
         position: [0, 0, 0],
         rotation: [0, 0, 0],
         scale: [1, 1, 1],
-        box3Min: undefined,
-        box3Max: undefined,
         radius: 1,
         widthSegments: 20,
         heightSegments: 20,

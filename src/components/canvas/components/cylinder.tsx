@@ -25,8 +25,6 @@ export function getDefaultCylinder(canvasState: CanvasState, dispatch: Dispatch)
         position: [0, 0, 0],
         rotation: [0, 0, 0],
         scale: [1, 1, 1],
-        box3Min: undefined,
-        box3Max: undefined,
         height: 1,
         color: getComputedStyle(document.documentElement).getPropertyValue('--cylinderColor').replace(' ', ''),
         previousPosition: [0, 0, 0],

@@ -33,8 +33,6 @@ export function getDefaultCube(canvasState: CanvasState, dispatch: Dispatch) {
         position: [0, 0, 0],
         rotation: [0, 0, 0],
         scale: [1, 1, 1],
-        box3Min: undefined,
-        box3Max: undefined,
         width: 1,
         depth: 1,
         height: 1,

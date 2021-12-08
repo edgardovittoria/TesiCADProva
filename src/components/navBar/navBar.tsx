@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Container, Form, InputGroup, Nav, Navbar, NavDropdown, NavItem, NavLink, Tooltip} from "react-bootstrap";
+import React, {useRef, useState} from 'react';
+import {Container, Form, Nav, Navbar, NavDropdown, Tooltip} from "react-bootstrap";
 import {
     faBars,
     faCaretDown,
@@ -8,7 +8,6 @@ import {
     faRing,
     faTimes,
     faTrash,
-    faUndo
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {getDefaultCube} from "../canvas/components/cube";
@@ -22,7 +21,6 @@ import {exportProjectFrom, exportToSTLFormatFrom} from "../../auxiliaryFunctions
 import {getDefaultCylinder} from '../canvas/components/cylinder';
 import {getDefaultTorus} from '../canvas/components/torus';
 import {getDefaultCone} from '../canvas/components/cone';
-import {ActionCreators} from "redux-undo";
 import {UndoRedo} from "./components/undoRedo";
 
 interface NavBarProps {
@@ -105,7 +103,6 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                 <UndoRedo/>
                                 <Nav.Link onClick={() => {
                                     dispatch(resetState())
-                                    localStorage.clear()
                                 }}>
                                     <div className="dropdownItem">
                                         <FontAwesomeIcon icon={faTrash} style={{marginRight: "5px"}}/>
