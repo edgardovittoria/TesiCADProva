@@ -44,9 +44,12 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
             <Modal show={true}>
                 <div className="modalContent">
                     <Modal.Header>
-                        <Modal.Title>Select Operation</Modal.Title>
+                        <Modal.Title>BINARY OPERATIONS</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        <div>
+                            <p>Select the binary operation you'd like to be made</p>
+                        </div>
                         <FormSelect
                             onChange={(event) => setSelectedOperation(event.currentTarget.value)}
                             defaultValue={(selectedOperation) ? selectedOperation : "SUBTRACTION"}
