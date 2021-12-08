@@ -1,9 +1,18 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Container, Form, InputGroup, Nav, Navbar, NavDropdown, NavItem, NavLink, Tooltip} from "react-bootstrap";
-import {faBars, faCaretDown, faCircle, faCube, faRing, faTimes, faUndo} from "@fortawesome/free-solid-svg-icons";
+import {
+    faBars,
+    faCaretDown,
+    faCircle,
+    faCube,
+    faRing,
+    faTimes,
+    faTrash,
+    faUndo
+} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {getDefaultCube} from "../canvas/components/cube";
-import {addComponent, canvasStateSelector} from "../../store/canvasSlice";
+import {addComponent, canvasStateSelector, resetState} from "../../store/canvasSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {getDefaultSphere} from '../canvas/components/sphere';
 import {store} from '../../store/store';
@@ -94,6 +103,15 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                 menuVariant="dark"
                             >
                                 <UndoRedo/>
+                                <Nav.Link onClick={() => {
+                                    dispatch(resetState())
+                                    localStorage.clear()
+                                }}>
+                                    <div className="dropdownItem">
+                                        <FontAwesomeIcon icon={faTrash} style={{marginRight: "5px"}}/>
+                                        <span>Clear All</span>
+                                    </div>
+                                </Nav.Link>
                             </NavDropdown>
                             {/*End Edit Menu*/}
                             {/*Start Components Dropdown*/}

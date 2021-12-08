@@ -9,14 +9,16 @@ export type CanvasState = {
     lastActionType: string
 }
 
+const initialState: CanvasState = {
+    components: [],
+    numberOfGeneratedKey: 0,
+    selectedComponentKey: 0,
+    lastActionType: ""
+}
+
 export const CanvasSlice = createSlice({
     name: 'canvas',
-    initialState: {
-        components: [],
-        numberOfGeneratedKey: 0,
-        selectedComponentKey: 0,
-        lastActionType: ""
-    } as CanvasState,
+    initialState: initialState,
     reducers: {
         //qui vanno inserite le azioni
         addComponent(state: CanvasState, action: PayloadAction<ComponentEntity>) {
@@ -92,6 +94,12 @@ export const CanvasSlice = createSlice({
             resetSelectedComponent(state)
             state.components = state.components.filter(component => !action.payload.elementsToRemove.includes(component.keyComponent))
             action.payload.newEntity.map(entity => state.components.push(entity))
+        },
+        resetState(state: CanvasState){
+            state.components = initialState.components
+            state.selectedComponentKey = initialState.selectedComponentKey
+            state.lastActionType = initialState.lastActionType
+            state.numberOfGeneratedKey = initialState.numberOfGeneratedKey
         }
 
 
@@ -106,7 +114,7 @@ export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
     addComponent, removeComponent, updatePosition, updateRotation,
     updateScale, selectComponent, incrementNumberOfGeneratedKey,
-    updateColor, updateName, importStateCanvas, subtraction, union, intersection
+    updateColor, updateName, importStateCanvas, subtraction, union, intersection, resetState
 } = CanvasSlice.actions
 
 export const canvasStateSelector = (state: { canvas: StateWithHistory<CanvasState> }) => state.canvas.present;
