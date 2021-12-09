@@ -1,5 +1,5 @@
 import { Dispatch } from '@reduxjs/toolkit';
-import { SphereEntity } from '../../../model/ComponentEntity';
+import { SphereEntity, TRANSF_PARAMS_DEFAULTS } from '../../../model/ComponentEntity';
 import { getNewKeys } from './cube';
 import {
     CanvasState
@@ -19,16 +19,12 @@ export function getDefaultSphere(canvasState: CanvasState, dispatch: Dispatch) {
         name: 'SPHERE',
         keyComponent: getNewKeys(canvasState, dispatch)[0],
         orbitEnabled: true,
-        position: [0, 0, 0],
-        rotation: [0, 0, 0],
-        scale: [1, 1, 1],
+        transformationParams: TRANSF_PARAMS_DEFAULTS,
         radius: 1,
         widthSegments: 20,
         heightSegments: 20,
         color: getComputedStyle(document.documentElement).getPropertyValue('--sphereColor').replace(' ', ''),
-        previousPosition: [0, 0, 0],
-        previousRotation: [0, 0, 0],
-        previousScale: [1, 1, 1],
+        previousTransformationParams: TRANSF_PARAMS_DEFAULTS,
         lastTransformationType: undefined
 
     }

@@ -36,22 +36,22 @@ export const CanvasSlice = createSlice({
         updatePosition(state: CanvasState, action: PayloadAction<[number, number, number]>) {
             setLastActionType(state, action.type)
             let selectedComponent = findComponentByKey(state.components, state.selectedComponentKey)
-            selectedComponent.previousPosition = selectedComponent.position
-            selectedComponent.position = action.payload
+            selectedComponent.previousTransformationParams.position = selectedComponent.transformationParams.position
+            selectedComponent.transformationParams.position = action.payload
             selectedComponent.lastTransformationType = "TRANSLATE"
         },
         updateRotation(state: CanvasState, action: PayloadAction<[number, number, number]>) {
             setLastActionType(state, action.type)
             let selectedComponent = findComponentByKey(state.components, state.selectedComponentKey)
-            selectedComponent.previousRotation = selectedComponent.rotation
-            selectedComponent.rotation = action.payload
+            selectedComponent.previousTransformationParams.rotation = selectedComponent.transformationParams.rotation
+            selectedComponent.transformationParams.rotation = action.payload
             selectedComponent.lastTransformationType = "ROTATE"
         },
         updateScale(state: CanvasState, action: PayloadAction<[number, number, number]>) {
             setLastActionType(state, action.type)
             let selectedComponent = findComponentByKey(state.components, state.selectedComponentKey)
-            selectedComponent.previousScale = selectedComponent.scale
-            selectedComponent.scale = action.payload
+            selectedComponent.previousTransformationParams.scale = selectedComponent.transformationParams.scale
+            selectedComponent.transformationParams.scale = action.payload
             selectedComponent.lastTransformationType = "SCALE"
         },
         selectComponent(state: CanvasState, action: PayloadAction<number>) {

@@ -67,12 +67,12 @@ export const Position: React.FC<PositionProps> = ({selectedComponent, dispatch})
     const [z,setZ] = useState(0);
     useEffect(() => {
         if(selectedComponent !== undefined){
-           let position = selectedComponent?.position as [number, number, number]
+           let position = selectedComponent?.transformationParams.position
              setX(position[0])
              setY(position[1])
              setZ(position[2])
         }
-    }, [selectedComponent, selectedComponent?.position]);
+    }, [selectedComponent, selectedComponent?.transformationParams.position]);
 
     return(
         <>

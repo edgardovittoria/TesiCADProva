@@ -7,16 +7,15 @@ import {
     setTransformationActive,
     toolbarTransformationStateSelector
 } from "../../../store/toolbarTransformationSlice";
+import { TransformationParams } from '../../../model/ComponentEntity';
 
 export interface ComponentProps {
     orbit: MutableRefObject<null>,
-    position: [number, number, number],
-    rotation: [number, number, number],
-    scale: [number, number, number],
+    transformationParams: TransformationParams
     keyComponent: number,
 }
 
-export const Component: React.FC<ComponentProps> = ({children, orbit, position, rotation, scale, keyComponent}) => {
+export const Component: React.FC<ComponentProps> = ({children, orbit, transformationParams, keyComponent}) => {
     const dispatch = useDispatch();
     const meshRef = useRef<THREE.Mesh>(null)
     const activeTransformation = useSelector(activeTransformationSelector)
@@ -25,7 +24,7 @@ export const Component: React.FC<ComponentProps> = ({children, orbit, position, 
 
     return (
         <>
-            <mesh ref={meshRef} name={keyComponent.toString()} position={position} rotation={rotation} scale={scale}
+            <mesh ref={meshRef} name={keyComponent.toString()} position={transformationParams.position} rotation={transformationParams.rotation} scale={transformationParams.scale}
                   onClick={(e) => {
                       e.stopPropagation()
                       dispatch(selectComponent(keyComponent))

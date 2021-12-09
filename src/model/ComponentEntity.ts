@@ -1,18 +1,33 @@
-import { type } from "os"
+export type TransformationParams = {
+    position: [number, number, number]
+    rotation: [number, number, number]
+    scale: [number, number, number]
+}
+
+export const TRANSF_PARAMS_DEFAULTS : TransformationParams = {
+    position: [0,0,0],
+    rotation: [0,0,0],
+    scale: [1,1,1]
+}
+
+export const areEquals = (firstTransfParams: TransformationParams, secondTransfParams: TransformationParams) => {
+    if (firstTransfParams.position.every((val, index) => val === secondTransfParams.position[index])
+        && firstTransfParams.scale.every((val, index) => val === secondTransfParams.scale[index])
+        && firstTransfParams.rotation.every((val, index) => val === secondTransfParams.rotation[index])) {
+        return true
+    }
+    return false
+}
 
 export type ComponentEntity = {
     name: string
     type: string //diventerà enum
     orbitEnabled: boolean
-    position: [number, number, number]
-    rotation: [number, number, number]
-    scale: [number, number, number]
-    previousPosition: [number, number, number]
-    previousRotation: [number, number, number]
-    previousScale: [number, number, number]
+    transformationParams: TransformationParams
+    previousTransformationParams: TransformationParams
     color: string
     keyComponent: number
-    lastTransformationType : string | undefined
+    lastTransformationType: string | undefined
 }
 
 export type CubeEntity = {
@@ -29,7 +44,7 @@ export type SphereEntity = {
 } & ComponentEntity
 
 export type CompositeEntity = {
-    baseElements : {elementA: ComponentEntity, elementB: ComponentEntity}
+    baseElements: { elementA: ComponentEntity, elementB: ComponentEntity }
 } & ComponentEntity
 
 export type BufferEntity = {
@@ -46,11 +61,11 @@ export type CylinderEntity = {
     heightSegments?: number,
     openEnded?: boolean,
     thetaLength?: number,
-    thetaStart?: number 
+    thetaStart?: number
 } & ComponentEntity
 
 export type TorusEntity = {
-    torusRadius: number, 
+    torusRadius: number,
     tubeRadius: number,
     radialSegments?: number,
     tubularSegments?: number,
@@ -64,5 +79,5 @@ export type ConeEntity = {
     heightSegments?: number,
     openEnded?: boolean,
     thetaLength?: number,
-    thetaStart?: number 
+    thetaStart?: number
 } & ComponentEntity

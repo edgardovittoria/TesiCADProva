@@ -2,7 +2,7 @@ import {
     CanvasState,
     incrementNumberOfGeneratedKey,
 } from "../../../store/canvasSlice";
-import { CubeEntity } from "../../../model/ComponentEntity";
+import { CubeEntity, TRANSF_PARAMS_DEFAULTS } from "../../../model/ComponentEntity";
 import { Dispatch } from "@reduxjs/toolkit";
 import { FC } from "react";
 
@@ -30,16 +30,12 @@ export function getDefaultCube(canvasState: CanvasState, dispatch: Dispatch) {
         name: 'CUBE',
         keyComponent: getNewKeys(canvasState, dispatch)[0],
         orbitEnabled: true,
-        position: [0, 0, 0],
-        rotation: [0, 0, 0],
-        scale: [1, 1, 1],
+        transformationParams: TRANSF_PARAMS_DEFAULTS,
         width: 1,
         depth: 1,
         height: 1,
         color: getComputedStyle(document.documentElement).getPropertyValue('--cubeColor').replace(' ', '') ,
-        previousPosition: [0, 0, 0],
-        previousRotation: [0, 0, 0],
-        previousScale: [1, 1, 1],
+        previousTransformationParams: TRANSF_PARAMS_DEFAULTS,
         lastTransformationType: undefined
     }
     return component

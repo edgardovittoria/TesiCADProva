@@ -2,7 +2,6 @@ import {Store} from "@reduxjs/toolkit";
 import {CanvasState} from "../store/canvasSlice";
 import {STLExporter} from "three/examples/jsm/exporters/STLExporter";
 import * as THREE from "three";
-import {FactoryComponent} from "../components/factory/FactoryComponent";
 import {meshFrom} from "../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
 import {ComponentEntity} from "../model/ComponentEntity";
 
@@ -18,14 +17,14 @@ export const exportToSTLFormatFrom = (canvasState: CanvasState) => {
         if (canvasState.components.length === 1) {
             componentToExport = {
                 ...component,
-                position: [0, 0, 0]
+                transformationParams: {...component.transformationParams, position: [0,0,0]}
             }
         }
 
         let mesh = meshFrom(componentToExport);
-        mesh.position.set(componentToExport.position[0], componentToExport.position[1], componentToExport.position[2])
-        mesh.scale.set(componentToExport.scale[0], componentToExport.scale[1], componentToExport.scale[2])
-        mesh.rotation.set(componentToExport.rotation[0], componentToExport.rotation[1], componentToExport.rotation[2])
+        mesh.position.set(...componentToExport.transformationParams.position)
+        mesh.scale.set(...componentToExport.transformationParams.scale)
+        mesh.rotation.set(...componentToExport.transformationParams.rotation)
 
         scene.add(mesh)
         scene.updateWorldMatrix(true, true)

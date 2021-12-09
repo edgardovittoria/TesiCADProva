@@ -69,12 +69,12 @@ export const Rotation: React.FC<RotationProps> = ({ selectedComponent, dispatch 
     const [z, setZ] = useState(0);
     useEffect(() => {
         if (selectedComponent !== undefined) {
-            let rotation = selectedComponent?.rotation as [number, number, number]
+            let rotation = selectedComponent?.transformationParams.rotation
             setX(rotation[0])
             setY(rotation[1])
             setZ(rotation[2])
         }
-    }, [selectedComponent, selectedComponent?.rotation]);
+    }, [selectedComponent, selectedComponent?.transformationParams.rotation]);
 
     return (
         <>

@@ -126,11 +126,11 @@ const makeBinaryOperation = (operation: string, collisions: [number, number][], 
             }
             elementACopy.keyComponent = newKeysSub[newKeysSub.length - 1];
             if (elementACopy.lastTransformationType === "TRANSLATE") {
-                elementACopy.position = elementACopy.previousPosition
+                elementACopy.transformationParams = {...elementACopy.transformationParams, position: elementACopy.previousTransformationParams.position}
             } else if (elementACopy.lastTransformationType === "ROTATE") {
-                elementACopy.rotation = elementACopy.previousRotation
+                elementACopy.transformationParams = {...elementACopy.transformationParams, rotation: elementACopy.previousTransformationParams.rotation}
             } else {
-                elementACopy.scale = elementACopy.previousScale
+                elementACopy.transformationParams = {...elementACopy.transformationParams, scale: elementACopy.previousTransformationParams.scale}
             }
             let elementsToRemove: number[] = [collisions[0][0]]
             collisions.map(([, elementB]) => {

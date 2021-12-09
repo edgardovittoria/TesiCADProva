@@ -1,6 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { FC } from "react";
-import { TorusEntity } from "../../../model/ComponentEntity";
+import { TorusEntity, TRANSF_PARAMS_DEFAULTS } from "../../../model/ComponentEntity";
 import { CanvasState } from "../../../store/canvasSlice";
 import { getNewKeys } from "./cube";
 
@@ -19,13 +19,9 @@ export function getDefaultTorus(canvasState: CanvasState, dispatch: Dispatch) {
         name: 'TORUS',
         keyComponent: getNewKeys(canvasState, dispatch)[0],
         orbitEnabled: true,
-        position: [0, 0, 0],
-        rotation: [0, 0, 0],
-        scale: [1, 1, 1],
+        transformationParams: TRANSF_PARAMS_DEFAULTS,
         color: getComputedStyle(document.documentElement).getPropertyValue('--torusColor').replace(' ', ''),
-        previousPosition: [0, 0, 0],
-        previousRotation: [0, 0, 0],
-        previousScale: [1, 1, 1],
+        previousTransformationParams: TRANSF_PARAMS_DEFAULTS,
         lastTransformationType: undefined,
         tubularSegments: 20,
         torusRadius: 2,

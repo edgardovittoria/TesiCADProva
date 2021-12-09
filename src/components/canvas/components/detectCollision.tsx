@@ -1,45 +1,43 @@
-import {FC, useEffect} from "react";
-import {useDispatch} from "react-redux";
-import { ComponentEntity } from "../../../model/ComponentEntity";
+import { FC, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { areEquals, ComponentEntity, TransformationParams } from "../../../model/ComponentEntity";
 import {
     removeComponent,
 } from "../../../store/canvasSlice";
-import {useThree} from "@react-three/fiber";
-import {Dispatch} from "redux";
-import {meshWithPositionRotationScaleFromOldOne} from "../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
-import {thereIsCollisionBetweenMeshes} from "../../../auxiliaryFunctionsUsingThreeDirectly/thereIsCollisionBetween";
+import { useThree } from "@react-three/fiber";
+import { Dispatch } from "redux";
+import { meshWithPositionRotationScaleFromOldOne } from "../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
+import { thereIsCollisionBetweenMeshes } from "../../../auxiliaryFunctionsUsingThreeDirectly/thereIsCollisionBetween";
 
-interface DetectCollisionProps{
+interface DetectCollisionProps {
     entity: ComponentEntity | undefined,
     setModalCollisions: Function
 }
 
-export const DetectCollision: FC<DetectCollisionProps> = ({entity, setModalCollisions}) => {
+export const DetectCollision: FC<DetectCollisionProps> = ({ entity, setModalCollisions }) => {
     return (
         entity !== undefined ?
-            <SetCollision componentEntity={entity} setModalCollisions={setModalCollisions}/>
+            <SetCollision componentEntity={entity} setModalCollisions={setModalCollisions} />
             : <></>
     )
 }
 
-const SetCollision: FC<{ componentEntity: ComponentEntity, setModalCollisions: Function }> = ({componentEntity, setModalCollisions}) => {
+const SetCollision: FC<{ componentEntity: ComponentEntity, setModalCollisions: Function }> = ({ componentEntity, setModalCollisions }) => {
     const { scene } = useThree()
     let dispatch = useDispatch()
 
     useEffect(() => {
         let collisionsSet = arrayOfCollisionsBetween(componentEntity.keyComponent, scene.children.filter(el => el.type === "Mesh") as THREE.Mesh[]);
         if (collisionsSet.length > 0) {
-            if (componentEntity.previousPosition.every((val, index) => val === componentEntity.position[index])
-                && componentEntity.previousScale.every((val, index) => val === componentEntity.scale[index])
-                && componentEntity.previousRotation.every((val, index) => val === componentEntity.rotation[index])) {
+            if (areEquals(componentEntity.transformationParams, componentEntity.previousTransformationParams)) {
                 removeEntityJustCreated(componentEntity, dispatch)
             }
             else {
                 setModalCollisions(collisionsSet)
             }
         }
-        return () => {collisionsSet = []}
-    }, [componentEntity.position, componentEntity.rotation, componentEntity.scale, componentEntity, scene.children, dispatch, setModalCollisions])
+        return () => { collisionsSet = [] }
+    }, [componentEntity.transformationParams.position, componentEntity.transformationParams.rotation, componentEntity.transformationParams.scale, componentEntity, scene.children, dispatch, setModalCollisions])
     return <></>
 }
 
@@ -54,14 +52,18 @@ const arrayOfCollisionsBetween = (element: number, allElements: THREE.Mesh[]) =>
         .filter(component => component.name !== element.toString())
         .reduce((results: [number, number][], component) => {
             let compSelected = meshWithPositionRotationScaleFromOldOne(meshSelected,
-                [meshSelected.position.x, meshSelected.position.y, meshSelected.position.z],
-                [meshSelected.rotation.x, meshSelected.rotation.y, meshSelected.rotation.z],
-                [meshSelected.scale.x, meshSelected.scale.y, meshSelected.scale.z],
+                {
+                    position: [meshSelected.position.x, meshSelected.position.y, meshSelected.position.z],
+                    rotation: [meshSelected.rotation.x, meshSelected.rotation.y, meshSelected.rotation.z],
+                    scale: [meshSelected.scale.x, meshSelected.scale.y, meshSelected.scale.z]
+                } as TransformationParams
             );
             let comp = meshWithPositionRotationScaleFromOldOne(component,
-                [component.position.x, component.position.y, component.position.z],
-                [component.rotation.x, component.rotation.y, component.rotation.z],
-                [component.scale.x, component.scale.y, component.scale.z],
+                {
+                    position: [component.position.x, component.position.y, component.position.z],
+                    rotation: [component.rotation.x, component.rotation.y, component.rotation.z],
+                    scale: [component.scale.x, component.scale.y, component.scale.z]
+                } as TransformationParams
             );
             (thereIsCollisionBetweenMeshes(compSelected, comp)) && results.push([parseInt(meshSelected.name), parseInt(component.name)])
             return results

@@ -69,12 +69,12 @@ export const Scale: React.FC<ScaleProps> = ({ selectedComponent, dispatch }) => 
     const [z, setZ] = useState(1);
     useEffect(() => {
         if (selectedComponent !== undefined) {
-            let scale = selectedComponent?.scale as [number, number, number];
+            let scale = selectedComponent?.transformationParams.scale;
             setX(scale[0])
             setY(scale[1])
             setZ(scale[2])
         }
-    }, [selectedComponent, selectedComponent?.scale]);
+    }, [selectedComponent, selectedComponent?.transformationParams.scale]);
 
     return (
         <>

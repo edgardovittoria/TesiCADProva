@@ -5,7 +5,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     canvasStateSelector,
     removeComponent,
-    selectComponent,
     selectedComponentSelector
 } from "../../store/canvasSlice";
 import {Outliner} from "./components/outliner";

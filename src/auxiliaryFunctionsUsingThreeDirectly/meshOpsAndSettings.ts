@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import { ConeGeometry, CylinderGeometry, TorusGeometry } from "three"
 import { CSG } from "three-csg-ts"
-import { BufferEntity, ComponentEntity, CompositeEntity, ConeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity } from "../model/ComponentEntity"
+import { BufferEntity, ComponentEntity, CompositeEntity, ConeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity, TransformationParams } from "../model/ComponentEntity"
 
 export const meshWithcomputedGeometryBoundingFrom = (mesh: THREE.Mesh) => {
     let meshCopy = mesh.clone(true)
@@ -24,11 +24,11 @@ export const meshWithResetTransformationParamsFromOld = (mesh: THREE.Mesh) => {
     return meshClone
 }
 
-export const meshWithPositionRotationScaleFromOldOne = (oldMesh: THREE.Mesh, position: [number, number, number], rotation: [number, number, number], scale: [number, number, number]) => {
+export const meshWithPositionRotationScaleFromOldOne = (oldMesh: THREE.Mesh, transformationParams: TransformationParams) => {
     let mesh = oldMesh.clone(true)
-    mesh.position.set(position[0], position[1], position[2])
-    mesh.scale.set(scale[0], scale[1], scale[2])
-    mesh.rotation.set(rotation[0], rotation[1], rotation[2])
+    mesh.position.set(...transformationParams.position)
+    mesh.scale.set(...transformationParams.scale)
+    mesh.rotation.set(...transformationParams.rotation)
     mesh.updateMatrix()
 
     return mesh
@@ -36,10 +36,8 @@ export const meshWithPositionRotationScaleFromOldOne = (oldMesh: THREE.Mesh, pos
 
 export const meshFrom = (entity: ComponentEntity) => {
     const getOperationElementsFrom = (compositeEntity: CompositeEntity) => {
-        let [positionA, scaleA, rotationA] = [compositeEntity.baseElements.elementA.position, compositeEntity.baseElements.elementA.scale, compositeEntity.baseElements.elementA.rotation]
-        let [positionB, scaleB, rotationB] = [compositeEntity.baseElements.elementB.position, compositeEntity.baseElements.elementB.scale, compositeEntity.baseElements.elementB.rotation]
-        let elementA = meshWithPositionRotationScaleFromOldOne(meshFrom(compositeEntity.baseElements.elementA), positionA, rotationA, scaleA)
-        let elementB = meshWithPositionRotationScaleFromOldOne(meshFrom(compositeEntity.baseElements.elementB), positionB, rotationB, scaleB)
+        let elementA = meshWithPositionRotationScaleFromOldOne(meshFrom(compositeEntity.baseElements.elementA), compositeEntity.baseElements.elementA.transformationParams)
+        let elementB = meshWithPositionRotationScaleFromOldOne(meshFrom(compositeEntity.baseElements.elementB), compositeEntity.baseElements.elementB.transformationParams)
         return [elementA, elementB]
     }
 
