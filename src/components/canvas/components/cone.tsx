@@ -1,7 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { FC } from "react";
-import { ConeEntity, CylinderEntity, TRANSF_PARAMS_DEFAULTS } from "../../../model/ComponentEntity";
-import { CanvasState } from "../../../store/canvasSlice";
+import { ConeEntity, TRANSF_PARAMS_DEFAULTS } from "../../../model/ComponentEntity";
 import { getNewKeys } from "./cube";
 
 interface ConeProps {
@@ -15,11 +14,11 @@ interface ConeProps {
     color: string
 }
 
-export function getDefaultCone(canvasState: CanvasState, dispatch: Dispatch) {
+export function getDefaultCone(numberOfGeneratedKey: number, dispatch: Dispatch) {
     const component: ConeEntity = {
         type: 'CONE',
         name: 'CONE',
-        keyComponent: getNewKeys(canvasState, dispatch)[0],
+        keyComponent: getNewKeys(numberOfGeneratedKey, dispatch)[0],
         orbitEnabled: true,
         transformationParams: TRANSF_PARAMS_DEFAULTS,
         height: 1,

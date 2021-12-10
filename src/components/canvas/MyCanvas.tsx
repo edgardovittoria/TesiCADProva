@@ -1,4 +1,4 @@
-import React, { FC, MutableRefObject, useEffect, useRef } from 'react';
+import React, {FC, MutableRefObject, useEffect, useRef} from 'react';
 import { Provider, ReactReduxContext, useDispatch, useSelector } from "react-redux";
 import {
     componentseSelector,
@@ -17,12 +17,14 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { DetectCollision } from './components/detectCollision';
 
 import './style/canvas.css'
+import {ComponentEntity} from "../../model/ComponentEntity";
 
 interface MyCanvasProps {
-    setModalCollisions: Function
+    setModalCollisions: Function,
+    setMeshes: Function
 }
 
-export const MyCanvas: React.FC<MyCanvasProps> = ({ setModalCollisions }) => {
+export const MyCanvas: React.FC<MyCanvasProps> = ({ setModalCollisions, setMeshes }) => {
 
     const components = useSelector(componentseSelector);
     const orbit = useRef(null);
@@ -49,7 +51,7 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({ setModalCollisions }) => {
                                     setModalCollisions={setModalCollisions} />
                                 <Controls orbit={orbit} keySelectedComponent={keySelectedComponent} />
                                 <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]} />
-
+                                <SetMeshes setMeshes={setMeshes} components={components}/>
                             </Provider>
                         </Canvas>
                     </>
@@ -59,6 +61,14 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({ setModalCollisions }) => {
 
     )
 
+}
+
+const SetMeshes: FC<{setMeshes: Function, components: ComponentEntity[]}> = ({setMeshes, components}) => {
+    const { scene } = useThree()
+    useEffect(() => {
+        setMeshes(scene.children.filter(child => child.type === "Mesh"))
+    }, [scene, components, setMeshes]);
+    return <></>
 }
 
 
@@ -82,7 +92,8 @@ const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number
             return () => controls.removeEventListener("dragging-changed", onChangeHandler)
         }
 
-    }, [])
+    })
+
 
     function onChangeHandler(event: THREE.Event) {
         if (!event.value && transformation.current) {

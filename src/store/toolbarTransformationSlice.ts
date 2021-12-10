@@ -34,6 +34,7 @@ export const ToolbarTransformationSlice = createSlice({
         setTransformationActive(transformationState: ToolbarTransformationState, action: PayloadAction<string>){
             transformationState.transformation.map(transformation => {
                 (transformation.type === action.payload) ? transformation.active = true : transformation.active = false;
+                return null
             })
         }
     }

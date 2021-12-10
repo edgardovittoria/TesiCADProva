@@ -8,11 +8,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { ToolBar } from "./components/toolBar/toolBar";
 import { DraggableComponent } from "./components/utility/draggableComponent";
 import { MakeBinaryOp } from './components/modal/makeBinaryOperation';
+import {Mesh} from "three";
 
 function App() {
 
     const [sideBar, setSideBar] = useState(false);
     const [collisions, setCollisions] = useState([]);
+    const [meshes, setMeshes] = useState<Mesh[]>([]);
 
     const showViewElementVisibility = (element: string, visibility: boolean) => {
         switch (element) {
@@ -26,9 +28,9 @@ function App() {
     return (
         <>
             <div style={{ margin: "0px" }}>
-                <MyNavBar setViewElementVisibility={showViewElementVisibility} />
+                <MyNavBar setViewElementVisibility={showViewElementVisibility} meshes={meshes}/>
                 <div className="canvas-width-100">
-                    <MyCanvas setModalCollisions={setCollisions} />
+                    <MyCanvas setModalCollisions={setCollisions} setMeshes={setMeshes}/>
                     <ToolBar />
                     {collisions.length > 0 &&
                         <MakeBinaryOp collisions={collisions} setCollisions={setCollisions} />

@@ -1,9 +1,6 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { SphereEntity, TRANSF_PARAMS_DEFAULTS } from '../../../model/ComponentEntity';
 import { getNewKeys } from './cube';
-import {
-    CanvasState
-} from "../../../store/canvasSlice";
 import { FC } from 'react';
 
 interface SphereProps {
@@ -13,11 +10,11 @@ interface SphereProps {
     color: string
 }
 
-export function getDefaultSphere(canvasState: CanvasState, dispatch: Dispatch) {
+export function getDefaultSphere(numberOfGeneratedKey: number, dispatch: Dispatch) {
     const component: SphereEntity = {
         type: 'SPHERE',
         name: 'SPHERE',
-        keyComponent: getNewKeys(canvasState, dispatch)[0],
+        keyComponent: getNewKeys(numberOfGeneratedKey, dispatch)[0],
         orbitEnabled: true,
         transformationParams: TRANSF_PARAMS_DEFAULTS,
         radius: 1,

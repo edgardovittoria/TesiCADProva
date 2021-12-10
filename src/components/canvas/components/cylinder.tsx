@@ -1,7 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { FC } from "react";
 import { CylinderEntity, TRANSF_PARAMS_DEFAULTS } from "../../../model/ComponentEntity";
-import { CanvasState } from "../../../store/canvasSlice";
 import { getNewKeys } from "./cube";
 
 interface CylinderProps {
@@ -16,11 +15,11 @@ interface CylinderProps {
     color: string
 }
 
-export function getDefaultCylinder(canvasState: CanvasState, dispatch: Dispatch) {
+export function getDefaultCylinder(numberOfGeneratedKey: number, dispatch: Dispatch) {
     const component: CylinderEntity = {
         type: 'CYLINDER',
         name: 'CYLINDER',
-        keyComponent: getNewKeys(canvasState, dispatch)[0],
+        keyComponent: getNewKeys(numberOfGeneratedKey, dispatch)[0],
         orbitEnabled: true,
         transformationParams: TRANSF_PARAMS_DEFAULTS,
         height: 1,

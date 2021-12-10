@@ -38,7 +38,7 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
             setCollisions([])
             setSpinner(false)
         }
-    }, [spinner])
+    }, [spinner, selectedOperation, collisions, canvas, dispatch, setCollisions])
 
     return (
             <Modal show={true}>
@@ -100,7 +100,7 @@ const compositeEntityFromOperationBetweenTwoEntities = (elementA: ComponentEntit
 }
 
 const makeBinaryOperation = (operation: string, collisions: [number, number][], canvasState: CanvasState, dispatch: Dispatch) => {
-    let newKeysSub = getNewKeys(canvasState, dispatch, 4 * collisions.length)
+    let newKeysSub = getNewKeys(canvasState.numberOfGeneratedKey, dispatch, 4 * collisions.length)
     switch (operation) {
         case "UNION":
             let result = collisions.reduce((componentResult: CompositeEntity, [, elementB], index) => {
@@ -111,6 +111,7 @@ const makeBinaryOperation = (operation: string, collisions: [number, number][], 
             let elementsToRemoveUnion: number[] = [collisions[0][0]]
             collisions.map(([, elementB]) => {
                 elementsToRemoveUnion.push(elementB)
+                return null
             })
             dispatch(union({elementsToRemove: elementsToRemoveUnion, newEntity: result}))
             break;
@@ -135,6 +136,7 @@ const makeBinaryOperation = (operation: string, collisions: [number, number][], 
             let elementsToRemove: number[] = [collisions[0][0]]
             collisions.map(([, elementB]) => {
                 elementsToRemove.push(elementB)
+                return null
             })
             dispatch(subtraction({
                 elementsToRemove: elementsToRemove,
@@ -152,6 +154,7 @@ const makeBinaryOperation = (operation: string, collisions: [number, number][], 
             let elementsToRemoveIntersection: number[] = [collisions[0][0]]
             collisions.map(([, elementB]) => {
                 elementsToRemoveIntersection.push(elementB)
+                return null
             })
             dispatch(intersection({elementsToRemove: elementsToRemoveIntersection, newEntity: resultINT}))
             break;

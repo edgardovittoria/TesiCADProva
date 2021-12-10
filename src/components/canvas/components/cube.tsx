@@ -1,7 +1,4 @@
-import {
-    CanvasState,
-    incrementNumberOfGeneratedKey,
-} from "../../../store/canvasSlice";
+import {incrementNumberOfGeneratedKey} from "../../../store/canvasSlice";
 import { CubeEntity, TRANSF_PARAMS_DEFAULTS } from "../../../model/ComponentEntity";
 import { Dispatch } from "@reduxjs/toolkit";
 import { FC } from "react";
@@ -13,8 +10,8 @@ interface CubeProps {
     depth: number
 }
 
-export function getNewKeys(canvasState: CanvasState, dispatch: Dispatch, numberOfKeyToGenerate = 1) {
-    let lastKey = canvasState.numberOfGeneratedKey
+export function getNewKeys(numberOfGeneratedKey: number, dispatch: Dispatch, numberOfKeyToGenerate = 1) {
+    let lastKey = numberOfGeneratedKey
     let newKeys: number[] = []
     for (let i = 1; i <= numberOfKeyToGenerate; i++) {
         newKeys.push(lastKey + i)
@@ -24,11 +21,11 @@ export function getNewKeys(canvasState: CanvasState, dispatch: Dispatch, numberO
 }
 
 
-export function getDefaultCube(canvasState: CanvasState, dispatch: Dispatch) {
+export function getDefaultCube(numberOfGeneratedKey: number, dispatch: Dispatch) {
     const component: CubeEntity = {
         type: 'CUBE',
         name: 'CUBE',
-        keyComponent: getNewKeys(canvasState, dispatch)[0],
+        keyComponent: getNewKeys(numberOfGeneratedKey, dispatch)[0],
         orbitEnabled: true,
         transformationParams: TRANSF_PARAMS_DEFAULTS,
         width: 1,

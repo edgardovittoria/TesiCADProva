@@ -11,7 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {getDefaultCube} from "../canvas/components/cube";
-import {addComponent, canvasStateSelector, resetState} from "../../store/canvasSlice";
+import {addComponent, numberOfGeneratedKeySelector, resetState} from "../../store/canvasSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {getDefaultSphere} from '../canvas/components/sphere';
 import {store} from '../../store/store';
@@ -22,18 +22,20 @@ import {getDefaultCylinder} from '../canvas/components/cylinder';
 import {getDefaultTorus} from '../canvas/components/torus';
 import {getDefaultCone} from '../canvas/components/cone';
 import {UndoRedo} from "./components/undoRedo";
+import * as THREE from 'three';
 
 interface NavBarProps {
-    setViewElementVisibility: Function
+    setViewElementVisibility: Function,
+    meshes: THREE.Mesh[]
 }
 
 
-export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
+export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, meshes}) => {
 
     const [navBarOpen, setNavBarOpen] = useState(false);
 
     const dispatch = useDispatch();
-    const canvasState = useSelector(canvasStateSelector);
+    const numberOfGeneratedKey = useSelector(numberOfGeneratedKeySelector)
     const inputRefProject = useRef(null)
     const inputRefSTL = useRef(null)
     const [sideBarChecked, setSideBarChecked] = useState(false)
@@ -90,6 +92,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                         id="custom-switch"
                                         label="SideBar"
                                         checked={sideBarChecked}
+                                        readOnly={true}
                                     />
                                 </Nav.Link>
                             </NavDropdown>
@@ -118,7 +121,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                 menuVariant="dark"
                             >
                                 <Nav.Link onClick={() => {
-                                    let cube = getDefaultCube(canvasState, dispatch);
+                                    let cube = getDefaultCube(numberOfGeneratedKey, dispatch);
                                     dispatch(addComponent(cube))
 
                                 }}>
@@ -129,7 +132,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
 
                                 </Nav.Link>
                                 <Nav.Link onClick={() => {
-                                    let sphere = getDefaultSphere(canvasState, dispatch);
+                                    let sphere = getDefaultSphere(numberOfGeneratedKey, dispatch);
                                     dispatch(addComponent(sphere))
 
                                 }}>
@@ -139,7 +142,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                     </div>
                                 </Nav.Link>
                                 <Nav.Link onClick={() => {
-                                    let cylinder = getDefaultCylinder(canvasState, dispatch);
+                                    let cylinder = getDefaultCylinder(numberOfGeneratedKey, dispatch);
                                     dispatch(addComponent(cylinder))
 
                                 }}>
@@ -150,7 +153,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
 
                                 </Nav.Link>
                                 <Nav.Link onClick={() => {
-                                    let torus = getDefaultTorus(canvasState, dispatch);
+                                    let torus = getDefaultTorus(numberOfGeneratedKey, dispatch);
                                     dispatch(addComponent(torus))
 
                                 }}>
@@ -161,7 +164,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
 
                                 </Nav.Link>
                                 <Nav.Link onClick={() => {
-                                    let cone = getDefaultCone(canvasState, dispatch);
+                                    let cone = getDefaultCone(numberOfGeneratedKey, dispatch);
                                     dispatch(addComponent(cone))
 
                                 }}>
@@ -203,7 +206,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                         accept=".stl"
                                         onChange={(e) => {
                                             let STLFiles = e.target.files;
-                                            (STLFiles) && importFrom(STLFiles[0], canvasState, dispatch)
+                                            (STLFiles) && importFrom(STLFiles[0], numberOfGeneratedKey, dispatch)
                                         }}/>
                                 </button>
                             </NavDropdown>
@@ -232,9 +235,10 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                 <Nav.Link
                                     id="exportSTL"
                                     onClick={() => {
+                                        console.log(meshes)
                                         const link = document.createElement('a');
                                         link.href = `data:model/stl;charset=utf-8,${encodeURIComponent(
-                                            exportToSTLFormatFrom(canvasState)
+                                            exportToSTLFormatFrom(meshes)
                                         )}`
                                         link.download = "model.stl"
                                         document.body.appendChild(link);

@@ -14,7 +14,7 @@ export const Outliner: React.FC<OutlinerProps> = ({canvasState}) => {
         if (selectedComponent !== undefined) {
             setOptionActive(selectedComponent.keyComponent.toString())
         }
-    }, [canvasState.components]);
+    }, [canvasState.components, canvasState.selectedComponentKey]);
 
     return (
         <>
