@@ -1,7 +1,9 @@
+export type TransformationParamDetails = [number, number, number]
+
 export type TransformationParams = {
-    position: [number, number, number]
-    rotation: [number, number, number]
-    scale: [number, number, number]
+    position: TransformationParamDetails
+    rotation: TransformationParamDetails
+    scale: TransformationParamDetails
 }
 
 export const TRANSF_PARAMS_DEFAULTS : TransformationParams = {
@@ -27,7 +29,6 @@ export type ComponentEntity = {
     previousTransformationParams: TransformationParams
     color: string
     keyComponent: number
-    lastTransformationType: string | undefined
 }
 
 export type CubeEntity = {

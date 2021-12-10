@@ -32,8 +32,7 @@ export function getDefaultCube(numberOfGeneratedKey: number, dispatch: Dispatch)
         depth: 1,
         height: 1,
         color: getComputedStyle(document.documentElement).getPropertyValue('--cubeColor').replace(' ', '') ,
-        previousTransformationParams: TRANSF_PARAMS_DEFAULTS,
-        lastTransformationType: undefined
+        previousTransformationParams: TRANSF_PARAMS_DEFAULTS
     }
     return component
 }

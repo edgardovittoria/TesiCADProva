@@ -21,7 +21,6 @@ export function getDefaultTorus(numberOfGeneratedKey: number, dispatch: Dispatch
         transformationParams: TRANSF_PARAMS_DEFAULTS,
         color: getComputedStyle(document.documentElement).getPropertyValue('--torusColor').replace(' ', ''),
         previousTransformationParams: TRANSF_PARAMS_DEFAULTS,
-        lastTransformationType: undefined,
         tubularSegments: 20,
         torusRadius: 2,
         tubeRadius: 0.4

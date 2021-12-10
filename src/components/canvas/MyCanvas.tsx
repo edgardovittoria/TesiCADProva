@@ -1,23 +1,20 @@
-import React, {FC, MutableRefObject, useEffect, useRef} from 'react';
+import React, { FC, MutableRefObject, useEffect, useRef } from 'react';
 import { Provider, ReactReduxContext, useDispatch, useSelector } from "react-redux";
 import {
     componentseSelector,
     findComponentByKey,
     keySelectedComponenteSelector,
-    updatePosition,
-    updateRotation,
-    updateScale
+    updateTransformationParams
 } from "../../store/canvasSlice";
 import { Canvas, Object3DNode, useThree } from "@react-three/fiber";
 import { OrbitControls, TransformControls } from "@react-three/drei";
 import { FactoryComponent } from '../factory/FactoryComponent';
 import * as THREE from 'three'
 import { ToolbarTransformationState, toolbarTransformationStateSelector } from '../../store/toolbarTransformationSlice';
-import { Dispatch } from '@reduxjs/toolkit';
 import { DetectCollision } from './components/detectCollision';
 
 import './style/canvas.css'
-import {ComponentEntity} from "../../model/ComponentEntity";
+import { ComponentEntity, TransformationParams } from "../../model/ComponentEntity";
 
 interface MyCanvasProps {
     setModalCollisions: Function,
@@ -51,7 +48,7 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({ setModalCollisions, setMeshe
                                     setModalCollisions={setModalCollisions} />
                                 <Controls orbit={orbit} keySelectedComponent={keySelectedComponent} />
                                 <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]} />
-                                <SetMeshes setMeshes={setMeshes} components={components}/>
+                                <SetMeshes setMeshes={setMeshes} components={components} />
                             </Provider>
                         </Canvas>
                     </>
@@ -63,7 +60,7 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({ setModalCollisions, setMeshe
 
 }
 
-const SetMeshes: FC<{setMeshes: Function, components: ComponentEntity[]}> = ({setMeshes, components}) => {
+const SetMeshes: FC<{ setMeshes: Function, components: ComponentEntity[] }> = ({ setMeshes, components }) => {
     const { scene } = useThree()
     useEffect(() => {
         setMeshes(scene.children.filter(child => child.type === "Mesh"))
@@ -98,25 +95,12 @@ const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number
     function onChangeHandler(event: THREE.Event) {
         if (!event.value && transformation.current) {
             const controls: Object3DNode<any, any> = transformation.current
-            if (controls.getMode() === 'translate') {
-                manageTransformation(
-                    controls.getMode(),
-                    [controls.worldPosition.x, controls.worldPosition.y, controls.worldPosition.z],
-                    dispatch
-                )
-            } else if (controls.getMode() === 'rotate') {
-                manageTransformation(
-                    controls.getMode(),
-                    [controls.worldQuaternion.x, controls.worldQuaternion.y, controls.worldQuaternion.z],
-                    dispatch
-                )
-            } else {
-                manageTransformation(
-                    controls.getMode(),
-                    [controls.worldScale.x, controls.worldScale.y, controls.worldScale.z],
-                    dispatch
-                )
+            let transformationParmas: TransformationParams = {
+                position: [controls.worldPosition.x, controls.worldPosition.y, controls.worldPosition.z],
+                rotation: [controls.worldQuaternion.x, controls.worldQuaternion.y, controls.worldQuaternion.z],
+                scale: [controls.worldScale.x, controls.worldScale.y, controls.worldScale.z]
             }
+            dispatch(updateTransformationParams(transformationParmas))
         }
     }
 
@@ -134,7 +118,7 @@ const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number
                 showY={(keySelectedComponent !== 0)}
                 showZ={(keySelectedComponent !== 0)}
                 mode={getActiveTransformationType(toolbarTransformationState)}
-                
+
             />
             <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
                 removeEventListener={undefined} dispatchEvent={undefined} makeDefault />
@@ -144,22 +128,6 @@ const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number
 
 }
 
-export function manageTransformation(
-    transformation: string,
-    transformationValues: number[],
-    dispatch: Dispatch) {
-    switch (transformation) {
-        case 'translate':
-            dispatch(updatePosition([transformationValues[0], transformationValues[1], transformationValues[2]]));
-            break;
-        case 'rotate':
-            dispatch(updateRotation([transformationValues[0], transformationValues[1], transformationValues[2]]));
-            break;
-        case 'scale':
-            dispatch(updateScale([transformationValues[0], transformationValues[1], transformationValues[2]]));
-            break;
-    }
-}
 
 
 

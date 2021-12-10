@@ -21,8 +21,7 @@ export function getDefaultSphere(numberOfGeneratedKey: number, dispatch: Dispatc
         widthSegments: 20,
         heightSegments: 20,
         color: getComputedStyle(document.documentElement).getPropertyValue('--sphereColor').replace(' ', ''),
-        previousTransformationParams: TRANSF_PARAMS_DEFAULTS,
-        lastTransformationType: undefined
+        previousTransformationParams: TRANSF_PARAMS_DEFAULTS
 
     }
     return component

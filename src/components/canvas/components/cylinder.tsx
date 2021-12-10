@@ -25,7 +25,6 @@ export function getDefaultCylinder(numberOfGeneratedKey: number, dispatch: Dispa
         height: 1,
         color: getComputedStyle(document.documentElement).getPropertyValue('--cylinderColor').replace(' ', ''),
         previousTransformationParams: TRANSF_PARAMS_DEFAULTS,
-        lastTransformationType: undefined,
         topRadius: 1,
         bottomRadius: 1,
         radialSegments: 20

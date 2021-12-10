@@ -8,15 +8,13 @@ import {
     selectedComponentSelector
 } from "../../store/canvasSlice";
 import {Outliner} from "./components/outliner";
-import {Position} from "./components/position";
-import {Rotation} from "./components/rotation";
-import {Scale} from "./components/scale";
 import {Color} from "./components/color";
-import {Col, Container, Row} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 
 import "./style/outliner.css"
 import "./style/sideBar.css"
 import "./style/transformation.css"
+import { Transformations } from './components/transformations';
 
 
 interface SideBarProps {
@@ -39,30 +37,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
                     <Outliner canvasState={canvasState}/>
                     {(canvasState.components.filter(component => component.keyComponent === canvasState.selectedComponentKey).length > 0) &&
                     <Container className="sideBarContainer">
-                        <Row>
-                            <Col className="col-2">
-                                <span className="textSideBar">Position</span>
-                            </Col>
-                            <Col>
-                                <Position selectedComponent={selectedComponent} dispatch={dispatch}/>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col className="col-2">
-                                <span className="textSideBar">Rotation</span>
-                            </Col>
-                            <Col>
-                                <Rotation selectedComponent={selectedComponent} dispatch={dispatch}/>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col className="col-2">
-                                <span className="textSideBar">Scale</span>
-                            </Col>
-                            <Col>
-                                <Scale selectedComponent={selectedComponent} dispatch={dispatch}/>
-                            </Col>
-                        </Row>
+                        <Transformations transformationParams={selectedComponent.transformationParams}/>
                         <Color selectedComponent={selectedComponent} dispatch={dispatch}/>
                         <button
                             type="button"

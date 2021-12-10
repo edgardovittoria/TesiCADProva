@@ -24,7 +24,6 @@ export function getDefaultCone(numberOfGeneratedKey: number, dispatch: Dispatch)
         height: 1,
         color: getComputedStyle(document.documentElement).getPropertyValue('--coneColor').replace(' ', ''),
         previousTransformationParams: TRANSF_PARAMS_DEFAULTS,
-        lastTransformationType: undefined,
         radius: 1,
         radialSegments: 20
     }

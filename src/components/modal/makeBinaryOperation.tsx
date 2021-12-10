@@ -93,8 +93,7 @@ const compositeEntityFromOperationBetweenTwoEntities = (elementA: ComponentEntit
             elementB: {...elementB, keyComponent: newKeys[1 + offsetKeys]}
         },
         type: operation,
-        keyComponent: newKeys[2 + offsetKeys],
-        lastTransformationType: undefined
+        keyComponent: newKeys[2 + offsetKeys]
     }
     return compositeEntity
 }
@@ -126,13 +125,7 @@ const makeBinaryOperation = (operation: string, collisions: [number, number][], 
                 ...findComponentByKey(canvasState.components, collisions[0][0]),
             }
             elementACopy.keyComponent = newKeysSub[newKeysSub.length - 1];
-            if (elementACopy.lastTransformationType === "TRANSLATE") {
-                elementACopy.transformationParams = {...elementACopy.transformationParams, position: elementACopy.previousTransformationParams.position}
-            } else if (elementACopy.lastTransformationType === "ROTATE") {
-                elementACopy.transformationParams = {...elementACopy.transformationParams, rotation: elementACopy.previousTransformationParams.rotation}
-            } else {
-                elementACopy.transformationParams = {...elementACopy.transformationParams, scale: elementACopy.previousTransformationParams.scale}
-            }
+            elementACopy.transformationParams = elementACopy.previousTransformationParams
             let elementsToRemove: number[] = [collisions[0][0]]
             collisions.map(([, elementB]) => {
                 elementsToRemove.push(elementB)

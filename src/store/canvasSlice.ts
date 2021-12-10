@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ComponentEntity } from "../model/ComponentEntity";
+import { ComponentEntity, TransformationParams } from "../model/ComponentEntity";
 import { StateWithHistory } from 'redux-undo';
 
 export type CanvasState = {
@@ -33,26 +33,11 @@ export const CanvasSlice = createSlice({
                 return component.keyComponent !== action.payload.keyComponent;
             })
         },
-        updatePosition(state: CanvasState, action: PayloadAction<[number, number, number]>) {
+        updateTransformationParams(state: CanvasState, action: PayloadAction<TransformationParams>){
             setLastActionType(state, action.type)
             let selectedComponent = findComponentByKey(state.components, state.selectedComponentKey)
-            selectedComponent.previousTransformationParams.position = selectedComponent.transformationParams.position
-            selectedComponent.transformationParams.position = action.payload
-            selectedComponent.lastTransformationType = "TRANSLATE"
-        },
-        updateRotation(state: CanvasState, action: PayloadAction<[number, number, number]>) {
-            setLastActionType(state, action.type)
-            let selectedComponent = findComponentByKey(state.components, state.selectedComponentKey)
-            selectedComponent.previousTransformationParams.rotation = selectedComponent.transformationParams.rotation
-            selectedComponent.transformationParams.rotation = action.payload
-            selectedComponent.lastTransformationType = "ROTATE"
-        },
-        updateScale(state: CanvasState, action: PayloadAction<[number, number, number]>) {
-            setLastActionType(state, action.type)
-            let selectedComponent = findComponentByKey(state.components, state.selectedComponentKey)
-            selectedComponent.previousTransformationParams.scale = selectedComponent.transformationParams.scale
-            selectedComponent.transformationParams.scale = action.payload
-            selectedComponent.lastTransformationType = "SCALE"
+            selectedComponent.previousTransformationParams = selectedComponent.transformationParams
+            selectedComponent.transformationParams = action.payload
         },
         selectComponent(state: CanvasState, action: PayloadAction<number>) {
             setLastActionType(state, action.type)
@@ -112,8 +97,7 @@ export const CanvasSlice = createSlice({
 
 export const {
     //qui vanno inserite tutte le azioni che vogliamo esporatare
-    addComponent, removeComponent, updatePosition, updateRotation,
-    updateScale, selectComponent, incrementNumberOfGeneratedKey,
+    addComponent, removeComponent, updateTransformationParams, selectComponent, incrementNumberOfGeneratedKey,
     updateColor, updateName, importStateCanvas, subtraction, union, intersection, resetState
 } = CanvasSlice.actions
 

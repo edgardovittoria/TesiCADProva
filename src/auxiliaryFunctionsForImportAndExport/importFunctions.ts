@@ -24,7 +24,6 @@ export const importFrom = (STLFile: File, numberOfGeneratedKey: number, dispatch
             transformationParams: {position: [0,0,0], rotation: [0,0,0], scale: [1,1,1]},
             color: '#ec2626',
             previousTransformationParams: {position: [0,0,0], rotation: [0,0,0], scale: [1,1,1]},
-            lastTransformationType: undefined,
             positionVertices: res.attributes.position.array as Float32Array,
             normalVertices: res.attributes.normal.array as Float32Array,
             uvVertices: undefined
