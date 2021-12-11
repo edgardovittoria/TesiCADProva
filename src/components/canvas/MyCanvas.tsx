@@ -14,7 +14,7 @@ import { ToolbarTransformationState, toolbarTransformationStateSelector } from '
 import { DetectCollision } from './components/detectCollision';
 
 import './style/canvas.css'
-import { ComponentEntity, TransformationParams } from "../../model/ComponentEntity";
+import {ComponentEntity, TransformationParams} from "../../model/ComponentEntity";
 
 interface MyCanvasProps {
     setModalCollisions: Function,
@@ -97,7 +97,7 @@ const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number
             const controls: Object3DNode<any, any> = transformation.current
             let transformationParmas: TransformationParams = {
                 position: [controls.worldPosition.x, controls.worldPosition.y, controls.worldPosition.z],
-                rotation: [controls.worldQuaternion.x, controls.worldQuaternion.y, controls.worldQuaternion.z],
+                rotation: [controls.object.rotation._x, controls.object.rotation._y, controls.object.rotation._z],
                 scale: [controls.worldScale.x, controls.worldScale.y, controls.worldScale.z]
             }
             dispatch(updateTransformationParams(transformationParmas))
@@ -118,7 +118,6 @@ const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number
                 showY={(keySelectedComponent !== 0)}
                 showZ={(keySelectedComponent !== 0)}
                 mode={getActiveTransformationType(toolbarTransformationState)}
-
             />
             <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
                 removeEventListener={undefined} dispatchEvent={undefined} makeDefault />
