@@ -92,3 +92,11 @@ export const meshFrom = (entity: ComponentEntity) => {
             return meshComposite
     }
 }
+
+export const transformationParamsOf = (mesh: THREE.Mesh) => {
+    return {
+        position: [mesh.position.x, mesh.position.y, mesh.position.z],
+        rotation: [mesh.rotation.x, mesh.rotation.y, mesh.rotation.z],
+        scale: [mesh.scale.x, mesh.scale.y, mesh.scale.z]
+    } as TransformationParams
+}

@@ -14,7 +14,7 @@ import { ToolbarTransformationState, toolbarTransformationStateSelector } from '
 import { DetectCollision } from './components/detectCollision';
 
 import './style/canvas.css'
-import {ComponentEntity, TransformationParams} from "../../model/ComponentEntity";
+import { ComponentEntity, TransformationParams } from "../../model/ComponentEntity";
 
 interface MyCanvasProps {
     setModalCollisions: Function,
@@ -44,8 +44,10 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({ setModalCollisions, setMeshe
                                     return <FactoryComponent key={component.keyComponent} entity={component}
                                         orbit={orbit} />
                                 })}
-                                <DetectCollision entity={findComponentByKey(components, keySelectedComponent)}
-                                    setModalCollisions={setModalCollisions} />
+                                {keySelectedComponent !== 0 &&
+                                    <DetectCollision entity={findComponentByKey(components, keySelectedComponent)}
+                                        setModalCollisions={setModalCollisions} />
+                                }
                                 <Controls orbit={orbit} keySelectedComponent={keySelectedComponent} />
                                 <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]} />
                                 <SetMeshes setMeshes={setMeshes} components={components} />

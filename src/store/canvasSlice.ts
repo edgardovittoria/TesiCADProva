@@ -26,11 +26,11 @@ export const CanvasSlice = createSlice({
             state.components.push(action.payload);
             //state.selectedComponentKey = action.payload.keyComponent
         },
-        removeComponent(state: CanvasState, action: PayloadAction<ComponentEntity>) {
+        removeComponent(state: CanvasState, action: PayloadAction<number>) {
             setLastActionType(state, action.type)
             resetSelectedComponent(state)
             state.components = state.components.filter(component => {
-                return component.keyComponent !== action.payload.keyComponent;
+                return component.keyComponent !== action.payload;
             })
         },
         updateTransformationParams(state: CanvasState, action: PayloadAction<TransformationParams>){
