@@ -4,20 +4,20 @@ import { CSG } from "three-csg-ts"
 import { BufferEntity, ComponentEntity, CompositeEntity, ConeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity, TransformationParams } from "../model/ComponentEntity"
 
 export const meshWithcomputedGeometryBoundingFrom = (mesh: THREE.Mesh) => {
-    let meshCopy = mesh.clone(true)
+    let meshCopy = new THREE.Mesh(mesh.geometry.clone(), mesh.material)
     meshCopy.geometry.computeBoundingBox()
-    meshCopy.geometry.boundingBox?.applyMatrix4(meshCopy.matrix)
+    meshCopy.geometry.boundingBox?.applyMatrix4(mesh.matrix)
     return meshCopy
 }
 
 export const meshWithColorFromOldOne = (oldMesh: THREE.Mesh, newColor: string) => {
-    let newMesh = oldMesh.clone();
-    (newMesh.material as THREE.MeshBasicMaterial).color.set(newColor)
+    let newMesh = oldMesh.clone(true);
+    (newMesh.material as THREE.MeshPhongMaterial).color.set(newColor)
     return newMesh
 }
 
 export const meshWithResetTransformationParamsFromOld = (mesh: THREE.Mesh) => {
-    let meshClone = mesh.copy(mesh, true);
+    let meshClone = mesh.clone(true);
     meshClone.position.set(0, 0, 0)
     meshClone.scale.set(1, 1, 1)
     meshClone.rotation.set(0, 0, 0)
