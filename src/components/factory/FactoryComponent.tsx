@@ -45,7 +45,7 @@ const factoryElements = (entity: ComponentEntity) => {
                            widthSegments={sphereEntity.widthSegments} radius={sphereEntity.radius}/>
         case "BUFFER":
             let bufferEntity = entity as BufferEntity
-            return <BufferComponent entity={bufferEntity}/>
+            return <BufferComponent positionVertices={bufferEntity.positionVertices} normalVertices={bufferEntity.normalVertices} color={bufferEntity.color}/>
         case "CYLINDER":
             let cylinderEntity = entity as CylinderEntity
             return <Cylinder topRadius={cylinderEntity.topRadius} bottomRadius={cylinderEntity.bottomRadius}

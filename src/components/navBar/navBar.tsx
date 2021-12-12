@@ -23,6 +23,7 @@ import {getDefaultTorus} from '../canvas/components/torus';
 import {getDefaultCone} from '../canvas/components/cone';
 import {UndoRedo} from "./components/undoRedo";
 import * as THREE from 'three';
+import { ActionCreators } from 'redux-undo';
 
 interface NavBarProps {
     setViewElementVisibility: Function,
@@ -106,6 +107,8 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, meshe
                                 <UndoRedo/>
                                 <Nav.Link onClick={() => {
                                     dispatch(resetState())
+                                    dispatch(ActionCreators.clearHistory())
+                                    localStorage.clear()
                                 }}>
                                     <div className="dropdownItem">
                                         <FontAwesomeIcon icon={faTrash} style={{marginRight: "5px"}}/>

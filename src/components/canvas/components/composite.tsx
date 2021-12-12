@@ -1,6 +1,7 @@
 import { FC, useMemo } from "react";
 import { meshFrom } from "../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
 import { CompositeEntity } from "../../../model/ComponentEntity";
+import { BufferComponent } from "./bufferComponent";
 
 
 interface CompositeProps {
@@ -9,19 +10,8 @@ interface CompositeProps {
 
 export const Composite: FC<CompositeProps> = ({ entity }) => {
     let compositeMesh = useMemo(() => meshFrom(entity), [entity.baseElements])
-    //let compositeMesh = meshFrom(entity)
 
     return (
-        <>
-            <bufferGeometry>
-                <bufferAttribute attachObject={["attributes", "position"]} itemSize={3}
-                                 array={compositeMesh.geometry.attributes.position.array}
-                                 count={compositeMesh.geometry.attributes.position.array.length / 3}/>
-                <bufferAttribute attachObject={["attributes", "normal"]} itemSize={3}
-                                 array={compositeMesh.geometry.attributes.normal.array}
-                                 count={compositeMesh.geometry.attributes.normal.array.length / 3}/>
-            </bufferGeometry>
-            <meshPhongMaterial color={entity.color}/>
-        </>
+        <BufferComponent color={entity.color} positionVertices={compositeMesh.geometry.attributes.position.array as Float32Array} normalVertices={compositeMesh.geometry.attributes.normal.array as Float32Array}/>
     )
 }

@@ -6,7 +6,7 @@ import {
 } from "../../../store/canvasSlice";
 import { useThree } from "@react-three/fiber";
 import { Dispatch } from "redux";
-import { thereIsCollisionBetweenMeshes } from "../../../auxiliaryFunctionsUsingThreeDirectly/thereIsCollisionBetween";
+import { thereIsCollisionBetweenMeshes } from "../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
 
 interface DetectCollisionProps {
     entity: ComponentEntity,

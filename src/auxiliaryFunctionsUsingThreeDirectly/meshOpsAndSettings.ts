@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import { ConeGeometry, CylinderGeometry, TorusGeometry } from "three"
 import { CSG } from "three-csg-ts"
-import { BufferEntity, ComponentEntity, CompositeEntity, ConeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity, TransformationParams } from "../model/ComponentEntity"
+import { BufferEntity, ComponentEntity, CompositeEntity, ConeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity, TransformationParams, TRANSF_PARAMS_DEFAULTS } from "../model/ComponentEntity"
 
 export const meshWithcomputedGeometryBoundingFrom = (mesh: THREE.Mesh) => {
     let meshCopy = mesh.clone()
@@ -19,11 +19,7 @@ export const meshWithColorFromOldOne = (oldMesh: THREE.Mesh, newColor: string) =
 }
 
 export const meshWithResetTransformationParamsFromOld = (mesh: THREE.Mesh) => {
-    let meshClone = mesh.clone(true);
-    meshClone.position.set(0, 0, 0)
-    meshClone.scale.set(1, 1, 1)
-    meshClone.rotation.set(0, 0, 0)
-    return meshClone
+    return meshWithPositionRotationScaleFromPreviousOne(mesh, TRANSF_PARAMS_DEFAULTS)
 }
 
 export const meshWithPositionRotationScaleFromPreviousOne = (oldMesh: THREE.Mesh, transformationParams: TransformationParams) => {
@@ -32,7 +28,6 @@ export const meshWithPositionRotationScaleFromPreviousOne = (oldMesh: THREE.Mesh
     mesh.scale.set(...transformationParams.scale)
     mesh.rotation.set(...transformationParams.rotation)
     mesh.updateMatrix()
-
     return mesh
 }
 
@@ -48,7 +43,7 @@ const materialPhongFrom = (entity: ComponentEntity) => {
     return material
 }
 
-const geometryFrom = (entity: ComponentEntity) => {
+export const geometryFrom = (entity: ComponentEntity) => {
     switch (entity.type) {
         case "CUBE":
             let cubeEntity = entity as CubeEntity
@@ -77,16 +72,14 @@ const geometryFrom = (entity: ComponentEntity) => {
         default:
             let compositeEntity = entity as CompositeEntity
             let [elementA, elementB] = [meshFrom(compositeEntity.baseElements.elementA), meshFrom(compositeEntity.baseElements.elementB)]
-            return (elementA && elementB) ? meshFromOperationBetweenTwoMeshes(entity.type, elementA, elementB).geometry : new THREE.BufferGeometry();
+            return meshFromOperationBetweenTwoMeshes(entity.type, elementA, elementB).geometry
     }
 }
 
 const meshFromOperationBetweenTwoMeshes = (operation: string, firstMesh: THREE.Mesh, secondMesh: THREE.Mesh) => {
-    let newMesh: THREE.Mesh
-    if (operation === "UNION") { newMesh = CSG.union(firstMesh, secondMesh) }
-    else if (operation === "INTERSECTION") { newMesh = CSG.intersect(firstMesh, secondMesh) }
-    else { newMesh = CSG.subtract(firstMesh, secondMesh) }
-    return newMesh
+    if (operation === "UNION") { return CSG.union(firstMesh, secondMesh) }
+    else if (operation === "INTERSECTION") { return CSG.intersect(firstMesh, secondMesh) }
+    else { return CSG.subtract(firstMesh, secondMesh) }
 }
 
 export const transformationParamsOf = (mesh: THREE.Mesh) => {
@@ -95,4 +88,13 @@ export const transformationParamsOf = (mesh: THREE.Mesh) => {
         rotation: [mesh.rotation.x, mesh.rotation.y, mesh.rotation.z],
         scale: [mesh.scale.x, mesh.scale.y, mesh.scale.z]
     } as TransformationParams
+}
+
+export const thereIsCollisionBetweenMeshes = (firstMesh: THREE.Mesh, secondMesh: THREE.Mesh) => {
+    let mesh2 = meshWithcomputedGeometryBoundingFrom(secondMesh);
+    let mesh1 = meshWithcomputedGeometryBoundingFrom(firstMesh)
+    return (mesh1.geometry.boundingBox && mesh2.geometry.boundingBox)
+        ? mesh1.geometry.boundingBox.intersectsBox(mesh2.geometry.boundingBox)
+        : false
+
 }
