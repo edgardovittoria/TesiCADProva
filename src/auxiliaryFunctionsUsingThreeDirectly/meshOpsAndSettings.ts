@@ -43,7 +43,7 @@ const materialPhongFrom = (entity: ComponentEntity) => {
     return material
 }
 
-export const geometryFrom = (entity: ComponentEntity) => {
+const geometryFrom = (entity: ComponentEntity) => {
     switch (entity.type) {
         case "CUBE":
             let cubeEntity = entity as CubeEntity

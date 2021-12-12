@@ -238,7 +238,6 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, meshe
                                 <Nav.Link
                                     id="exportSTL"
                                     onClick={() => {
-                                        console.log(meshes)
                                         const link = document.createElement('a');
                                         link.href = `data:model/stl;charset=utf-8,${encodeURIComponent(
                                             exportToSTLFormatFrom(meshes)

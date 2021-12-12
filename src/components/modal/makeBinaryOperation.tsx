@@ -12,6 +12,7 @@ import {getNewKeys} from '../canvas/components/cube';
 import {Dispatch} from '@reduxjs/toolkit';
 
 import './style/makeBinaryOperation.css'
+import { BinaryOperationType, ComponentTypes } from '../../model/auxiliaryTypes';
 
 interface MakeBinaryOpProps {
     collisions: [number, number][],
@@ -34,7 +35,7 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
 
     useEffect(() => {
         if (spinner) {
-            makeBinaryOperation(selectedOperation, collisions, canvas, dispatch)
+            makeBinaryOperation(selectedOperation as BinaryOperationType, collisions, canvas, dispatch)
             setCollisions([])
             setSpinner(false)
         }
@@ -85,20 +86,20 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
 
 }
 
-const compositeEntityFromOperationBetweenTwoEntities = (elementA: ComponentEntity, elementB: ComponentEntity, operation: string, newKeys: number[], offsetKeys: number) => {
+const compositeEntityFromOperationBetweenTwoEntities = (elementA: ComponentEntity, elementB: ComponentEntity, type: ComponentTypes, newKeys: number[], offsetKeys: number) => {
     let compositeEntity: CompositeEntity = {
         ...elementA,
         baseElements: {
             elementA: {...elementA, keyComponent: newKeys[offsetKeys]},
             elementB: {...elementB, keyComponent: newKeys[1 + offsetKeys]}
         },
-        type: operation,
+        type: type,
         keyComponent: newKeys[2 + offsetKeys]
     }
     return compositeEntity
 }
 
-const makeBinaryOperation = (operation: string, collisions: [number, number][], canvasState: CanvasState, dispatch: Dispatch) => {
+const makeBinaryOperation = (operation: BinaryOperationType, collisions: [number, number][], canvasState: CanvasState, dispatch: Dispatch) => {
     let newKeysSub = getNewKeys(canvasState.numberOfGeneratedKey, dispatch, 4 * collisions.length)
     switch (operation) {
         case "UNION":

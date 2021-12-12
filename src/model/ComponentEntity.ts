@@ -1,3 +1,5 @@
+import { ComponentTypes } from "./auxiliaryTypes"
+
 export type TransformationParamDetails = [number, number, number]
 
 export type TransformationParams = {
@@ -23,7 +25,7 @@ export const areEquals = (firstTransfParams: TransformationParams, secondTransfP
 
 export type ComponentEntity = {
     name: string
-    type: string //diventerà enum
+    type: ComponentTypes
     orbitEnabled: boolean
     transformationParams: TransformationParams
     previousTransformationParams: TransformationParams
