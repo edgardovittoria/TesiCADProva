@@ -4,9 +4,11 @@ import { CSG } from "three-csg-ts"
 import { BufferEntity, ComponentEntity, CompositeEntity, ConeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity, TransformationParams } from "../model/ComponentEntity"
 
 export const meshWithcomputedGeometryBoundingFrom = (mesh: THREE.Mesh) => {
-    let meshCopy = new THREE.Mesh(mesh.geometry.clone(), mesh.material)
+    let meshCopy = mesh.clone()
+    meshCopy.geometry = mesh.geometry.clone()
+    meshCopy.updateMatrix()
     meshCopy.geometry.computeBoundingBox()
-    meshCopy.geometry.boundingBox?.applyMatrix4(mesh.matrix)
+    meshCopy.geometry.boundingBox?.applyMatrix4(meshCopy.matrix)
     return meshCopy
 }
 
@@ -24,7 +26,7 @@ export const meshWithResetTransformationParamsFromOld = (mesh: THREE.Mesh) => {
     return meshClone
 }
 
-export const meshWithPositionRotationScaleFromOldOne = (oldMesh: THREE.Mesh, transformationParams: TransformationParams) => {
+export const meshWithPositionRotationScaleFromPreviousOne = (oldMesh: THREE.Mesh, transformationParams: TransformationParams) => {
     let mesh = oldMesh.clone(true)
     mesh.position.set(...transformationParams.position)
     mesh.scale.set(...transformationParams.scale)
@@ -35,62 +37,56 @@ export const meshWithPositionRotationScaleFromOldOne = (oldMesh: THREE.Mesh, tra
 }
 
 export const meshFrom = (entity: ComponentEntity) => {
-    const getOperationElementsFrom = (compositeEntity: CompositeEntity) => {
-        let elementA = meshWithPositionRotationScaleFromOldOne(meshFrom(compositeEntity.baseElements.elementA), compositeEntity.baseElements.elementA.transformationParams)
-        let elementB = meshWithPositionRotationScaleFromOldOne(meshFrom(compositeEntity.baseElements.elementB), compositeEntity.baseElements.elementB.transformationParams)
-        return [elementA, elementB]
-    }
+    let newMesh = new THREE.Mesh(geometryFrom(entity), materialPhongFrom(entity))
+    let meshResult = meshWithPositionRotationScaleFromPreviousOne(newMesh, entity.transformationParams)
+    return meshResult
+}
 
-    const meshFromOperationBetweenElements = (operation: string, elementA: THREE.Mesh, elementB: THREE.Mesh) => {
-        let newMesh: THREE.Mesh
-        if (operation === "UNION") { newMesh = CSG.union(elementA, elementB) }
-        else if (operation === "INTERSECTION") { newMesh = CSG.intersect(elementA, elementB) }
-        else { newMesh = CSG.subtract(elementA, elementB) }
-        return meshWithResetTransformationParamsFromOld(newMesh)
-    }
+const materialPhongFrom = (entity: ComponentEntity) => {
+    let material = new THREE.MeshPhongMaterial()
+    material.color.set(entity.color)
+    return material
+}
+
+const geometryFrom = (entity: ComponentEntity) => {
     switch (entity.type) {
         case "CUBE":
             let cubeEntity = entity as CubeEntity
-            let material = new THREE.MeshPhongMaterial()
-            material.color.set(cubeEntity.color)
-            return new THREE.Mesh(new THREE.BoxGeometry(cubeEntity.width, cubeEntity.height, cubeEntity.depth), material)
+            return new THREE.BoxGeometry(cubeEntity.width, cubeEntity.height, cubeEntity.depth)
         case "SPHERE":
             let sphereEntity = entity as SphereEntity
-            let materialSphere = new THREE.MeshPhongMaterial()
-            materialSphere.color.set(sphereEntity.color)
-            return new THREE.Mesh(new THREE.SphereGeometry(sphereEntity.radius, sphereEntity.widthSegments, sphereEntity.heightSegments), materialSphere)
+            return new THREE.SphereGeometry(sphereEntity.radius, sphereEntity.widthSegments, sphereEntity.heightSegments)
         case "BUFFER":
             let bufferEntity = entity as BufferEntity
-            let bufferMaterial = new THREE.MeshPhongMaterial()
-            bufferMaterial.color.set(bufferEntity.color)
             let geometry = new THREE.BufferGeometry()
             geometry.setAttribute('position', new THREE.BufferAttribute(bufferEntity.positionVertices, 3))
             geometry.setAttribute('normal', new THREE.BufferAttribute(bufferEntity.normalVertices, 3))
-            return new THREE.Mesh(geometry, bufferMaterial)
+            return geometry
         case "CYLINDER":
             let cylinderEntity = entity as CylinderEntity
-            let cylinderMaterial = new THREE.MeshPhongMaterial()
-            cylinderMaterial.color.set(cylinderEntity.color)
-            return new THREE.Mesh(new CylinderGeometry(cylinderEntity.topRadius, cylinderEntity.bottomRadius, cylinderEntity.height, cylinderEntity.radialSegments,
-                cylinderEntity.heightSegments, cylinderEntity.openEnded, cylinderEntity.thetaStart, cylinderEntity.thetaLength), cylinderMaterial)
+            return new CylinderGeometry(cylinderEntity.topRadius, cylinderEntity.bottomRadius, cylinderEntity.height, cylinderEntity.radialSegments,
+                cylinderEntity.heightSegments, cylinderEntity.openEnded, cylinderEntity.thetaStart, cylinderEntity.thetaLength)
         case "TORUS":
             let torusEntity = entity as TorusEntity
-            let torusMaterial = new THREE.MeshPhongMaterial()
-            torusMaterial.color.set(torusEntity.color)
-            return new THREE.Mesh(new TorusGeometry(torusEntity.torusRadius, torusEntity.tubeRadius,
-                torusEntity.radialSegments, torusEntity.tubularSegments, torusEntity.centralAngle), torusMaterial)
+            return new TorusGeometry(torusEntity.torusRadius, torusEntity.tubeRadius,
+                torusEntity.radialSegments, torusEntity.tubularSegments, torusEntity.centralAngle)
         case "CONE":
             let coneEntity = entity as ConeEntity
-            let coneMaterial = new THREE.MeshPhongMaterial()
-            coneMaterial.color.set(coneEntity.color)
-            return new THREE.Mesh(new ConeGeometry(coneEntity.radius, coneEntity.height, coneEntity.radialSegments,
-                coneEntity.heightSegments, coneEntity.openEnded, coneEntity.thetaStart, coneEntity.thetaLength), coneMaterial)
+            return new ConeGeometry(coneEntity.radius, coneEntity.height, coneEntity.radialSegments,
+                coneEntity.heightSegments, coneEntity.openEnded, coneEntity.thetaStart, coneEntity.thetaLength)
         default:
-            let [elementA, elementB] = getOperationElementsFrom(entity as CompositeEntity)
-            let meshComposite = (elementA && elementB) ? meshFromOperationBetweenElements(entity.type, elementA, elementB) : new THREE.Mesh();
-            (meshComposite.material as THREE.MeshPhongMaterial).color.set(entity.color)
-            return meshComposite
+            let compositeEntity = entity as CompositeEntity
+            let [elementA, elementB] = [meshFrom(compositeEntity.baseElements.elementA), meshFrom(compositeEntity.baseElements.elementB)]
+            return (elementA && elementB) ? meshFromOperationBetweenTwoMeshes(entity.type, elementA, elementB).geometry : new THREE.BufferGeometry();
     }
+}
+
+const meshFromOperationBetweenTwoMeshes = (operation: string, firstMesh: THREE.Mesh, secondMesh: THREE.Mesh) => {
+    let newMesh: THREE.Mesh
+    if (operation === "UNION") { newMesh = CSG.union(firstMesh, secondMesh) }
+    else if (operation === "INTERSECTION") { newMesh = CSG.intersect(firstMesh, secondMesh) }
+    else { newMesh = CSG.subtract(firstMesh, secondMesh) }
+    return newMesh
 }
 
 export const transformationParamsOf = (mesh: THREE.Mesh) => {
