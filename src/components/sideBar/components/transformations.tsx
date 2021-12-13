@@ -1,19 +1,11 @@
 import { FC } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { TransformationParamDetails, TransformationParams } from "../../../model/ComponentEntity";
+import { TransformationParams } from "../../../model/ComponentEntity";
 import { updateTransformationParams } from "../../../store/canvasSlice";
 
 export const Transformations: FC<{ transformationParams: TransformationParams }> = ({ transformationParams }) => {
     const dispatch = useDispatch()
-
-    const setValueTransformationItem = (type: string, positionItemValue: number, indexPositionItem: number) => {
-        let transfTemp = {...transformationParams}
-         let item: TransformationParamDetails = [...transfTemp[type as keyof TransformationParams]]
-         item[indexPositionItem] = positionItemValue
-         transfTemp[type as keyof TransformationParams] = item
-        dispatch(updateTransformationParams(transfTemp))
-    }
 
     return (
         <>
@@ -24,7 +16,22 @@ export const Transformations: FC<{ transformationParams: TransformationParams }>
                     </Col>
                     <Col>
                         <div className="Row transformation" style={{ width: "100%", right: 0 }}>
-                            {value.map((paramValue, index) => <InputElement key={index} type={type} coordinate={paramValue} setCoordinate={setValueTransformationItem} axisIndex={index} />)}
+                            {value.map((paramValue, index) =>
+                                <input key={index}
+                                    type="number"
+                                    step="0.1"
+                                    className="Number"
+                                    autoComplete="off"
+                                    value={paramValue}
+                                    onChange={(e) => {
+                                        dispatch(updateTransformationParams(Object.keys(transformationParams).reduce((newTransfParams, typeTransf) => {
+                                            newTransfParams[typeTransf as keyof TransformationParams] = [...newTransfParams[typeTransf as keyof TransformationParams]]
+                                            if (typeTransf === type) { newTransfParams[typeTransf as keyof TransformationParams][index] = parseFloat(e.target.value) }
+                                            return newTransfParams
+                                        }, { ...transformationParams })))
+                                    }}
+                                />
+                            )}
                         </div>
                     </Col>
                 </Row>
@@ -32,21 +39,5 @@ export const Transformations: FC<{ transformationParams: TransformationParams }>
 
         </>
 
-    )
-}
-
-
-const InputElement: FC<{ type: string, axisIndex: number, coordinate: number, setCoordinate: Function }> = ({ coordinate, setCoordinate, axisIndex, type }) => {
-
-    return (
-        <input type="number"
-            step="0.1"
-            className="Number"
-            autoComplete="off"
-            value={coordinate}
-            onChange={(e) => {
-                setCoordinate(type, parseFloat(e.target.value), axisIndex);
-            }}
-        />
     )
 }
