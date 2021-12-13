@@ -13,19 +13,15 @@ import {Dispatch} from '@reduxjs/toolkit';
 
 import './style/makeBinaryOperation.css'
 import { BinaryOperationType, ComponentTypes } from '../../model/auxiliaryTypes';
+import { useCollisions } from '../contexts/useCollisions';
 
 interface MakeBinaryOpProps {
-    collisions: [number, number][],
-    setCollisions: Function,
 }
 
 
-export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
-    {
-        collisions,
-        setCollisions,
-    }) => {
+export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = () => {
     const dispatch = useDispatch();
+    const {collisions, resetCollisions} = useCollisions()
 
 
     const [selectedOperation, setSelectedOperation] = useState("SUBTRACTION");
@@ -36,10 +32,10 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = (
     useEffect(() => {
         if (spinner) {
             makeBinaryOperation(selectedOperation as BinaryOperationType, collisions, canvas, dispatch)
-            setCollisions([])
+            resetCollisions()
             setSpinner(false)
         }
-    }, [spinner, selectedOperation, collisions, canvas, dispatch, setCollisions])
+    }, [spinner, selectedOperation, collisions, canvas, dispatch, resetCollisions])
 
     return (
             <Modal show={true}>

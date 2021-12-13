@@ -7,15 +7,16 @@ import {
 import { useThree } from "@react-three/fiber";
 import { Dispatch } from "redux";
 import { thereIsCollisionBetweenMeshes } from "../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
+import { useCollisions } from "../../contexts/useCollisions";
 
 interface DetectCollisionProps {
     entity: ComponentEntity,
-    setModalCollisions: Function
 }
 
-export const DetectCollision: FC<DetectCollisionProps> = ({ entity, setModalCollisions }) => {
+export const DetectCollision: FC<DetectCollisionProps> = ({ entity }) => {
     const { scene } = useThree()
     let dispatch = useDispatch()
+    const {setCollisions} = useCollisions()
 
     useEffect(() => {
         let [meshSelected, allMeshesButSelectedOne] = scene.children
@@ -28,10 +29,10 @@ export const DetectCollision: FC<DetectCollisionProps> = ({ entity, setModalColl
         if (collisionsSet.length > 0) {
             (areEquals(entity.transformationParams, entity.previousTransformationParams))
                 ? removeEntityJustCreated(entity.keyComponent, dispatch)
-                : setModalCollisions(collisionsSet)
+                : setCollisions(collisionsSet)
         }
         return () => { collisionsSet = [] }
-    }, [entity.keyComponent, setModalCollisions, entity.transformationParams, entity.previousTransformationParams, scene.children, dispatch])
+    }, [entity.keyComponent, setCollisions, entity.transformationParams, entity.previousTransformationParams, scene.children, dispatch])
 
     return <></>
 }

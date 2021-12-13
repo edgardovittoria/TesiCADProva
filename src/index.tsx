@@ -2,15 +2,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {Provider} from "react-redux";
-import {persistor, store} from "./store/store";
+import { Provider } from "react-redux";
+import { persistor, store } from "./store/store";
 import { PersistGate } from 'redux-persist/integration/react'
+import { MeshesAndCollisionsProvider } from './components/contexts/meshesAndCollisionsProvider';
 
 ReactDOM.render(
     <Provider store={store}>
-        <PersistGate persistor={persistor}>
-            <App />
-        </PersistGate>
+        <MeshesAndCollisionsProvider>
+            <PersistGate persistor={persistor}>
+                <App />
+            </PersistGate>
+        </MeshesAndCollisionsProvider>
     </Provider>
     ,
     document.getElementById('root')

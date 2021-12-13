@@ -22,17 +22,16 @@ import {getDefaultCylinder} from '../canvas/components/cylinder';
 import {getDefaultTorus} from '../canvas/components/torus';
 import {getDefaultCone} from '../canvas/components/cone';
 import {UndoRedo} from "./components/undoRedo";
-import * as THREE from 'three';
 import { ActionCreators } from 'redux-undo';
+import { useMeshes } from '../contexts/useMeshes';
 
 interface NavBarProps {
     setViewElementVisibility: Function,
-    meshes: THREE.Mesh[]
 }
 
 
-export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, meshes}) => {
-
+export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
+    const {meshes} = useMeshes()
     const [navBarOpen, setNavBarOpen] = useState(false);
 
     const dispatch = useDispatch();
@@ -238,6 +237,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, meshe
                                 <Nav.Link
                                     id="exportSTL"
                                     onClick={() => {
+                                        console.log(meshes)
                                         const link = document.createElement('a');
                                         link.href = `data:model/stl;charset=utf-8,${encodeURIComponent(
                                             exportToSTLFormatFrom(meshes)

@@ -15,13 +15,14 @@ import { DetectCollision } from './components/detectCollision';
 
 import './style/canvas.css'
 import { ComponentEntity, TransformationParams } from "../../model/ComponentEntity";
+import { MeshesAndCollisionsContext } from '../contexts/meshesAndCollisionsProvider';
+import { useMeshes } from '../contexts/useMeshes';
+import { getObjectsFromSceneByType } from '../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
 
 interface MyCanvasProps {
-    setModalCollisions: Function,
-    setMeshes: Function
 }
 
-export const MyCanvas: React.FC<MyCanvasProps> = ({ setModalCollisions, setMeshes }) => {
+export const MyCanvas: React.FC<MyCanvasProps> = () => {
 
     const components = useSelector(componentseSelector);
     const orbit = useRef(null);
@@ -32,29 +33,35 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({ setModalCollisions, setMeshe
 
             <ReactReduxContext.Consumer>
                 {({ store }) => (
-                    <>
-                        <Canvas id="myCanvas"
-                            camera={{ position: [0, 50, 0], fov: 20, far: 1000, near: 0.1 }}>
-                            <Provider store={store}>
-                                <pointLight position={[100, 100, 100]} intensity={0.8} />
-                                <hemisphereLight color="#ffffff" groundColor={new THREE.Color("#b9b9b9")}
-                                    position={[-7, 25, 13]} intensity={0.85} />
+                    <MeshesAndCollisionsContext.Consumer>
+                        {(MeshesContextType) => (
+                            <>
+                                <Canvas id="myCanvas"
+                                    camera={{ position: [0, 50, 0], fov: 20, far: 1000, near: 0.1 }}>
+                                    <Provider store={store}>
+                                        <MeshesAndCollisionsContext.Provider value={MeshesContextType}>
+                                            <pointLight position={[100, 100, 100]} intensity={0.8} />
+                                            <hemisphereLight color="#ffffff" groundColor={new THREE.Color("#b9b9b9")}
+                                                position={[-7, 25, 13]} intensity={0.85} />
+                                            <SetMeshes components={components} />
+                                            {components.map((component) => {
+                                                return <FactoryComponent key={component.keyComponent} entity={component}
+                                                    orbit={orbit} />
+                                            })}
+                                            {keySelectedComponent !== 0 &&
+                                                <DetectCollision entity={findComponentByKey(components, keySelectedComponent)} />
+                                            }
+                                            <Controls orbit={orbit} keySelectedComponent={keySelectedComponent} />
+                                            <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]} />
+                                        </MeshesAndCollisionsContext.Provider>
+                                    </Provider>
+                                </Canvas>
+                            </>
+                        )}
 
-                                {components.map((component) => {
-                                    return <FactoryComponent key={component.keyComponent} entity={component}
-                                        orbit={orbit} />
-                                })}
-                                {keySelectedComponent !== 0 &&
-                                    <DetectCollision entity={findComponentByKey(components, keySelectedComponent)}
-                                        setModalCollisions={setModalCollisions} />
-                                }
-                                <Controls orbit={orbit} keySelectedComponent={keySelectedComponent} />
-                                <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]} />
-                                <SetMeshes setMeshes={setMeshes} components={components} />
-                            </Provider>
-                        </Canvas>
-                    </>
+                    </MeshesAndCollisionsContext.Consumer>
                 )}
+
             </ReactReduxContext.Consumer>
         </div>
 
@@ -62,10 +69,11 @@ export const MyCanvas: React.FC<MyCanvasProps> = ({ setModalCollisions, setMeshe
 
 }
 
-const SetMeshes: FC<{ setMeshes: Function, components: ComponentEntity[] }> = ({ setMeshes, components }) => {
+const SetMeshes: FC<{ components: ComponentEntity[] }> = ({ components }) => {
     const { scene } = useThree()
+    const { setMeshes } = useMeshes()
     useEffect(() => {
-        setMeshes(scene.children.filter(child => child.type === "Mesh"))
+        setMeshes(getObjectsFromSceneByType(scene, "Mesh"))
     }, [scene, components, setMeshes]);
     return <></>
 }

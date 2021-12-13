@@ -98,3 +98,5 @@ export const thereIsCollisionBetweenMeshes = (firstMesh: THREE.Mesh, secondMesh:
         : false
 
 }
+
+export const getObjectsFromSceneByType = (scene: THREE.Scene, type: string) => scene.children.filter(obj => obj.type === type)
