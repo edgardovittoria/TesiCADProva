@@ -1,5 +1,5 @@
 import React, {MutableRefObject, useRef} from 'react';
-import {selectComponent} from "../../../store/canvasSlice";
+import {keySelectedComponenteSelector, selectComponent} from "../../../store/canvasSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {
     activeTransformationSelector,
@@ -20,14 +20,15 @@ export const Component: React.FC<ComponentProps> = ({children, orbit, transforma
     const meshRef = useRef<THREE.Mesh>(null)
     const activeTransformation = useSelector(activeTransformationSelector)
     const toolbarTransformation = useSelector(toolbarTransformationStateSelector)
+    const selectedComponentKey = useSelector(keySelectedComponenteSelector)
 
 
     return (
         <>
             <mesh ref={meshRef} name={keyComponent.toString()} position={transformationParams.position} rotation={transformationParams.rotation} scale={transformationParams.scale}
                   onClick={(e) => {
-                      e.stopPropagation()
-                      dispatch(selectComponent(keyComponent))
+                      e.stopPropagation();
+                      (selectedComponentKey !== keyComponent) && dispatch(selectComponent(keyComponent))
                   }}
                   onContextMenu={(e) => {
                       e.stopPropagation()
