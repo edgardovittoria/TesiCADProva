@@ -14,7 +14,8 @@ export const importProjectFrom = (file: File, dispatch: Dispatch) => {
 
 export const importFrom = (STLFile: File, numberOfGeneratedKey: number, dispatch: Dispatch) => {
     let loader = new STLLoader();
-    STLFile.text().then((value) => {
+
+    STLFile.arrayBuffer().then((value) => {
         let res = loader.parse(value);
         let entity: BufferEntity = {
             type: 'BUFFER',
