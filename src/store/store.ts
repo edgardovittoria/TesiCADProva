@@ -7,14 +7,14 @@ import {
 import {CanvasSlice} from "./canvasSlice";
 import {ToolbarTransformationSlice} from "./toolbarTransformationSlice";
 import undoable, {excludeAction} from 'redux-undo';
-import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist'
 import persistStore from "redux-persist/es/persistStore";
+import localforage from 'localforage';
 
 
 const persistConfig = {
     key: 'root',
-    storage: storage
+    storage: localforage
 }
 
 const rootReducer = combineReducers({

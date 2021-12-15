@@ -58,8 +58,8 @@ export const CanvasSlice = createSlice({
         },
         importStateCanvas(state: CanvasState, action: PayloadAction<CanvasState>) {
             setLastActionType(state, action.type)
-            state.components = action.payload.components
-            state.numberOfGeneratedKey = action.payload.numberOfGeneratedKey
+            state.components = state.components.concat(action.payload.components)
+             if(state.numberOfGeneratedKey < action.payload.numberOfGeneratedKey) {state.numberOfGeneratedKey = action.payload.numberOfGeneratedKey}
         },
         subtraction(state: CanvasState, action: PayloadAction<{elementsToRemove: number[], newEntity: ComponentEntity[], selectedEntityCopy: ComponentEntity}>){
             setLastActionType(state, action.type)

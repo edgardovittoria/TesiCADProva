@@ -2,7 +2,7 @@ import {Dispatch} from "@reduxjs/toolkit";
 import {RootState} from "../store/store";
 import {addComponent, importStateCanvas} from "../store/canvasSlice";
 import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
-import {BufferEntity} from "../model/ComponentEntity";
+import {BufferEntity, TRANSF_PARAMS_DEFAULTS} from "../model/ComponentEntity";
 import {getNewKeys} from "../components/canvas/components/cube";
 
 export const importProjectFrom = (file: File, dispatch: Dispatch) => {
@@ -21,9 +21,9 @@ export const importFrom = (STLFile: File, numberOfGeneratedKey: number, dispatch
             name: 'BUFFER',
             keyComponent: getNewKeys(numberOfGeneratedKey, dispatch)[0],
             orbitEnabled: true,
-            transformationParams: {position: [0,0,0], rotation: [0,0,0], scale: [1,1,1]},
+            transformationParams: TRANSF_PARAMS_DEFAULTS,
             color: '#ec2626',
-            previousTransformationParams: {position: [0,0,0], rotation: [0,0,0], scale: [1,1,1]},
+            previousTransformationParams: TRANSF_PARAMS_DEFAULTS,
             positionVertices: res.attributes.position.array as Float32Array,
             normalVertices: res.attributes.normal.array as Float32Array,
             uvVertices: undefined
