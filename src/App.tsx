@@ -9,11 +9,14 @@ import { ToolBar } from "./components/toolBar/toolBar";
 import { DraggableComponent } from "./components/utility/draggableComponent";
 import { MakeBinaryOp } from './components/modal/makeBinaryOperation';
 import { useCollisions } from './components/contexts/useCollisions';
+import {KeyboardEventMapper} from "./utils/keyboardEventMapper/keyboardEventMapper";
 
 function App() {
 
     const [sideBar, setSideBar] = useState(false);
     const {collisions} = useCollisions()
+    const [sideBarChecked, setSideBarChecked] = useState(false)
+
 
     const showViewElementVisibility = (element: string, visibility: boolean) => {
         switch (element) {
@@ -23,11 +26,11 @@ function App() {
         }
     }
 
-
     return (
         <>
             <div style={{ margin: "0px" }}>
-                <MyNavBar setViewElementVisibility={showViewElementVisibility}/>
+                <MyNavBar setViewElementVisibility={showViewElementVisibility} sideBarChecked={sideBarChecked} setSideBarChecked={setSideBarChecked}/>
+                <KeyboardEventMapper setViewElementVisibility={showViewElementVisibility} sideBarChecked={sideBarChecked} setSideBarChecked={setSideBarChecked}/>
                 <div className="canvas-width-100">
                     <MyCanvas />
                     <ToolBar />

@@ -24,13 +24,38 @@ import {getDefaultCone} from '../canvas/components/cone';
 import {UndoRedo} from "./components/undoRedo";
 import { ActionCreators } from 'redux-undo';
 import { useMeshes } from '../contexts/useMeshes';
+import {Mesh} from "three";
 
 interface NavBarProps {
     setViewElementVisibility: Function,
+    sideBarChecked: boolean,
+    setSideBarChecked: Function
+}
+
+export const exportJSONProject = () => {
+    const link = document.createElement('a');
+    link.href = `data:application/json;charset=utf-8,${encodeURIComponent(
+        exportProjectFrom(store)
+    )}`
+    link.download = "project.json"
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+export const exportToSTLFormat = (meshes: Mesh[]) => {
+    const link = document.createElement('a');
+    link.href = `data:model/stl;charset=utf-8,${encodeURIComponent(
+        exportToSTLFormatFrom(meshes)
+    )}`
+    link.download = "model.stl"
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
 
-export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
+export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideBarChecked, setSideBarChecked}) => {
     const {meshes} = useMeshes()
     const [navBarOpen, setNavBarOpen] = useState(false);
 
@@ -38,7 +63,8 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
     const numberOfGeneratedKey = useSelector(numberOfGeneratedKeySelector)
     const inputRefProject = useRef(null)
     const inputRefSTL = useRef(null)
-    const [sideBarChecked, setSideBarChecked] = useState(false)
+
+
 
 
     const onImportProjectClick = () => {
@@ -87,33 +113,49 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                                     setSideBarChecked(!sideBarChecked)
                                     setViewElementVisibility("SIDEBAR", !sideBarChecked)
                                 }}>
-                                    <Form.Check
-                                        type="switch"
-                                        id="custom-switch"
-                                        label="SideBar"
-                                        checked={sideBarChecked}
-                                        readOnly={true}
-                                    />
+                                    <div id="viewDropdown">
+                                        <div className="row">
+                                            <div className="col-8">
+                                                <Form.Check
+                                                    type="switch"
+                                                    id="custom-switch"
+                                                    label="Object Details"
+                                                    checked={sideBarChecked}
+                                                    readOnly={true}
+                                                />
+                                            </div>
+                                            <div className="col-4">
+                                                <span className="keyboardShortcut">Ctrl + d</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </Nav.Link>
                             </NavDropdown>
                             {/*End View Dropdown*/}
                             {/*Start Edit Menu*/}
                             <NavDropdown
-                                id="nav-dropdown-dark-example"
                                 title="Edit"
                                 menuVariant="dark"
                             >
-                                <UndoRedo/>
-                                <Nav.Link onClick={() => {
-                                    dispatch(resetState())
-                                    dispatch(ActionCreators.clearHistory())
-                                    localStorage.clear()
-                                }}>
-                                    <div className="dropdownItem">
-                                        <FontAwesomeIcon icon={faTrash} style={{marginRight: "5px"}}/>
-                                        <span>Clear All</span>
-                                    </div>
-                                </Nav.Link>
+                                <div id="editDropdown">
+                                    <UndoRedo/>
+                                    <Nav.Link onClick={() => {
+                                        dispatch(resetState())
+                                        dispatch(ActionCreators.clearHistory())
+                                    }}>
+                                        <div className="row">
+                                            <div className="dropdownItem col-8">
+                                                <FontAwesomeIcon icon={faTrash} style={{marginRight: "5px"}}/>
+                                                <span>Clear All</span>
+                                            </div>
+                                            <div className="keyboardShortcut  col-4">
+                                                <span>Ctrl + Alt + r</span>
+                                            </div>
+                                        </div>
+                                    </Nav.Link>
+                                </div>
+
                             </NavDropdown>
                             {/*End Edit Menu*/}
                             {/*Start Components Dropdown*/}
@@ -222,33 +264,34 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility}) => {
                             >
                                 <Nav.Link
                                     onClick={() => {
-                                        const link = document.createElement('a');
-                                        link.href = `data:application/json;charset=utf-8,${encodeURIComponent(
-                                            exportProjectFrom(store)
-                                        )}`
-                                        link.download = "project.json"
-                                        document.body.appendChild(link);
-                                        link.click();
-                                        document.body.removeChild(link);
+                                        exportJSONProject()
                                     }}>
-                                    <span className="dropdownItem">Project</span>
+                                    <div id="exportDropdown">
+                                        <div className="row">
+                                            <div className="col-6 dropdownItem">
+                                                <span>Project</span>
+                                            </div>
+                                            <div className="col-6 keyboardShortcut">
+                                                <span>Ctrl + s</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </Nav.Link>
                                 <hr/>
                                 <Nav.Link
                                     id="exportSTL"
                                     onClick={() => {
-                                        console.log(meshes)
-                                        const link = document.createElement('a');
-                                        link.href = `data:model/stl;charset=utf-8,${encodeURIComponent(
-                                            exportToSTLFormatFrom(meshes)
-                                        )}`
-                                        link.download = "model.stl"
-                                        document.body.appendChild(link);
-                                        link.click();
-                                        document.body.removeChild(link);
+                                        exportToSTLFormat(meshes)
                                     }}
                                 >
-                                    <span className="dropdownItem">STL Format</span>
+                                    <div className="row">
+                                        <div className="col-6 dropdownItem">
+                                            <span>STL Format</span>
+                                        </div>
+                                        <div className="col-6 keyboardShortcut">
+                                            <span>Ctrl + Alt + s</span>
+                                        </div>
+                                    </div>
                                 </Nav.Link>
                             </NavDropdown>
                             {/*End Export Dropdown*/}

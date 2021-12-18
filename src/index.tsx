@@ -7,6 +7,7 @@ import { persistor, store } from "./store/store";
 import { PersistGate } from 'redux-persist/integration/react'
 import { MeshesAndCollisionsProvider } from './components/contexts/meshesAndCollisionsProvider';
 
+
 ReactDOM.render(
     <Provider store={store}>
         <MeshesAndCollisionsProvider>

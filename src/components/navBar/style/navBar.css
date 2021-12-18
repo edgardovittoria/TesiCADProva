@@ -23,6 +23,18 @@
     width: max-content;
 }
 
+#editDropdown{
+    width: 340px;
+}
+
+#exportDropdown{
+    width: 230px;
+}
+
+#viewDropdown{
+    width: 260px;
+}
+
 .burgerMenu{
     background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
     width: 50px;
@@ -92,4 +104,8 @@ hr{
 
 .form-check-input{
     pointer-events: none;
+}
+
+.keyboardShortcut{
+    color: #888888;
 }

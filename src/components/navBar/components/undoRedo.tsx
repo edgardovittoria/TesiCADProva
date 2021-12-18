@@ -6,8 +6,41 @@ import { lastActionTypeSelector, lengthFutureStateSelector, lengthPastStateSelec
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faRedo, faUndo} from "@fortawesome/free-solid-svg-icons";
+import {Dispatch} from "@reduxjs/toolkit";
 
 interface UndoRedoProps {
+}
+
+export const undoFunction = (lastActionType: string, undoActions: string[], setundoActions: Function, dispatch: Dispatch) => {
+    if (lastActionType === 'canvas/subtraction'
+        || lastActionType === 'canvas/union'
+        || lastActionType === 'canvas/intersection'
+    ) {
+        dispatch(ActionCreators.jump(-2))
+        setundoActions([...undoActions, lastActionType])
+
+    } else {
+        setundoActions([...undoActions, lastActionType])
+        dispatch(ActionCreators.undo())
+
+    }
+}
+
+export const redoFunction = (undoActions: string[], setundoActions: Function, dispatch: Dispatch) => {
+    let newUndoActions = [...undoActions]
+    newUndoActions.pop()
+    if (undoActions[undoActions.length - 1] === 'canvas/subtraction'
+        || undoActions[undoActions.length - 1] === 'canvas/union'
+        || undoActions[undoActions.length - 1] === 'canvas/intersection') {
+
+        setundoActions(newUndoActions)
+        dispatch(ActionCreators.jump(2))
+
+    } else {
+
+        setundoActions(newUndoActions)
+        dispatch(ActionCreators.redo())
+    }
 }
 
 export const UndoRedo: React.FC<UndoRedoProps> = () => {
@@ -20,23 +53,17 @@ export const UndoRedo: React.FC<UndoRedoProps> = () => {
         <>
                     {pastStateLength > 0 ?
                         <Nav.Link onClick={() => {
-
-                            if (lastActionType === 'canvas/subtraction'
-                                || lastActionType === 'canvas/union'
-                                || lastActionType === 'canvas/intersection'
-                            ) {
-                                dispatch(ActionCreators.jump(-2))
-                                setundoActions([...undoActions, lastActionType])
-
-                            } else {
-                                setundoActions([...undoActions, lastActionType])
-                                dispatch(ActionCreators.undo())
-
-                            }
+                            undoFunction(lastActionType, undoActions, setundoActions, dispatch)
                         }}>
-                            <div className="dropdownItem">
-                                <FontAwesomeIcon icon={faUndo} style={{marginRight: "5px"}}/>
-                                <span>Undo Last Action</span>
+                            <div className="row">
+                                <div className="dropdownItem col-8">
+                                    <FontAwesomeIcon icon={faUndo} style={{marginRight: "5px"}}/>
+                                    <span>Undo Last Action</span>
+                                </div>
+                                <div className="keyboardShortcut  col-4">
+                                    <span>Ctrl + z</span>
+                                </div>
+
                             </div>
                         </Nav.Link>
                         :
@@ -50,24 +77,16 @@ export const UndoRedo: React.FC<UndoRedoProps> = () => {
 
                     {futureStateLength > 0 ?
                         <Nav.Link onClick={() => {
-                            let newUndoActions = [...undoActions]
-                            newUndoActions.pop()
-                            if (undoActions[undoActions.length - 1] === 'canvas/subtraction'
-                                || undoActions[undoActions.length - 1] === 'canvas/union'
-                                || undoActions[undoActions.length - 1] === 'canvas/intersection') {
-
-                                setundoActions(newUndoActions)
-                                dispatch(ActionCreators.jump(2))
-
-                            } else {
-
-                                setundoActions(newUndoActions)
-                                dispatch(ActionCreators.redo())
-                            }
+                            redoFunction(undoActions, setundoActions, dispatch)
                         }}>
-                            <div className="dropdownItem">
-                                <FontAwesomeIcon icon={faRedo} style={{marginRight: "5px"}}/>
-                                <span>Redo Last Action</span>
+                            <div className="row">
+                                <div className="dropdownItem col-8">
+                                    <FontAwesomeIcon icon={faRedo} style={{marginRight: "5px"}}/>
+                                    <span>Redo Last Action</span>
+                                </div>
+                                <div className="keyboardShortcut  col-4">
+                                    <span>Ctrl + x</span>
+                                </div>
                             </div>
                         </Nav.Link>
                         :

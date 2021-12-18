@@ -19,6 +19,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     canvas: undoable(CanvasSlice.reducer, {
+        limit: 20,
         filter: excludeAction(CanvasSlice.actions.incrementNumberOfGeneratedKey.type),
     }),
     toolbarTransformation: ToolbarTransformationSlice.reducer,

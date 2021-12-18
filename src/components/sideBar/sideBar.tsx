@@ -30,7 +30,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
     return (
         <ProSidebar className="proSidebar">
             <SidebarHeader className="sideBarHeader">
-                <h4>SideBar</h4>
+                <h4>Object Details</h4>
             </SidebarHeader>
             <SidebarContent className="sideBarContent">
                 <div>
