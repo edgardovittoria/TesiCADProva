@@ -6,8 +6,9 @@ import {
 } from "../../../store/canvasSlice";
 import { useThree } from "@react-three/fiber";
 import { Dispatch } from "redux";
-import { thereIsCollisionBetweenMeshes } from "../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
+import { getObjectsFromSceneByType, meshesCollidingWithTargetMesh } from "../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
 import { useCollisions } from "../../contexts/useCollisions";
+import * as THREE from "three";
 
 interface DetectCollisionProps {
     entity: ComponentEntity,
@@ -16,11 +17,10 @@ interface DetectCollisionProps {
 export const DetectCollision: FC<DetectCollisionProps> = ({ entity }) => {
     const { scene } = useThree()
     let dispatch = useDispatch()
-    const {setCollisions} = useCollisions()
+    const { setCollisions } = useCollisions()
 
     useEffect(() => {
-        let [meshSelected, allMeshesButSelectedOne] = scene.children
-            .filter(el => el.type === "Mesh")
+        let [meshSelected, allMeshesButSelectedOne] = getObjectsFromSceneByType(scene, "Mesh")
             .reduce((result: [THREE.Mesh, THREE.Mesh[]], mesh) => {
                 (mesh.name === entity.keyComponent.toString()) ? result[0] = mesh as THREE.Mesh : result[1].push(mesh as THREE.Mesh)
                 return result
@@ -31,8 +31,7 @@ export const DetectCollision: FC<DetectCollisionProps> = ({ entity }) => {
                 ? removeEntityJustCreated(entity.keyComponent, dispatch)
                 : setCollisions(collisionsSet)
         }
-        return () => { collisionsSet = [] }
-    }, [entity.keyComponent, setCollisions, entity.transformationParams, entity.previousTransformationParams, scene.children, dispatch])
+    }, [entity.keyComponent, setCollisions, entity.transformationParams, entity.previousTransformationParams, scene, dispatch])
 
     return <></>
 }
@@ -43,9 +42,13 @@ const removeEntityJustCreated = (entityKey: number, dispatch: Dispatch) => {
 }
 
 const arrayOfCollisionsBetween = (meshSelected: THREE.Mesh, allMeshes: THREE.Mesh[]) => {
-    return allMeshes
-        .reduce((results: [number, number][], mesh) => {
-            (thereIsCollisionBetweenMeshes(meshSelected, mesh)) && results.push([parseInt(meshSelected.name), parseInt(mesh.name)])
-            return results
-        }, [])
-}
+    return meshesCollidingWithTargetMesh(meshSelected, allMeshes).reduce((collisions: [number,number][], meshColliding) => {
+        collisions.push([parseInt(meshSelected.name), parseInt(meshColliding.name)])
+        return collisions
+    },[])
+//     return allMeshes
+//         .reduce((results: [number, number][], mesh) => {
+//             (thereIsCollisionBetweenMeshes(meshSelected, mesh)) && results.push([parseInt(meshSelected.name), parseInt(mesh.name)])
+//             return results
+//         }, [])
+ }
