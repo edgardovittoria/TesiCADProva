@@ -7,8 +7,6 @@ import {
     lengthPastStateSelector, removeComponent, resetState,
 } from "../../store/canvasSlice";
 import {redoFunction, undoFunction} from "../../components/navBar/components/undoRedo";
-import {exportProjectFrom} from "../../auxiliaryFunctionsForImportAndExport/exportFunctions";
-import {store} from "../../store/store";
 import {exportJSONProject, exportToSTLFormat} from "../../components/navBar/navBar";
 import {useMeshes} from "../../components/contexts/useMeshes";
 

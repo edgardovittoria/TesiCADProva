@@ -31,6 +31,7 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = () => {
 
     useEffect(() => {
         if (spinner) {
+            console.log(collisions)
             makeBinaryOperation(selectedOperation as BinaryOperationType, collisions, canvas, dispatch)
             resetCollisions()
             setSpinner(false)

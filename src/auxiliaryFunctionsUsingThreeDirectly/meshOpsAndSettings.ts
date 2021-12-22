@@ -100,3 +100,28 @@ export const thereIsCollisionBetweenMeshes = (firstMesh: THREE.Mesh, secondMesh:
 }
 
 export const getObjectsFromSceneByType = (scene: THREE.Scene, type: string) => scene.children.filter(obj => obj.type === type)
+
+export const meshesCollidingWithTargetMeshBasedOnBoundingBox = (targetMesh: THREE.Mesh, meshesToCheckCollisionWith: THREE.Mesh[]) : THREE.Mesh[] => {
+        return meshesToCheckCollisionWith
+        .reduce((results: THREE.Mesh[], mesh) => {
+            (thereIsCollisionBetweenMeshes(targetMesh, mesh)) && results.push(mesh)
+            return results
+       }, [])
+}
+
+
+export const meshesCollidingWithTargetMesh = (targetMesh: THREE.Mesh, meshesToCheckCollisionWith: THREE.Mesh[]) : THREE.Mesh[] => {
+    let meshesToCheckCopy = [...meshesToCheckCollisionWith]
+    let directionVector = new THREE.Vector3()
+    let collisions: THREE.Mesh[] = [];
+    for (let index = 0; index < targetMesh.geometry.getAttribute("position").count; index++) {
+        directionVector.fromBufferAttribute(targetMesh.geometry.getAttribute("position"), index).applyMatrix4(targetMesh.matrix).sub(targetMesh.position)
+        let ray = new THREE.Raycaster(targetMesh.position.clone(), directionVector.clone().normalize())
+        let collisionResults = ray.intersectObjects(meshesToCheckCopy)
+        if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
+            collisions.push(collisionResults[0].object as THREE.Mesh)
+            meshesToCheckCopy = meshesToCheckCopy.filter(mesh => mesh.name !== collisionResults[0].object.name)
+        }
+    }
+    return collisions
+}
