@@ -101,6 +101,15 @@ export const thereIsCollisionBetweenMeshes = (firstMesh: THREE.Mesh, secondMesh:
 
 export const getObjectsFromSceneByType = (scene: THREE.Scene, type: string) => scene.children.filter(obj => obj.type === type)
 
+export const meshesCollidingWithTargetMeshBasedOnBoundingBox = (targetMesh: THREE.Mesh, meshesToCheckCollisionWith: THREE.Mesh[]) : THREE.Mesh[] => {
+        return meshesToCheckCollisionWith
+        .reduce((results: THREE.Mesh[], mesh) => {
+            (thereIsCollisionBetweenMeshes(targetMesh, mesh)) && results.push(mesh)
+            return results
+       }, [])
+}
+
+
 export const meshesCollidingWithTargetMesh = (targetMesh: THREE.Mesh, meshesToCheckCollisionWith: THREE.Mesh[]) : THREE.Mesh[] => {
     let meshesToCheckCopy = [...meshesToCheckCollisionWith]
     let directionVector = new THREE.Vector3()

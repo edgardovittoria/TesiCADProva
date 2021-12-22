@@ -46,9 +46,4 @@ const arrayOfCollisionsBetween = (meshSelected: THREE.Mesh, allMeshes: THREE.Mes
         collisions.push([parseInt(meshSelected.name), parseInt(meshColliding.name)])
         return collisions
     },[])
-//     return allMeshes
-//         .reduce((results: [number, number][], mesh) => {
-//             (thereIsCollisionBetweenMeshes(meshSelected, mesh)) && results.push([parseInt(meshSelected.name), parseInt(mesh.name)])
-//             return results
-//         }, [])
  }
