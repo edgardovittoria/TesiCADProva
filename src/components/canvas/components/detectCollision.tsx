@@ -1,14 +1,11 @@
 import { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { areEquals, ComponentEntity } from "../../../model/ComponentEntity";
-import {
-    removeComponent,
-} from "../../../store/canvasSlice";
 import { useThree } from "@react-three/fiber";
 import { Dispatch } from "redux";
 import { getObjectsFromSceneByType, meshesCollidingWithTargetMesh } from "../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
 import { useCollisions } from "../../contexts/useCollisions";
 import * as THREE from "three";
+import { areEquals, ComponentEntity, removeComponent } from "@Draco112358/cad-library";
 
 interface DetectCollisionProps {
     entity: ComponentEntity,

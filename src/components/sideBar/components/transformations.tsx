@@ -1,8 +1,7 @@
+import { TransformationParams, updateTransformationParams } from "@Draco112358/cad-library";
 import { FC } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { TransformationParams } from "../../../model/ComponentEntity";
-import { updateTransformationParams } from "../../../store/canvasSlice";
 
 export const Transformations: FC<{ transformationParams: TransformationParams }> = ({ transformationParams }) => {
     const dispatch = useDispatch()

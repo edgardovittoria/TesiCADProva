@@ -1,5 +1,4 @@
-import React, {MutableRefObject, useRef} from 'react';
-import {keySelectedComponenteSelector, selectComponent} from "../../../store/canvasSlice";
+import React, {useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
     activeTransformationSelector,
@@ -7,15 +6,14 @@ import {
     setTransformationActive,
     toolbarTransformationStateSelector
 } from "../../../store/toolbarTransformationSlice";
-import { TransformationParams } from '../../../model/ComponentEntity';
+import { keySelectedComponenteSelector, selectComponent, TransformationParams } from '@Draco112358/cad-library';
 
 export interface ComponentProps {
-    orbit: MutableRefObject<null>,
     transformationParams: TransformationParams
     keyComponent: number,
 }
 
-export const Component: React.FC<ComponentProps> = ({children, orbit, transformationParams, keyComponent}) => {
+export const Component: React.FC<ComponentProps> = ({children, transformationParams, keyComponent}) => {
     const dispatch = useDispatch();
     const meshRef = useRef<THREE.Mesh>(null)
     const activeTransformation = useSelector(activeTransformationSelector)

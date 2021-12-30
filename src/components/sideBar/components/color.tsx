@@ -1,9 +1,7 @@
 import React from 'react';
-import {ComponentEntity} from "../../../model/ComponentEntity";
 import {Dispatch} from "@reduxjs/toolkit";
-import {updateColor} from "../../../store/canvasSlice";
-
 import "../style/color.css"
+import { ComponentEntity, updateColor } from '@Draco112358/cad-library';
 
 interface ColorProps {
     selectedComponent: ComponentEntity

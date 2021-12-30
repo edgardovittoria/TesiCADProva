@@ -1,75 +1,19 @@
-import {
-    BufferEntity,
-    ComponentEntity,
-    CompositeEntity,
-    ConeEntity,
-    CubeEntity,
-    CylinderEntity,
-    SphereEntity,
-    TorusEntity
-} from "../../model/ComponentEntity";
-import {Cube} from "../canvas/components/cube";
-import {FC, MutableRefObject} from "react";
-import {Composite} from "../canvas/components/composite";
-import {Sphere} from "../canvas/components/sphere";
-import {BufferComponent} from "../canvas/components/bufferComponent";
-import {Cylinder} from "../canvas/components/cylinder";
+import {FC} from "react";
 import {Component} from "../canvas/components/Component";
-import {Torus} from "../canvas/components/torus";
-import {Cone} from "../canvas/components/cone";
+import { ComponentEntity, FactoryShapes } from "@Draco112358/cad-library";
 
 
 interface FactoryComponentProps {
     entity: ComponentEntity,
-    orbit: MutableRefObject<null>
 }
 
-export const FactoryComponent: FC<FactoryComponentProps> = ({entity, orbit}) => {
+export const FactoryComponent: FC<FactoryComponentProps> = ({entity}) => {
     return (
-        <Component key={entity.keyComponent} keyComponent={entity.keyComponent} orbit={orbit}
-                       transformationParams={entity.transformationParams}>
-                {factoryElements(entity)}
+        <Component key={entity.keyComponent} keyComponent={entity.keyComponent} transformationParams={entity.transformationParams}>
+                <FactoryShapes entity={entity}/>
         </Component>
     )
 }
 
-const factoryElements = (entity: ComponentEntity) => {
-    switch (entity.type) {
-        case "CUBE":
-            let cubeEntity = entity as CubeEntity
-            return <Cube color={cubeEntity.color} width={cubeEntity.width} height={cubeEntity.height}
-                         depth={cubeEntity.depth}/>
-        case "SPHERE":
-            let sphereEntity = entity as SphereEntity
-            return <Sphere color={sphereEntity.color} heightSegments={sphereEntity.heightSegments}
-                           widthSegments={sphereEntity.widthSegments} radius={sphereEntity.radius}/>
-        case "BUFFER":
-            let bufferEntity = entity as BufferEntity
-            return <BufferComponent positionVertices={bufferEntity.positionVertices} normalVertices={bufferEntity.normalVertices} color={bufferEntity.color}/>
-        case "CYLINDER":
-            let cylinderEntity = entity as CylinderEntity
-            return <Cylinder topRadius={cylinderEntity.topRadius} bottomRadius={cylinderEntity.bottomRadius}
-                             height={cylinderEntity.height}
-                             color={cylinderEntity.color} heightSegments={cylinderEntity.heightSegments}
-                             radialSegments={cylinderEntity.radialSegments}
-                             thetaStart={cylinderEntity.thetaStart} thetaLength={cylinderEntity.thetaLength}
-                             openEnded={cylinderEntity.openEnded}/>
-        case "TORUS":
-            let torusEntity = entity as TorusEntity
-            return <Torus color={torusEntity.color} torusRadius={torusEntity.torusRadius}
-                          tubeRadius={torusEntity.tubeRadius}
-                          centralAngle={torusEntity.centralAngle} radialSegments={torusEntity.radialSegments}
-                          tubularSegments={torusEntity.tubularSegments}/>
-        case "CONE":
-            let coneEntity = entity as ConeEntity
-            return <Cone radius={coneEntity.radius} height={coneEntity.height}
-                         color={coneEntity.color} heightSegments={coneEntity.heightSegments}
-                         radialSegments={coneEntity.radialSegments}
-                         thetaStart={coneEntity.thetaStart} thetaLength={coneEntity.thetaLength}
-                         openEnded={coneEntity.openEnded}/>
-        default:
-            return <Composite entity={entity as CompositeEntity}/>
 
-    }
-}
 

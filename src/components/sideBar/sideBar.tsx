@@ -2,11 +2,6 @@ import React, {} from 'react';
 import {ProSidebar, SidebarContent, SidebarHeader} from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {useDispatch, useSelector} from "react-redux";
-import {
-    canvasStateSelector,
-    removeComponent,
-    selectedComponentSelector
-} from "../../store/canvasSlice";
 import {Outliner} from "./components/outliner";
 import {Color} from "./components/color";
 import {Container} from "react-bootstrap";
@@ -15,6 +10,7 @@ import "./style/outliner.css"
 import "./style/sideBar.css"
 import "./style/transformation.css"
 import { Transformations } from './components/transformations';
+import { canvasStateSelector, removeComponent, selectedComponentSelector } from '@Draco112358/cad-library';
 
 
 interface SideBarProps {

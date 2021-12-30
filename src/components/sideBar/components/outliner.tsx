@@ -1,5 +1,5 @@
+import { CanvasState } from '@Draco112358/cad-library';
 import React, {useEffect, useState} from 'react';
-import {CanvasState} from "../../../store/canvasSlice";
 import { OutlinerItem } from './outlinerItem';
 
 interface OutlinerProps {

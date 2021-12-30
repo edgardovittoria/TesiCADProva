@@ -1,7 +1,7 @@
+import { BufferEntity, ComponentEntity, CompositeEntity, ConeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity, TransformationParams, TRANSF_PARAMS_DEFAULTS } from "@Draco112358/cad-library"
 import * as THREE from "three"
 import { ConeGeometry, CylinderGeometry, TorusGeometry } from "three"
 import { CSG } from "three-csg-ts"
-import { BufferEntity, ComponentEntity, CompositeEntity, ConeEntity, CubeEntity, CylinderEntity, SphereEntity, TorusEntity, TransformationParams, TRANSF_PARAMS_DEFAULTS } from "../model/ComponentEntity"
 
 export const meshWithcomputedGeometryBoundingFrom = (mesh: THREE.Mesh) => {
     let meshCopy = mesh.clone()

@@ -1,6 +1,6 @@
+import { selectComponent, updateName } from "@Draco112358/cad-library";
 import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
-import { selectComponent, updateName } from "../../../store/canvasSlice";
 
 interface OutlinerItemProps{
     keyComponent : number,

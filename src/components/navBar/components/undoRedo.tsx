@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import {Nav} from "react-bootstrap";
-import { ActionCreators } from "redux-undo"
-import { lastActionTypeSelector, lengthFutureStateSelector, lengthPastStateSelector } from '../../../store/canvasSlice';
-
+import { ActionCreators } from "redux-undo";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faRedo, faUndo} from "@fortawesome/free-solid-svg-icons";
 import {Dispatch} from "@reduxjs/toolkit";
+import { lastActionTypeSelector, lengthFutureStateSelector, lengthPastStateSelector } from '@Draco112358/cad-library';
 
 interface UndoRedoProps {
 }

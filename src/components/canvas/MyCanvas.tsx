@@ -1,11 +1,5 @@
-import React, { FC, MutableRefObject, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { Provider, ReactReduxContext, useDispatch, useSelector } from "react-redux";
-import {
-    componentseSelector,
-    findComponentByKey,
-    keySelectedComponenteSelector,
-    updateTransformationParams
-} from "../../store/canvasSlice";
 import { Canvas, Object3DNode, useThree } from "@react-three/fiber";
 import { OrbitControls, TransformControls } from "@react-three/drei";
 import { FactoryComponent } from '../factory/FactoryComponent';
@@ -14,10 +8,10 @@ import { ToolbarTransformationState, toolbarTransformationStateSelector } from '
 import { DetectCollision } from './components/detectCollision';
 
 import './style/canvas.css'
-import { ComponentEntity, TransformationParams } from "../../model/ComponentEntity";
 import { MeshesAndCollisionsContext } from '../contexts/meshesAndCollisionsProvider';
 import { useMeshes } from '../contexts/useMeshes';
 import { getObjectsFromSceneByType } from '../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
+import { ComponentEntity, componentseSelector, findComponentByKey, keySelectedComponenteSelector, TransformationParams, updateTransformationParams } from '@Draco112358/cad-library';
 
 interface MyCanvasProps {
 }
@@ -25,7 +19,6 @@ interface MyCanvasProps {
 export const MyCanvas: React.FC<MyCanvasProps> = () => {
 
     const components = useSelector(componentseSelector);
-    const orbit = useRef(null);
     const keySelectedComponent = useSelector(keySelectedComponenteSelector)
 
     return (
@@ -45,13 +38,12 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                                                 position={[-7, 25, 13]} intensity={0.85} />
                                             <SetMeshes components={components} />
                                             {components.map((component) => {
-                                                return <FactoryComponent key={component.keyComponent} entity={component}
-                                                    orbit={orbit} />
+                                                return <FactoryComponent key={component.keyComponent} entity={component} />
                                             })}
                                             {keySelectedComponent !== 0 &&
                                                 <DetectCollision entity={findComponentByKey(components, keySelectedComponent)} />
                                             }
-                                            <Controls orbit={orbit} keySelectedComponent={keySelectedComponent} />
+                                            <Controls keySelectedComponent={keySelectedComponent} />
                                             <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]} />
                                         </MeshesAndCollisionsContext.Provider>
                                     </Provider>
@@ -79,10 +71,7 @@ const SetMeshes: FC<{ components: ComponentEntity[] }> = ({ components }) => {
 }
 
 
-const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number }> = ({
-    orbit,
-    keySelectedComponent
-}) => {
+const Controls: FC<{ keySelectedComponent: number }> = ({ keySelectedComponent}) => {
     const { scene, camera } = useThree()
     const transformation = useRef(null);
     const toolbarTransformationState = useSelector(toolbarTransformationStateSelector);
@@ -129,7 +118,7 @@ const Controls: FC<{ orbit: MutableRefObject<null>, keySelectedComponent: number
                 showZ={(keySelectedComponent !== 0)}
                 mode={getActiveTransformationType(toolbarTransformationState)}
             />
-            <OrbitControls ref={orbit} addEventListener={undefined} hasEventListener={undefined}
+            <OrbitControls addEventListener={undefined} hasEventListener={undefined}
                 removeEventListener={undefined} dispatchEvent={undefined} makeDefault />
         </>
     )

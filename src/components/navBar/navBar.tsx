@@ -10,21 +10,16 @@ import {
     faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {getDefaultCube} from "../canvas/components/cube";
-import {addComponent, numberOfGeneratedKeySelector, resetState} from "../../store/canvasSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {getDefaultSphere} from '../canvas/components/sphere';
 import {store} from '../../store/store';
 import './style/navBar.css';
-import {importFrom, importProjectFrom} from "../../auxiliaryFunctionsForImportAndExport/importFunctions";
+import {importProjectFrom} from "../../auxiliaryFunctionsForImportAndExport/importFunctions";
 import {exportProjectFrom, exportToSTLFormatFrom} from "../../auxiliaryFunctionsForImportAndExport/exportFunctions";
-import {getDefaultCylinder} from '../canvas/components/cylinder';
-import {getDefaultTorus} from '../canvas/components/torus';
-import {getDefaultCone} from '../canvas/components/cone';
 import {UndoRedo} from "./components/undoRedo";
 import { ActionCreators } from 'redux-undo';
 import { useMeshes } from '../contexts/useMeshes';
 import {Mesh} from "three";
+import { addComponent, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, importFrom, numberOfGeneratedKeySelector, resetState } from '@Draco112358/cad-library';
 
 interface NavBarProps {
     setViewElementVisibility: Function,

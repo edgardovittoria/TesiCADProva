@@ -1,19 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {FormSelect, Modal, Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    CanvasState,
-    findComponentByKey, intersection,
-    subtraction, union
-} from "../../store/canvasSlice";
-import {canvasStateSelector} from '../../store/canvasSlice';
-import {ComponentEntity, CompositeEntity} from '../../model/ComponentEntity';
-import {getNewKeys} from '../canvas/components/cube';
 import {Dispatch} from '@reduxjs/toolkit';
-
 import './style/makeBinaryOperation.css'
-import { BinaryOperationType, ComponentTypes } from '../../model/auxiliaryTypes';
 import { useCollisions } from '../contexts/useCollisions';
+import { BinaryOperationType, CanvasState, canvasStateSelector, ComponentEntity, ComponentTypes, CompositeEntity, findComponentByKey, getNewKeys, intersection, subtraction, union } from '@Draco112358/cad-library';
 
 interface MakeBinaryOpProps {
 }
