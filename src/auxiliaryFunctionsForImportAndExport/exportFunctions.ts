@@ -1,9 +1,9 @@
-import {Store} from "@reduxjs/toolkit";
 import {STLExporter} from "three/examples/jsm/exporters/STLExporter";
 import * as THREE from "three";
+import { CanvasState } from "@Draco112358/cad-library";
 
-export const exportProjectFrom = (store: Store) => {
-    return JSON.stringify(store.getState())
+export const exportProjectFrom = (canvas: CanvasState) => {
+    return JSON.stringify(canvas)
 }
 
 export const exportToSTLFormatFrom = (meshes: THREE.Mesh[]) => {

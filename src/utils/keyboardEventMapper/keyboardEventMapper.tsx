@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {redoFunction, undoFunction} from "../../components/navBar/components/undoRedo";
 import {exportJSONProject, exportToSTLFormat} from "../../components/navBar/navBar";
 import {useMeshes} from "../../components/contexts/useMeshes";
-import { keySelectedComponenteSelector, lastActionTypeSelector, lengthFutureStateSelector, lengthPastStateSelector, removeComponent, resetState } from '@Draco112358/cad-library';
+import { canvasStateSelector, keySelectedComponenteSelector, lastActionTypeSelector, lengthFutureStateSelector, lengthPastStateSelector, removeComponent, resetState } from '@Draco112358/cad-library';
 
 interface KeyboardEventMapperProps {
     sideBarChecked: boolean,
@@ -20,6 +20,7 @@ export const KeyboardEventMapper: React.FC<KeyboardEventMapperProps> = ({setSide
     const [undoActions, setundoActions] = useState<string[]>([])
 
     const selectedComponentKey = useSelector(keySelectedComponenteSelector)
+    const canvasState = useSelector(canvasStateSelector)
 
     const {meshes} = useMeshes()
 
@@ -54,7 +55,7 @@ export const KeyboardEventMapper: React.FC<KeyboardEventMapperProps> = ({setSide
         if(e.ctrlKey && !e.altKey && e.key === 's'){
             e.preventDefault()
             if(window.confirm('Do you want to export the project in json format?')){
-                exportJSONProject()
+                exportJSONProject(canvasState)
             }
         }
         //export JSON project

@@ -11,15 +11,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useDispatch, useSelector} from "react-redux";
-import {store} from '../../store/store';
 import './style/navBar.css';
-import {importProjectFrom} from "../../auxiliaryFunctionsForImportAndExport/importFunctions";
 import {exportProjectFrom, exportToSTLFormatFrom} from "../../auxiliaryFunctionsForImportAndExport/exportFunctions";
 import {UndoRedo} from "./components/undoRedo";
 import { ActionCreators } from 'redux-undo';
 import { useMeshes } from '../contexts/useMeshes';
 import {Mesh} from "three";
-import { addComponent, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, importFrom, numberOfGeneratedKeySelector, resetState } from '@Draco112358/cad-library';
+import { addComponent, CanvasState, canvasStateSelector, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, importFromCadProject, importFromCadSTL, numberOfGeneratedKeySelector, resetState } from '@Draco112358/cad-library';
 
 interface NavBarProps {
     setViewElementVisibility: Function,
@@ -27,10 +25,10 @@ interface NavBarProps {
     setSideBarChecked: Function
 }
 
-export const exportJSONProject = () => {
+export const exportJSONProject = (canvas: CanvasState) => {
     const link = document.createElement('a');
     link.href = `data:application/json;charset=utf-8,${encodeURIComponent(
-        exportProjectFrom(store)
+        exportProjectFrom(canvas)
     )}`
     link.download = "project.json"
     document.body.appendChild(link);
@@ -56,6 +54,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
 
     const dispatch = useDispatch();
     const numberOfGeneratedKey = useSelector(numberOfGeneratedKeySelector)
+    const canvasState = useSelector(canvasStateSelector)
     const inputRefProject = useRef(null)
     const inputRefSTL = useRef(null)
 
@@ -232,7 +231,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
                                         accept="application/json"
                                         onChange={(e) => {
                                             let files = e.target.files;
-                                            (files) && importProjectFrom(files[0], dispatch)
+                                            (files) && importFromCadProject(files[0], dispatch)
                                         }}/>
                                 </button>
                                 <hr/>
@@ -245,7 +244,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
                                         accept=".stl"
                                         onChange={(e) => {
                                             let STLFiles = e.target.files;
-                                            (STLFiles) && importFrom(STLFiles[0], numberOfGeneratedKey, dispatch)
+                                            (STLFiles) && importFromCadSTL(STLFiles[0], numberOfGeneratedKey, dispatch)
                                         }}/>
                                 </button>
                             </NavDropdown>
@@ -259,7 +258,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
                             >
                                 <Nav.Link
                                     onClick={() => {
-                                        exportJSONProject()
+                                        exportJSONProject(canvasState)
                                     }}>
                                     <div id="exportDropdown">
                                         <div className="row">
