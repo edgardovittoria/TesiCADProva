@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {Container, Form, Nav, Navbar, NavDropdown, Tooltip} from "react-bootstrap";
+import React, { useRef, useState } from 'react';
+import { Container, Form, Nav, Navbar, NavDropdown, Tooltip } from "react-bootstrap";
 import {
     faBars,
     faCaretDown,
@@ -9,15 +9,15 @@ import {
     faTimes,
     faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {useDispatch, useSelector} from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch, useSelector } from "react-redux";
 import './style/navBar.css';
-import {exportProjectFrom, exportToSTLFormatFrom} from "../../auxiliaryFunctionsForImportAndExport/exportFunctions";
-import {UndoRedo} from "./components/undoRedo";
+import { exportProjectFrom, exportToSTLFormatFrom } from "../../auxiliaryFunctionsForImportAndExport/exportFunctions";
+import { UndoRedo } from "./components/undoRedo";
 import { ActionCreators } from 'redux-undo';
 import { useMeshes } from '../contexts/useMeshes';
-import {Mesh} from "three";
-import { addComponent, CanvasState, canvasStateSelector, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, importFromCadProject, importFromCadSTL, numberOfGeneratedKeySelector, resetState } from '@Draco112358/cad-library';
+import { Mesh } from "three";
+import { addComponent, CanvasState, canvasStateSelector, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, ImportActionParamsObject, ImportCadProjectButton, importFromCadSTL, importStateCanvas, numberOfGeneratedKeySelector, resetState } from '@Draco112358/cad-library';
 
 interface NavBarProps {
     setViewElementVisibility: Function,
@@ -48,26 +48,16 @@ export const exportToSTLFormat = (meshes: Mesh[]) => {
 }
 
 
-export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideBarChecked, setSideBarChecked}) => {
-    const {meshes} = useMeshes()
+export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, sideBarChecked, setSideBarChecked }) => {
+    const { meshes } = useMeshes()
     const [navBarOpen, setNavBarOpen] = useState(false);
 
     const dispatch = useDispatch();
     const numberOfGeneratedKey = useSelector(numberOfGeneratedKeySelector)
     const canvasState = useSelector(canvasStateSelector)
-    const inputRefProject = useRef(null)
     const inputRefSTL = useRef(null)
 
 
-
-
-    const onImportProjectClick = () => {
-        let input = inputRefProject.current
-        if (input) {
-            (input as HTMLInputElement).click()
-        }
-
-    };
 
     const onImportSTLClick = () => {
         let input = inputRefSTL.current
@@ -80,9 +70,9 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
     if (!navBarOpen) {
         return (
 
-                <Tooltip title="Open Navbar" className="burgerMenu" onClick={() => setNavBarOpen(!navBarOpen)}>
-                    <FontAwesomeIcon className="navbarBeforeOpenIcon" icon={faBars} size="2x"/>
-                </Tooltip>
+            <Tooltip title="Open Navbar" className="burgerMenu" onClick={() => setNavBarOpen(!navBarOpen)}>
+                <FontAwesomeIcon className="navbarBeforeOpenIcon" icon={faBars} size="2x" />
+            </Tooltip>
 
 
         )
@@ -92,7 +82,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
                 <Navbar variant="light">
                     <div className="closeNavBar">
                         <Tooltip title="Close NavBar" onClick={() => setNavBarOpen(!navBarOpen)}>
-                            <FontAwesomeIcon icon={faTimes} size="1x"/>
+                            <FontAwesomeIcon icon={faTimes} size="1x" />
                         </Tooltip>
                     </div>
                     <Container>
@@ -133,14 +123,14 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
                                 menuVariant="dark"
                             >
                                 <div id="editDropdown">
-                                    <UndoRedo/>
+                                    <UndoRedo />
                                     <Nav.Link onClick={() => {
                                         dispatch(resetState())
                                         dispatch(ActionCreators.clearHistory())
                                     }}>
                                         <div className="row">
                                             <div className="dropdownItem col-8">
-                                                <FontAwesomeIcon icon={faTrash} style={{marginRight: "5px"}}/>
+                                                <FontAwesomeIcon icon={faTrash} style={{ marginRight: "5px" }} />
                                                 <span>Clear All</span>
                                             </div>
                                             <div className="keyboardShortcut  col-4">
@@ -164,7 +154,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
 
                                 }}>
                                     <div className="dropdownItemCube dropdownItem">
-                                        <FontAwesomeIcon icon={faCube} style={{marginRight: "5px"}}/>
+                                        <FontAwesomeIcon icon={faCube} style={{ marginRight: "5px" }} />
                                         <span>Cube</span>
                                     </div>
 
@@ -175,7 +165,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
 
                                 }}>
                                     <div className="dropdownItemSphere dropdownItem">
-                                        <FontAwesomeIcon icon={faCircle} style={{marginRight: "5px"}}/>
+                                        <FontAwesomeIcon icon={faCircle} style={{ marginRight: "5px" }} />
                                         <span>Sphere</span>
                                     </div>
                                 </Nav.Link>
@@ -185,7 +175,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
 
                                 }}>
                                     <div className="dropdownItemCylinder dropdownItem">
-                                        <FontAwesomeIcon icon={faCircle} style={{marginRight: "5px"}}/>
+                                        <FontAwesomeIcon icon={faCircle} style={{ marginRight: "5px" }} />
                                         <span>Cylinder</span>
                                     </div>
 
@@ -196,7 +186,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
 
                                 }}>
                                     <div className="dropdownItemTorus dropdownItem">
-                                        <FontAwesomeIcon icon={faRing} style={{marginRight: "5px"}}/>
+                                        <FontAwesomeIcon icon={faRing} style={{ marginRight: "5px" }} />
                                         <span>Torus</span>
                                     </div>
 
@@ -208,7 +198,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
                                 }}>
                                     <div className="dropdownItemCone dropdownItem">
                                         {/* <FontAwesomeIcon icon={faRing} style={{marginRight: "5px"}}/> */}
-                                        <FontAwesomeIcon icon={faCaretDown} size="lg" style={{marginRight: "5px"}}/>
+                                        <FontAwesomeIcon icon={faCaretDown} size="lg" style={{ marginRight: "5px" }} />
                                         <span>Cone</span>
                                     </div>
 
@@ -222,30 +212,21 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
                                 title="Import"
                                 menuVariant="dark"
                             >
-                                <button className="btn-export" onClick={onImportProjectClick}>
+                                <ImportCadProjectButton className='btn-export' actionParams={{} as ImportActionParamsObject} importAction={importStateCanvas}>
                                     <span className="dropdownItem">Project</span>
-                                    <input
-                                        type="file"
-                                        ref={inputRefProject}
-                                        style={{display: "none"}}
-                                        accept="application/json"
-                                        onChange={(e) => {
-                                            let files = e.target.files;
-                                            (files) && importFromCadProject(files[0], dispatch)
-                                        }}/>
-                                </button>
-                                <hr/>
+                                </ImportCadProjectButton>
+                                <hr />
                                 <button className="btn-export" onClick={onImportSTLClick}>
                                     <span className="dropdownItem">STL file</span>
                                     <input
                                         type="file"
                                         ref={inputRefSTL}
-                                        style={{display: "none"}}
+                                        style={{ display: "none" }}
                                         accept=".stl"
                                         onChange={(e) => {
                                             let STLFiles = e.target.files;
                                             (STLFiles) && importFromCadSTL(STLFiles[0], numberOfGeneratedKey, dispatch)
-                                        }}/>
+                                        }} />
                                 </button>
                             </NavDropdown>
                             {/*End Import Dropdown*/}
@@ -271,7 +252,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({setViewElementVisibility, sideB
                                         </div>
                                     </div>
                                 </Nav.Link>
-                                <hr/>
+                                <hr />
                                 <Nav.Link
                                     id="exportSTL"
                                     onClick={() => {

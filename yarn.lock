@@ -1203,10 +1203,10 @@
   "resolved" "https://registry.npmjs.org/@csstools/normalize.css/-/normalize.css-10.1.0.tgz"
   "version" "10.1.0"
 
-"@Draco112358/cad-library@^0.1.9":
-  "integrity" "sha512-S0v+NrhzaJTI84ulkDMqr9+lGlUoSzxZK/ytdn5oqw8sVhdO4gETNXgJ/4w373YtJnzbfuOk6EWiaFtQZXa8qw=="
-  "resolved" "https://npm.pkg.github.com/download/@Draco112358/cad-library/0.1.9/bd634c1ee20dcab4b9c592eb4e61de1834766bdfcfcb698d533c9029713952c0"
-  "version" "0.1.9"
+"@Draco112358/cad-library@^0.1.11":
+  "integrity" "sha512-q+ha9aYJHbWPfDRFRuzhCy/48hXtuPuEG7fYYFt0Hhn0m8eYqYLSQJAarCUbo3dI3pyxs3Uoufb8yGfF/Kwmrg=="
+  "resolved" "https://npm.pkg.github.com/download/@Draco112358/cad-library/0.1.11/04eae34162653ad8dd965fc21ecf0c281f75725d3794719bd2868790e3786457"
+  "version" "0.1.11"
 
 "@emotion/is-prop-valid@^0.8.8":
   "integrity" "sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA=="
