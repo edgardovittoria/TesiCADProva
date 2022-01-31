@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Dispatch} from '@reduxjs/toolkit';
 import './style/makeBinaryOperation.css'
 import { useCollisions } from '../contexts/useCollisions';
-import { BinaryOperationType, CanvasState, canvasStateSelector, ComponentEntity, ComponentTypes, CompositeEntity, findComponentByKey, GeometryAttributes, getNewKeys, intersection, subtraction, union } from '@Draco112358/cad-library';
+import { BinaryOperationType, CanvasState, canvasStateSelector, ComponentEntity, ComponentTypes, CompositeEntity, findComponentByKey, GeometryAttributes, getNewKeys, intersection, lastActionTypeSelector, removeComponent, subtraction, union } from '@Draco112358/cad-library';
 
 interface MakeBinaryOpProps {
 }
@@ -13,6 +13,7 @@ interface MakeBinaryOpProps {
 export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = () => {
     const dispatch = useDispatch();
     const {collisions, resetCollisions} = useCollisions()
+    const lastActionType = useSelector(lastActionTypeSelector)
 
 
     const [selectedOperation, setSelectedOperation] = useState("SUBTRACTION");
@@ -22,8 +23,7 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = () => {
 
     useEffect(() => {
         if (spinner) {
-            console.log(collisions)
-            makeBinaryOperation(selectedOperation as BinaryOperationType, collisions, canvas, dispatch)
+            makeBinaryOperation(selectedOperation as BinaryOperationType, collisions, canvas, dispatch, lastActionType)
             resetCollisions()
             setSpinner(false)
         }
@@ -88,7 +88,7 @@ const compositeEntityFromOperationBetweenTwoEntities = (elementA: ComponentEntit
     return compositeEntity
 }
 
-const makeBinaryOperation = (operation: BinaryOperationType, collisions: [number, number][], canvasState: CanvasState, dispatch: Dispatch) => {
+const makeBinaryOperation = (operation: BinaryOperationType, collisions: [number, number][], canvasState: CanvasState, dispatch: Dispatch, lastActionType: string) => {
     let newKeysSub = getNewKeys(canvasState.numberOfGeneratedKey, dispatch, 4 * collisions.length)
     switch (operation) {
         case "UNION":
@@ -110,17 +110,23 @@ const makeBinaryOperation = (operation: BinaryOperationType, collisions: [number
                 let entityB = findComponentByKey(canvasState.components, elementB)
                 let indexKey = 3 * index
                 return compositeEntityFromOperationBetweenTwoEntities(entityB, entityA, operation, newKeysSub, indexKey)
-            })
+            })        
             let elementACopy: ComponentEntity = {
                 ...findComponentByKey(canvasState.components, collisions[0][0]),
             }
             elementACopy.keyComponent = newKeysSub[newKeysSub.length - 1];
-            elementACopy.transformationParams = elementACopy.previousTransformationParams
+            if(lastActionType === "canvas/updateTransformationParams"){
+                elementACopy.transformationParams = elementACopy.previousTransformationParams
+            }
+            else if(elementACopy.previousGeometryAttributes !== undefined){
+                elementACopy.geometryAttributes = elementACopy.previousGeometryAttributes
+            }
             let elementsToRemove: number[] = [collisions[0][0]]
             collisions.map(([, elementB]) => {
                 elementsToRemove.push(elementB)
                 return null
             })
+
             dispatch(subtraction({
                 elementsToRemove: elementsToRemove,
                 newEntity: resultSUB,
