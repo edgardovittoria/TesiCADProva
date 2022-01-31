@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Dispatch} from '@reduxjs/toolkit';
 import './style/makeBinaryOperation.css'
 import { useCollisions } from '../contexts/useCollisions';
-import { BinaryOperationType, CanvasState, canvasStateSelector, ComponentEntity, ComponentTypes, CompositeEntity, findComponentByKey, getNewKeys, intersection, subtraction, union } from '@Draco112358/cad-library';
+import { BinaryOperationType, CanvasState, canvasStateSelector, ComponentEntity, ComponentTypes, CompositeEntity, findComponentByKey, GeometryAttributes, getNewKeys, intersection, subtraction, union } from '@Draco112358/cad-library';
 
 interface MakeBinaryOpProps {
 }
@@ -82,7 +82,8 @@ const compositeEntityFromOperationBetweenTwoEntities = (elementA: ComponentEntit
             elementB: {...elementB, keyComponent: newKeys[1 + offsetKeys]}
         },
         type: type,
-        keyComponent: newKeys[2 + offsetKeys]
+        keyComponent: newKeys[2 + offsetKeys],
+        geometryAttributes: {} as GeometryAttributes
     }
     return compositeEntity
 }

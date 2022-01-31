@@ -2,10 +2,9 @@ import { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useThree } from "@react-three/fiber";
 import { Dispatch } from "redux";
-import { getObjectsFromSceneByType, meshesCollidingWithTargetMesh } from "../../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings";
 import { useCollisions } from "../../contexts/useCollisions";
 import * as THREE from "three";
-import { areEquals, ComponentEntity, removeComponent } from "@Draco112358/cad-library";
+import { areEquals, ComponentEntity, getObjectsFromSceneByType, meshesCollidingWithTargetMesh, removeComponent } from "@Draco112358/cad-library";
 
 interface DetectCollisionProps {
     entity: ComponentEntity,
@@ -28,7 +27,7 @@ export const DetectCollision: FC<DetectCollisionProps> = ({ entity }) => {
                 ? removeEntityJustCreated(entity.keyComponent, dispatch)
                 : setCollisions(collisionsSet)
         }
-    }, [entity.keyComponent, setCollisions, entity.transformationParams, entity.previousTransformationParams, scene, dispatch])
+    }, [entity.keyComponent, setCollisions, entity.transformationParams, entity.previousTransformationParams, entity.geometryAttributes, scene, dispatch])
 
     return <></>
 }

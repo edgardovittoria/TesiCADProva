@@ -10,8 +10,7 @@ import { DetectCollision } from './components/detectCollision';
 import './style/canvas.css'
 import { MeshesAndCollisionsContext } from '../contexts/meshesAndCollisionsProvider';
 import { useMeshes } from '../contexts/useMeshes';
-import { getObjectsFromSceneByType } from '../../auxiliaryFunctionsUsingThreeDirectly/meshOpsAndSettings';
-import { ComponentEntity, componentseSelector, findComponentByKey, keySelectedComponenteSelector, TransformationParams, updateTransformationParams } from '@Draco112358/cad-library';
+import { ComponentEntity, componentseSelector, findComponentByKey, getObjectsFromSceneByType, keySelectedComponenteSelector, TransformationParams, updateTransformationParams } from '@Draco112358/cad-library';
 
 interface MyCanvasProps {
 }

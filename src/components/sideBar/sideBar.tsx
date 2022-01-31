@@ -11,6 +11,7 @@ import "./style/sideBar.css"
 import "./style/transformation.css"
 import { Transformations } from './components/transformations';
 import { canvasStateSelector, removeComponent, selectedComponentSelector } from '@Draco112358/cad-library';
+import { GeometryParams } from './components/geometryParams';
 
 
 interface SideBarProps {
@@ -34,6 +35,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
                     {(canvasState.components.filter(component => component.keyComponent === canvasState.selectedComponentKey).length > 0) &&
                     <Container className="sideBarContainer">
                         <Transformations transformationParams={selectedComponent.transformationParams}/>
+                        <GeometryParams entity={selectedComponent}/>
                         <Color selectedComponent={selectedComponent} dispatch={dispatch}/>
                         <button
                             type="button"

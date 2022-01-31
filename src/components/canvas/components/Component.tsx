@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
     activeTransformationSelector,
@@ -15,7 +15,6 @@ export interface ComponentProps {
 
 export const Component: React.FC<ComponentProps> = ({children, transformationParams, keyComponent}) => {
     const dispatch = useDispatch();
-    const meshRef = useRef<THREE.Mesh>(null)
     const activeTransformation = useSelector(activeTransformationSelector)
     const toolbarTransformation = useSelector(toolbarTransformationStateSelector)
     const selectedComponentKey = useSelector(keySelectedComponenteSelector)
@@ -23,7 +22,7 @@ export const Component: React.FC<ComponentProps> = ({children, transformationPar
 
     return (
         <>
-            <mesh ref={meshRef} name={keyComponent.toString()} position={transformationParams.position} rotation={transformationParams.rotation} scale={transformationParams.scale}
+            <mesh name={keyComponent.toString()} position={transformationParams.position} rotation={transformationParams.rotation} scale={transformationParams.scale}
                   onClick={(e) => {
                       e.stopPropagation();
                       (selectedComponentKey !== keyComponent) && dispatch(selectComponent(keyComponent))
