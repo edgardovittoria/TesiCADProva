@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Dispatch} from '@reduxjs/toolkit';
 import './style/makeBinaryOperation.css'
 import { useCollisions } from '../contexts/useCollisions';
-import { BinaryOperationType, CanvasState, canvasStateSelector, ComponentEntity, ComponentTypes, CompositeEntity, findComponentByKey, GeometryAttributes, getNewKeys, intersection, lastActionTypeSelector, removeComponent, subtraction, union } from '@Draco112358/cad-library';
+import { BinaryOperationType, CanvasState, canvasStateSelector, ComponentEntity, ComponentTypes, CompositeEntity, findComponentByKey, GeometryAttributes, getNewKeys, intersection, lastActionTypeSelector, subtraction, union } from '@Draco112358/cad-library';
 
 interface MakeBinaryOpProps {
 }
@@ -27,7 +27,7 @@ export const MakeBinaryOp: React.FC<MakeBinaryOpProps> = () => {
             resetCollisions()
             setSpinner(false)
         }
-    }, [spinner, selectedOperation, collisions, canvas, dispatch, resetCollisions])
+    }, [spinner, selectedOperation, collisions, canvas, dispatch, resetCollisions, lastActionType])
 
     return (
             <Modal show={true}>
