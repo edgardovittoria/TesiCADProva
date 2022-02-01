@@ -11,7 +11,7 @@ import "./style/sideBar.css"
 import "./style/transformation.css"
 import { Transformations } from './components/transformations';
 import { canvasStateSelector, removeComponent, selectedComponentSelector } from '@Draco112358/cad-library';
-import { GeometryParams } from './components/geometryParams';
+import { GeometryParams } from './components/geometryParams/geometryParams';
 
 
 interface SideBarProps {
