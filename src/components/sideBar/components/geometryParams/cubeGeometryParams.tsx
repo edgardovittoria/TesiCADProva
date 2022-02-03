@@ -18,7 +18,7 @@ export const CubeGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, upd
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as CubeGeometryAttributes).width}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, width: parseFloat(e.target.value) } as CubeGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, width: parseFloat(e.target.value) || 0 } as CubeGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -35,7 +35,7 @@ export const CubeGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, upd
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as CubeGeometryAttributes).height}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, height: parseFloat(e.target.value) } as CubeGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, height: parseFloat(e.target.value) || 0 } as CubeGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -52,7 +52,7 @@ export const CubeGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, upd
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as CubeGeometryAttributes).depth}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, depth: parseFloat(e.target.value) } as CubeGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, depth: parseFloat(e.target.value) || 0 } as CubeGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -69,7 +69,7 @@ export const CubeGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, upd
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as CubeGeometryAttributes).widthSegments}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, widthSegments: parseFloat(e.target.value) } as CubeGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, widthSegments: parseFloat(e.target.value) || 0 } as CubeGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -86,7 +86,7 @@ export const CubeGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, upd
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as CubeGeometryAttributes).heigthSegments}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, heigthSegments: parseFloat(e.target.value) } as CubeGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, heigthSegments: parseFloat(e.target.value) || 0 } as CubeGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -103,7 +103,7 @@ export const CubeGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, upd
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as CubeGeometryAttributes).depthSegments}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, depthSegments: parseFloat(e.target.value) } as CubeGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, depthSegments: parseFloat(e.target.value) || 0 } as CubeGeometryAttributes)}
                         />
                     </div>
                 </Col>

@@ -19,7 +19,7 @@ export const CylinderGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity,
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as CylinderGeometryAttributes).topRadius}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, topRadius: parseFloat(e.target.value) } as CylinderGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, topRadius: parseFloat(e.target.value) || 0 } as CylinderGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -36,7 +36,7 @@ export const CylinderGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity,
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as CylinderGeometryAttributes).bottomRadius}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, bottomRadius: parseFloat(e.target.value) } as CylinderGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, bottomRadius: parseFloat(e.target.value) || 0 } as CylinderGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -53,7 +53,7 @@ export const CylinderGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity,
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as CylinderGeometryAttributes).height}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, height: parseFloat(e.target.value) } as CylinderGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, height: parseFloat(e.target.value) || 0 } as CylinderGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -70,7 +70,7 @@ export const CylinderGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity,
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as CylinderGeometryAttributes).radialSegments}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, radialSegments: parseFloat(e.target.value) } as CylinderGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, radialSegments: parseFloat(e.target.value) || 0 } as CylinderGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -87,7 +87,7 @@ export const CylinderGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity,
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as CylinderGeometryAttributes).heightSegments}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, heightSegments: parseFloat(e.target.value) } as CylinderGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, heightSegments: parseFloat(e.target.value) || 0 } as CylinderGeometryAttributes)}
                         />
                     </div>
                 </Col>

@@ -25,7 +25,7 @@ export const Transformations: FC<{ transformationParams: TransformationParams }>
                                     onChange={(e) => {
                                         dispatch(updateTransformationParams(Object.keys(transformationParams).reduce((newTransfParams, typeTransf) => {
                                             newTransfParams[typeTransf as keyof TransformationParams] = [...newTransfParams[typeTransf as keyof TransformationParams]]
-                                            if (typeTransf === type) { newTransfParams[typeTransf as keyof TransformationParams][index] = parseFloat(e.target.value) }
+                                            if (typeTransf === type) { newTransfParams[typeTransf as keyof TransformationParams][index] = parseFloat(e.target.value) || 0 }
                                             return newTransfParams
                                         }, { ...transformationParams })))
                                     }}

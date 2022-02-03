@@ -19,7 +19,7 @@ export const TorusGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, up
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as TorusGeometryAttributes).torusRadius}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, torusRadius: parseFloat(e.target.value) } as TorusGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, torusRadius: parseFloat(e.target.value) || 0 } as TorusGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -36,7 +36,7 @@ export const TorusGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, up
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as TorusGeometryAttributes).tubeRadius}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, tubeRadius: parseFloat(e.target.value) } as TorusGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, tubeRadius: parseFloat(e.target.value) || 0 } as TorusGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -53,7 +53,7 @@ export const TorusGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, up
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as TorusGeometryAttributes).radialSegments}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, radialSegments: parseFloat(e.target.value) } as TorusGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, radialSegments: parseFloat(e.target.value) || 0 } as TorusGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -70,7 +70,7 @@ export const TorusGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, up
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as TorusGeometryAttributes).tubularSegments}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, tubularSegments: parseFloat(e.target.value) } as TorusGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, tubularSegments: parseFloat(e.target.value) || 0 } as TorusGeometryAttributes)}
                         />
                     </div>
                 </Col>

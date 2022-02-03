@@ -19,7 +19,7 @@ export const SphereGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, u
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as SphereGeometryAttributes).radius}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, radius: parseFloat(e.target.value) } as SphereGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, radius: parseFloat(e.target.value) || 0 } as SphereGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -36,7 +36,7 @@ export const SphereGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, u
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as SphereGeometryAttributes).widthSegments}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, widthSegments: parseFloat(e.target.value) } as SphereGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, widthSegments: parseFloat(e.target.value) || 0 } as SphereGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -53,7 +53,7 @@ export const SphereGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, u
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as SphereGeometryAttributes).heightSegments}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, heightSegments: parseFloat(e.target.value) } as SphereGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, heightSegments: parseFloat(e.target.value) || 0 } as SphereGeometryAttributes)}
                         />
                     </div>
                 </Col>

@@ -10003,6 +10003,11 @@
     "@react-spring/web" "~9.2.0"
     "@react-spring/zdog" "~9.2.0"
 
+"react-statusbar@^0.0.4":
+  "integrity" "sha512-J1K12b6GyGR3P6LrF6pOltDr/g8qzrX4t354z/p1+a4v+41QlswmY2R1zV89H/5NrhJNqoUW2YB0q02UqK502A=="
+  "resolved" "https://registry.npmjs.org/react-statusbar/-/react-statusbar-0.0.4.tgz"
+  "version" "0.0.4"
+
 "react-three-fiber@*", "react-three-fiber@0.0.0-deprecated":
   "integrity" "sha512-EblIqTAsIpkYeM8bZtC4lcpTE0A2zCEGipFB52RgcQq/q+0oryrk7Sxt+sqhIjUu6xMNEVywV8dr74lz5yWO6A=="
   "resolved" "https://registry.npmjs.org/react-three-fiber/-/react-three-fiber-0.0.0-deprecated.tgz"

@@ -1,5 +1,5 @@
 #canvas-container{
-    height: 100vh;
+    height: 92vh;
     background: linear-gradient(to top, var(--canvasPrimaryColor), var(--canvasSecondaryColor));
 }
 

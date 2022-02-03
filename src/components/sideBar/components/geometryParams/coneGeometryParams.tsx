@@ -19,7 +19,7 @@ export const ConeGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, upd
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as ConeGeometryAttributes).radius}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, radius: parseFloat(e.target.value) } as ConeGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, radius: parseFloat(e.target.value) || 0 } as ConeGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -36,7 +36,7 @@ export const ConeGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, upd
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as ConeGeometryAttributes).height}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, height: parseFloat(e.target.value) } as ConeGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, height: parseFloat(e.target.value) || 0 } as ConeGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -53,7 +53,7 @@ export const ConeGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, upd
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as ConeGeometryAttributes).radialSegments}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, radialSegments: parseFloat(e.target.value) } as ConeGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, radialSegments: parseFloat(e.target.value) || 0 } as ConeGeometryAttributes)}
                         />
                     </div>
                 </Col>
@@ -70,7 +70,7 @@ export const ConeGeometryParams: FC<GeometryParamsGeneralProps> = ({ entity, upd
                             className="Number"
                             autoComplete="off"
                             value={(entity.geometryAttributes as ConeGeometryAttributes).heightSegments}
-                            onChange={(e) => updateParams({ ...entity.geometryAttributes, heightSegments: parseFloat(e.target.value) } as ConeGeometryAttributes)}
+                            onChange={(e) => updateParams({ ...entity.geometryAttributes, heightSegments: parseFloat(e.target.value) || 0 } as ConeGeometryAttributes)}
                         />
                     </div>
                 </Col>
