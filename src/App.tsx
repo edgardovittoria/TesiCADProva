@@ -32,7 +32,7 @@ function App() {
     return (
         <>
             <div style={{ margin: "0px", height: "100vh" }}>
-                <img src="axis.png" style={{position: "absolute", right: 10, top: 20}}/>
+                <img src="/axis.png" style={{ position: "absolute", left: 10, bottom: 30, zIndex: 1, width: "150px" }} />
                 <MyNavBar setViewElementVisibility={showViewElementVisibility} sideBarChecked={sideBarChecked} setSideBarChecked={setSideBarChecked} />
                 <KeyboardEventMapper setViewElementVisibility={showViewElementVisibility} sideBarChecked={sideBarChecked} setSideBarChecked={setSideBarChecked} />
                 <div className="canvas-width-100">
