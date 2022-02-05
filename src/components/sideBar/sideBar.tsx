@@ -3,15 +3,15 @@ import { ProSidebar, SidebarContent, SidebarFooter, SidebarHeader } from 'react-
 import 'react-pro-sidebar/dist/css/styles.css';
 import { useDispatch, useSelector } from "react-redux";
 import { Outliner } from "./components/outliner";
-import { Color } from "./components/color";
 import { Container } from "react-bootstrap";
 
 import "./style/outliner.css"
 import "./style/sideBar.css"
 import "./style/transformation.css"
 import { Transformations } from './components/transformations';
-import { canvasStateSelector, removeComponent, selectedComponentSelector } from '@Draco112358/cad-library';
+import { canvasStateSelector, Material, removeComponent, removeComponentMaterial, selectedComponentSelector, setComponentMaterial } from '@Draco112358/cad-library';
 import { GeometryParams } from './components/geometryParams/geometryParams';
+import { MaterialSelection } from './components/materialSelection';
 
 
 interface SideBarProps {
@@ -23,6 +23,8 @@ export const SideBar: React.FC<SideBarProps> = () => {
     const canvasState = useSelector(canvasStateSelector);
     let selectedComponent = useSelector(selectedComponentSelector)
     const dispatch = useDispatch()
+    const setMaterial = (material: Material) => dispatch(setComponentMaterial({ key: selectedComponent.keyComponent, material: material }))
+    const unsetMaterial = () => dispatch(removeComponentMaterial({ keyComponent: selectedComponent.keyComponent }))
 
     return (
         <ProSidebar className="proSidebar">
@@ -38,7 +40,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
                             <Transformations transformationParams={selectedComponent.transformationParams} />
                             <SidebarHeader><h6 style={{ textAlign: "center" }}>Geometry Params</h6></SidebarHeader>
                             <GeometryParams entity={selectedComponent} />
-                            <Color selectedComponent={selectedComponent} dispatch={dispatch} />
+                            <MaterialSelection material={selectedComponent.material} setMaterial={setMaterial} unsetMaterial={unsetMaterial} />
                             <SidebarFooter>
                                 <button
                                     type="button"
@@ -52,17 +54,6 @@ export const SideBar: React.FC<SideBarProps> = () => {
                                     Delete
                                 </button>
                             </SidebarFooter>
-                            <button
-                                type="button"
-                                className="btn btn-danger btn-delete"
-                                onClick={() => {
-                                    if (window.confirm(`Sei sicuro di voler eliminare il componente ${selectedComponent.name} ?`)) {
-                                        dispatch(removeComponent(selectedComponent.keyComponent));
-                                    }
-                                }}
-                            >
-                                Delete
-                            </button>
                         </Container>
                     }
                 </div>

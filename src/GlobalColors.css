@@ -1,6 +1,6 @@
-/* :root{
-    --navPrimaryColor: #1F2937;
-    --navSecondaryColor: #3c5068;
+:root{
+    --navPrimaryColor: #696868;
+    --navSecondaryColor: #696868;
     --cubeColor: #420202;
     --sphereColor: #6b5d10;
     --cylinderColor: #5e3507;
@@ -10,9 +10,9 @@
     --canvasSecondaryColor: #ffffff;
 
     --modalBackground: linear-gradient(to bottom right, #1F2937, #a5763c)
-} */
+}
 
-:root{
+/* :root{
     --navPrimaryColor: #222121;
     --navSecondaryColor: #2e2d2d;
     --cubeColor: #570707;
@@ -24,4 +24,4 @@
     --canvasSecondaryColor: #3a3939;
 
     --modalBackground: linear-gradient(to bottom right, #222121, #2e2d2d)
-}
+} */

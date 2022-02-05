@@ -5,11 +5,10 @@ import { useDispatch } from "react-redux";
 interface OutlinerItemProps{
     keyComponent : number,
     nameComponent : string,
-    colorComponent: string,
     isSelelctedComponent: boolean
 }
 
-export const OutlinerItem : FC<OutlinerItemProps> = ({keyComponent, nameComponent, isSelelctedComponent, colorComponent}) => {
+export const OutlinerItem : FC<OutlinerItemProps> = ({keyComponent, nameComponent, isSelelctedComponent}) => {
 
     const [outlinerItemVisibility, setOutlinerItemVisibility] = useState(true);
     const [inputItemVisibility, setInputItemVisibility] = useState(false);
@@ -30,7 +29,7 @@ export const OutlinerItem : FC<OutlinerItemProps> = ({keyComponent, nameComponen
                 hidden={!outlinerItemVisibility}
             >
                 <span className="opener"/>
-                <span className="type" style={{color: colorComponent }}/>
+                <span className="type"/>
                 {nameComponent}
             </div>
             <div key={keyComponent + "_input"} hidden={!inputItemVisibility}>

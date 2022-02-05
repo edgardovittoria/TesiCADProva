@@ -8,6 +8,16 @@ export const Transformations: FC<{ transformationParams: TransformationParams }>
 
     return (
         <>
+            <Row>
+                <Col className="col-2"></Col>
+                <Col>
+                    <div className="Row transformation" style={{ width: "100%", right: 0 }}>
+                        <div className="textSideBar" style={{ textAlign: "center", width: "30%" }}>X</div>
+                        <div className="textSideBar" style={{ textAlign: "center", width: "30%" }}>Y</div>
+                        <div className="textSideBar" style={{ textAlign: "center", width: "30%" }}>Z</div>
+                    </div>
+                </Col>
+            </Row>
             {Object.entries(transformationParams).map(([type, value]) =>
                 <Row key={type}>
                     <Col className="col-2">
