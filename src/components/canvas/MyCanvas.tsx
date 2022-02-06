@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { Provider, ReactReduxContext, useDispatch, useSelector } from "react-redux";
 import { Canvas, Object3DNode, useThree } from "@react-three/fiber";
-import { OrbitControls, TransformControls } from "@react-three/drei";
+import { GizmoHelper, GizmoViewcube, GizmoViewport, OrbitControls, TransformControls } from "@react-three/drei";
 import { FactoryComponent } from '../factory/FactoryComponent';
 import * as THREE from 'three'
 import { ToolbarTransformationState, toolbarTransformationStateSelector } from '../../store/toolbarTransformationSlice';
@@ -119,6 +119,9 @@ const Controls: FC<{ keySelectedComponent: number }> = ({ keySelectedComponent})
             />
             <OrbitControls addEventListener={undefined} hasEventListener={undefined}
                 removeEventListener={undefined} dispatchEvent={undefined} makeDefault />
+                <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
+                    <GizmoViewport axisColors={['red', 'green', 'blue']} labelColor="black" />
+                </GizmoHelper>
         </>
     )
 

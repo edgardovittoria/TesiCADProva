@@ -4,12 +4,12 @@ import { Col, FormSelect, Row } from "react-bootstrap";
 import { useMaterials } from "./useMaterials";
 
 interface MaterialSelectionProps {
-    material?: Material
+    defaultMaterial?: Material
     setMaterial: Function
     unsetMaterial: Function
 }
 
-export const MaterialSelection: FC<MaterialSelectionProps> = ({ material, setMaterial, unsetMaterial }) => {
+export const MaterialSelection: FC<MaterialSelectionProps> = ({ defaultMaterial, setMaterial, unsetMaterial }) => {
     const { availableMaterials } = useMaterials()
     return (
         <Row>
@@ -19,7 +19,7 @@ export const MaterialSelection: FC<MaterialSelectionProps> = ({ material, setMat
             <Col>
                 <FormSelect
                     onChange={(event) => (event.currentTarget.value !== "UNDEFINED") ? setMaterial(availableMaterials.filter(mat => mat.name === event.currentTarget.value)[0]) : unsetMaterial()}
-                    defaultValue={(material !== undefined) ? material.name : "UNDEFINED"}
+                    defaultValue={(defaultMaterial !== undefined) ? defaultMaterial.name : "UNDEFINED"}
                     className="selectOperation"
                 >
                     <option value="UNDEFINED">UNDEFINED</option>

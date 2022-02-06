@@ -40,7 +40,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
                             <Transformations transformationParams={selectedComponent.transformationParams} />
                             <SidebarHeader><h6 style={{ textAlign: "center" }}>Geometry Params</h6></SidebarHeader>
                             <GeometryParams entity={selectedComponent} />
-                            <MaterialSelection material={selectedComponent.material} setMaterial={setMaterial} unsetMaterial={unsetMaterial} />
+                            <MaterialSelection defaultMaterial={selectedComponent.material} setMaterial={setMaterial} unsetMaterial={unsetMaterial} />
                             <SidebarFooter>
                                 <button
                                     type="button"
