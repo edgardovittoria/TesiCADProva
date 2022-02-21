@@ -1,8 +1,7 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { Provider, ReactReduxContext, useDispatch, useSelector } from "react-redux";
 import { Canvas, Object3DNode, useThree } from "@react-three/fiber";
-import { GizmoHelper, GizmoViewcube, GizmoViewport, OrbitControls, TransformControls } from "@react-three/drei";
-import { FactoryComponent } from '../factory/FactoryComponent';
+import { GizmoHelper, GizmoViewport, OrbitControls, TransformControls } from "@react-three/drei";
 import * as THREE from 'three'
 import { ToolbarTransformationState, toolbarTransformationStateSelector } from '../../store/toolbarTransformationSlice';
 import { DetectCollision } from './components/detectCollision';
@@ -10,7 +9,8 @@ import { DetectCollision } from './components/detectCollision';
 import './style/canvas.css'
 import { MeshesAndCollisionsContext } from '../contexts/meshesAndCollisionsProvider';
 import { useMeshes } from '../contexts/useMeshes';
-import { ComponentEntity, componentseSelector, findComponentByKey, getObjectsFromSceneByType, keySelectedComponenteSelector, TransformationParams, updateTransformationParams } from '@Draco112358/cad-library';
+import { ComponentEntity, componentseSelector, FactoryShapes, findComponentByKey, getObjectsFromSceneByType, keySelectedComponenteSelector, TransformationParams, updateTransformationParams } from '@Draco112358/cad-library';
+import { Component } from './components/Component';
 
 interface MyCanvasProps {
 }
@@ -37,7 +37,11 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                                                 position={[-7, 25, 13]} intensity={0.85} />
                                             <SetMeshes components={components} />
                                             {components.map((component) => {
-                                                return <FactoryComponent key={component.keyComponent} entity={component} />
+                                                return (
+                                                    <Component key={component.keyComponent} keyComponent={component.keyComponent} transformationParams={component.transformationParams}>
+                                                        <FactoryShapes entity={component} />
+                                                    </Component>
+                                                )
                                             })}
                                             {keySelectedComponent !== 0 &&
                                                 <DetectCollision entity={findComponentByKey(components, keySelectedComponent)} />
@@ -70,7 +74,7 @@ const SetMeshes: FC<{ components: ComponentEntity[] }> = ({ components }) => {
 }
 
 
-const Controls: FC<{ keySelectedComponent: number }> = ({ keySelectedComponent}) => {
+const Controls: FC<{ keySelectedComponent: number }> = ({ keySelectedComponent }) => {
     const { scene, camera } = useThree()
     const transformation = useRef(null);
     const toolbarTransformationState = useSelector(toolbarTransformationStateSelector);
@@ -119,9 +123,9 @@ const Controls: FC<{ keySelectedComponent: number }> = ({ keySelectedComponent})
             />
             <OrbitControls addEventListener={undefined} hasEventListener={undefined}
                 removeEventListener={undefined} dispatchEvent={undefined} makeDefault />
-                <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
-                    <GizmoViewport axisColors={['red', 'green', 'blue']} labelColor="black" />
-                </GizmoHelper>
+            <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
+                <GizmoViewport axisColors={['red', 'green', 'blue']} labelColor="black" />
+            </GizmoHelper>
         </>
     )
 
