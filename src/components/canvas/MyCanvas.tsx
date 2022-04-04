@@ -5,11 +5,10 @@ import { GizmoHelper, GizmoViewport, OrbitControls, TransformControls } from "@r
 import * as THREE from 'three'
 import { ToolbarTransformationState, toolbarTransformationStateSelector } from '../../store/toolbarTransformationSlice';
 import { DetectCollision } from './components/detectCollision';
-
 import './style/canvas.css'
 import { MeshesAndCollisionsContext } from '../contexts/meshesAndCollisionsProvider';
 import { useMeshes } from '../contexts/useMeshes';
-import { ComponentEntity, componentseSelector, FactoryShapes, findComponentByKey, getObjectsFromSceneByType, keySelectedComponenteSelector, TransformationParams, updateTransformationParams } from '@Draco112358/cad-library';
+import { ComponentEntity, componentseSelector, FactoryShapes, findComponentByKey, getObjectsFromSceneByType, keySelectedComponenteSelector, TransformationParams, updateTransformationParams } from "cad-library";
 import { Component } from './components/Component';
 
 interface MyCanvasProps {

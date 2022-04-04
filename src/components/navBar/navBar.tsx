@@ -17,7 +17,7 @@ import { UndoRedo } from "./components/undoRedo";
 import { ActionCreators } from 'redux-undo';
 import { useMeshes } from '../contexts/useMeshes';
 import { Mesh } from "three";
-import { addComponent, CanvasState, canvasStateSelector, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, ImportActionParamsObject, ImportCadProjectButton, importFromCadSTL, importStateCanvas, numberOfGeneratedKeySelector, resetState } from '@Draco112358/cad-library';
+import { addComponent, CanvasState, canvasStateSelector, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, ImportActionParamsObject, ImportCadProjectButton, importFromCadSTL, importStateCanvas, numberOfGeneratedKeySelector, resetState } from 'cad-library';
 
 interface NavBarProps {
     setViewElementVisibility: Function,

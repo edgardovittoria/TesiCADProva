@@ -1,4 +1,4 @@
-import { ConeGeometryAttributes } from "@Draco112358/cad-library";
+import { ConeGeometryAttributes } from "cad-library";
 import { FC } from "react";
 import { Col, Row } from "react-bootstrap";
 import { GeometryParamsGeneralProps } from "./geometryParams";

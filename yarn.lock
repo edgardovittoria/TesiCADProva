@@ -1203,11 +1203,6 @@
   "resolved" "https://registry.npmjs.org/@csstools/normalize.css/-/normalize.css-10.1.0.tgz"
   "version" "10.1.0"
 
-"@Draco112358/cad-library@^0.1.17":
-  "integrity" "sha512-HoICDTpfAqdeNXvf5umLEnMG9/I8HS4L4OgRF24z7snRWoDd0O0T2qPI8uQiFz4MvYOuQ9A7UqzpB7c4e9OASA=="
-  "resolved" "https://npm.pkg.github.com/download/@Draco112358/cad-library/0.1.17/cb7afe3a3c2ad30e4695fa58036577116a6a5591010fdaae256eec71f574f07c"
-  "version" "0.1.17"
-
 "@emotion/is-prop-valid@^0.8.8":
   "integrity" "sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA=="
   "resolved" "https://registry.npmjs.org/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz"
@@ -3483,6 +3478,11 @@
     "to-object-path" "^0.3.0"
     "union-value" "^1.0.0"
     "unset-value" "^1.0.0"
+
+"cad-library@^0.1.21":
+  "integrity" "sha512-dH5JPFtYapNwZhNu7oM7lUTCat3ik1CdiDk4yisUycrJvjNLhIJHYSyd1KiLwo5UgkFeTQI07f0mu3+7bA2NgA=="
+  "resolved" "https://registry.npmjs.org/cad-library/-/cad-library-0.1.21.tgz"
+  "version" "0.1.21"
 
 "call-bind@^1.0.0", "call-bind@^1.0.2":
   "integrity" "sha512-7O+FbCihrB5WGbFYesctwmTKae6rOiIzmz1icreWJ+0aA7LJfuqhEso2T9ncpcFtzMQtzXf2QGGueWJGTYsqrA=="

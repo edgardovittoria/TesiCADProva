@@ -1,4 +1,4 @@
-import { TransformationParams, updateTransformationParams } from "@Draco112358/cad-library";
+import { TransformationParams, updateTransformationParams } from "cad-library";
 import { FC } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";

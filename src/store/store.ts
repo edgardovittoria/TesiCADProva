@@ -9,7 +9,7 @@ import undoable, {excludeAction} from 'redux-undo';
 import { persistReducer } from 'redux-persist'
 import persistStore from "redux-persist/es/persistStore";
 import localforage from 'localforage';
-import { CanvasSlice } from '@Draco112358/cad-library';
+import { CanvasSlice } from 'cad-library';
 
 
 const persistConfig = {

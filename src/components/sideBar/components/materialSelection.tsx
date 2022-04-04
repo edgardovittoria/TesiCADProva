@@ -1,4 +1,4 @@
-import { Material } from "@Draco112358/cad-library";
+import { Material } from "cad-library";
 import { FC } from "react";
 import { Col, FormSelect, Row } from "react-bootstrap";
 import { useMaterials } from "./useMaterials";

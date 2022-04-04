@@ -6,7 +6,7 @@ import {
     setTransformationActive,
     toolbarTransformationStateSelector
 } from "../../../store/toolbarTransformationSlice";
-import { keySelectedComponenteSelector, selectComponent, TransformationParams } from '@Draco112358/cad-library';
+import { keySelectedComponenteSelector, selectComponent, TransformationParams } from 'cad-library';
 
 export interface ComponentProps {
     transformationParams: TransformationParams

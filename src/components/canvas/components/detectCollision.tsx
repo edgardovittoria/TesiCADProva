@@ -4,7 +4,7 @@ import { useThree } from "@react-three/fiber";
 import { Dispatch } from "redux";
 import { useCollisions } from "../../contexts/useCollisions";
 import * as THREE from "three";
-import { areEquals, ComponentEntity, getObjectsFromSceneByType, meshesCollidingWithTargetMesh, removeComponent } from "@Draco112358/cad-library";
+import { areEquals, ComponentEntity, getObjectsFromSceneByType, meshesCollidingWithTargetMesh, removeComponent } from "cad-library";
 
 interface DetectCollisionProps {
     entity: ComponentEntity,

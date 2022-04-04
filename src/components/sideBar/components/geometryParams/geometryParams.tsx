@@ -1,4 +1,4 @@
-import { ComponentEntity, GeometryAttributes, updateEntityGeometryParams } from "@Draco112358/cad-library";
+import { ComponentEntity, GeometryAttributes, updateEntityGeometryParams } from "cad-library";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { ConeGeometryParams } from "./coneGeometryParams";

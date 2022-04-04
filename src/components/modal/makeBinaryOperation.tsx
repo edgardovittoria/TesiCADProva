@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Dispatch} from '@reduxjs/toolkit';
 import './style/makeBinaryOperation.css'
 import { useCollisions } from '../contexts/useCollisions';
-import { BinaryOperationType, CanvasState, canvasStateSelector, ComponentEntity, ComponentTypes, CompositeEntity, findComponentByKey, GeometryAttributes, getNewKeys, intersection, lastActionTypeSelector, subtraction, union } from '@Draco112358/cad-library';
+import { BinaryOperationType, CanvasState, canvasStateSelector, ComponentEntity, ComponentTypes, CompositeEntity, findComponentByKey, GeometryAttributes, getNewKeys, intersection, lastActionTypeSelector, subtraction, union } from 'cad-library';
 
 interface MakeBinaryOpProps {
 }

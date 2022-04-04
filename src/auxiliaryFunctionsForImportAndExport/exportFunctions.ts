@@ -1,6 +1,6 @@
 import {STLExporter} from "three/examples/jsm/exporters/STLExporter";
 import * as THREE from "three";
-import { CanvasState } from "@Draco112358/cad-library";
+import { CanvasState } from "cad-library";
 
 export const exportProjectFrom = (canvas: CanvasState) => {
     return JSON.stringify(canvas)

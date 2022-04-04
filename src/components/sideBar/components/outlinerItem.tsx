@@ -1,4 +1,4 @@
-import { selectComponent, updateName } from "@Draco112358/cad-library";
+import { selectComponent, updateName } from "cad-library";
 import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 

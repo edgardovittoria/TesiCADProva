@@ -1,4 +1,4 @@
-import { SphereGeometryAttributes } from "@Draco112358/cad-library";
+import { SphereGeometryAttributes } from "cad-library";
 import { FC } from "react";
 import { Col, Row } from "react-bootstrap";
 import { GeometryParamsGeneralProps } from "./geometryParams";

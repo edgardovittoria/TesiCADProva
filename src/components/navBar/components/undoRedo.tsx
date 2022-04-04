@@ -5,7 +5,7 @@ import { ActionCreators } from "redux-undo";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faRedo, faUndo} from "@fortawesome/free-solid-svg-icons";
 import {Dispatch} from "@reduxjs/toolkit";
-import { lastActionTypeSelector, lengthFutureStateSelector, lengthPastStateSelector } from '@Draco112358/cad-library';
+import { lastActionTypeSelector, lengthFutureStateSelector, lengthPastStateSelector } from 'cad-library';
 
 interface UndoRedoProps {
 }

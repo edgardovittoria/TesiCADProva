@@ -9,7 +9,7 @@ import "./style/outliner.css"
 import "./style/sideBar.css"
 import "./style/transformation.css"
 import { Transformations } from './components/transformations';
-import { canvasStateSelector, Material, removeComponent, removeComponentMaterial, selectedComponentSelector, setComponentMaterial } from '@Draco112358/cad-library';
+import { canvasStateSelector, Material, removeComponent, removeComponentMaterial, selectedComponentSelector, setComponentMaterial } from 'cad-library';
 import { GeometryParams } from './components/geometryParams/geometryParams';
 import { MaterialSelection } from './components/materialSelection';
 

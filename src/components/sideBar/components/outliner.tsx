@@ -1,4 +1,4 @@
-import { CanvasState } from '@Draco112358/cad-library';
+import { CanvasState } from 'cad-library';
 import React, {useEffect, useState} from 'react';
 import { OutlinerItem } from './outlinerItem';
 
