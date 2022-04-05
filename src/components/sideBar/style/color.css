@@ -1,0 +1,17 @@
+.colorRow{
+    margin-top: 20px;
+    display: flex;
+}
+
+.colorText{
+    color: #ffffff;
+    cursor: default;
+    display: inline-block;
+    width: 72px;
+}
+
+.colorInput{
+    cursor: ns-resize;
+    background-color: transparent;
+    width: 107px;
+}

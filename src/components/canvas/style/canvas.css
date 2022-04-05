@@ -1,0 +1,9 @@
+#canvas-container{
+    height: 92vh;
+    background: linear-gradient(to top, var(--canvasPrimaryColor), var(--canvasSecondaryColor));
+}
+
+#myCanvas{
+    width: 100%;
+    height: 100%;
+}
