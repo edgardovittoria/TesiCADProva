@@ -1,0 +1,43 @@
+{
+  "materials": [
+    {
+      "name": "Alumina",
+      "color": "#61d6b8",
+      "permeability": 1.5,
+      "tangent_delta_permeability": 1.2,
+      "custom_permeability": [1.2, 10],
+      "permittivity": 2.2,
+      "tangent_delta_permittivity": 2.1,
+      "custom_permittivity": [2.4, 11],
+      "conductivity": 2.3,
+      "tangent_delta_conductivity": 2.7,
+      "custom_conductivity": [2.7, 12]
+    },
+    {
+      "name": "Copper",
+      "color": "#f18151",
+      "permeability": 1.5,
+      "tangent_delta_permeability": 1.2,
+      "custom_permeability": [1.2, 10],
+      "permittivity": 2.2,
+      "tangent_delta_permittivity": 2.1,
+      "custom_permittivity": [2.4, 11],
+      "conductivity": 2.3,
+      "tangent_delta_conductivity": 2.7,
+      "custom_conductivity": [2.7, 12]
+    },
+    {
+      "name": "Glass",
+      "color": "#85e0f3",
+      "permeability": 1.5,
+      "tangent_delta_permeability": 1.2,
+      "custom_permeability": [1.2, 10],
+      "permittivity": 2.2,
+      "tangent_delta_permittivity": 2.1,
+      "custom_permittivity": [2.4, 11],
+      "conductivity": 2.3,
+      "tangent_delta_conductivity": 2.7,
+      "custom_conductivity": [2.7, 12]
+    }
+  ]
+}

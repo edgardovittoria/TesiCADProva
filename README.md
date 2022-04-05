@@ -1,6 +1,14 @@
-# Getting Started with Create React App
+# Installation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Clone the repository
+```bash
+    git clone https://github.com/edgardovittoria/TesiCADProva.git
+```
+### Install dependencies
+Move to project's directory and launch:
+```bash
+    npm install
+```
 
 ## Available Scripts
 
