@@ -23,7 +23,7 @@ export const MaterialSelection: FC<MaterialSelectionProps> = ({ defaultMaterial,
                     className="selectOperation"
                 >
                     <option value="UNDEFINED">UNDEFINED</option>
-                    {availableMaterials.map(mat => <option value={mat.name}>{mat.name}</option>)}
+                    {availableMaterials.map(mat => <option key={mat.name} value={mat.name}>{mat.name}</option>)}
                 </FormSelect>
             </Col>
         </Row>
