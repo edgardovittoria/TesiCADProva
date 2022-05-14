@@ -6,16 +6,25 @@ import { Provider } from "react-redux";
 import { persistor, store } from "./store/store";
 import { PersistGate } from 'redux-persist/integration/react'
 import { MeshesAndCollisionsProvider } from './components/contexts/meshesAndCollisionsProvider';
+import { Auth0Provider } from '@auth0/auth0-react';
+import React from 'react';
 
 
 ReactDOM.render(
-    <Provider store={store}>
-        <MeshesAndCollisionsProvider>
-            <PersistGate persistor={persistor}>
-                <App />
-            </PersistGate>
-        </MeshesAndCollisionsProvider>
-    </Provider>
+    <React.StrictMode>
+        <Auth0Provider
+            clientId={process.env.REACT_APP_AUTH0_ID as string}
+            domain={process.env.REACT_APP_AUTH0_DOMAIN as string}
+            redirectUri={window.location.origin}>
+            <Provider store={store}>
+                <MeshesAndCollisionsProvider>
+                    <PersistGate persistor={persistor}>
+                        <App />
+                    </PersistGate>
+                </MeshesAndCollisionsProvider>
+            </Provider>
+        </Auth0Provider>
+    </React.StrictMode>
     ,
     document.getElementById('root')
 );

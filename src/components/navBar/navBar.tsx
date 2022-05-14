@@ -18,6 +18,7 @@ import { ActionCreators } from 'redux-undo';
 import { useMeshes } from '../contexts/useMeshes';
 import { Mesh } from "three";
 import { addComponent, CanvasState, canvasStateSelector, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, ImportActionParamsObject, ImportCadProjectButton, importFromCadSTL, importStateCanvas, numberOfGeneratedKeySelector, resetState } from 'cad-library';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface NavBarProps {
     setViewElementVisibility: Function,
@@ -66,6 +67,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, side
         }
 
     };
+    const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
 
     if (!navBarOpen) {
         return (
@@ -270,6 +272,24 @@ export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, side
                                 </Nav.Link>
                             </NavDropdown>
                             {/*End Export Dropdown*/}
+                            <NavDropdown
+                                id="nav-dropdown-dark-example"
+                                title="Authentication"
+                                menuVariant="dark"
+                            >
+                                <Nav.Link
+                                    onClick={() => {
+                                        isAuthenticated ? logout({ returnTo: window.location.origin }) : loginWithRedirect()
+                                    }}>
+                                    <div id="exportDropdown">
+                                        <div className="row">
+                                            <div className="dropdownItem">
+                                                <span>{isAuthenticated ? 'Logout' : 'Login'}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Nav.Link>
+                            </NavDropdown>
                         </Nav>
                     </Container>
                 </Navbar>
