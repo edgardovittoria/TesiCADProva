@@ -1,11 +1,15 @@
 import { Material } from "cad-library";
-import {client, q} from "../client";
-import {FaunaResMaterials} from "../responseModels";
+import { client, q } from "../client";
 
 export async function getMaterials() {
     try {
         const response = await client.query(
-            q.Map(q.Paginate(q.Documents(q.Collection('Materials'))), q.Lambda('doc', q.Get(q.Var('doc'))))
+            q.Select("data",
+                q.Map(
+                    q.Paginate(q.Match(q.Index("materials_all"))),
+                    q.Lambda("material", q.Select("data", q.Get(q.Var("material"))))
+                )
+            )
         )
             .catch((err) => console.error(
                 'Error: [%s] %s: %s',
@@ -13,7 +17,7 @@ export async function getMaterials() {
                 err.message,
                 err.errors()[0].description,
             ));
-        return (response as FaunaResMaterials).data.map(d => d.data)
+        return response as Material[]
     } catch (e) {
         console.log(e)
         return [];
