@@ -1,7 +1,7 @@
 import { Material } from "cad-library";
 import { FC } from "react";
 import { Col, FormSelect, Row } from "react-bootstrap";
-import { useMaterials } from "./useMaterials";
+import { useMaterials } from "../../../faunadb/api/useMaterials";
 
 interface MaterialSelectionProps {
     defaultMaterial?: Material

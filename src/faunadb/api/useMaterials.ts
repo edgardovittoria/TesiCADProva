@@ -1,6 +1,6 @@
 import { Material } from "cad-library";
 import {useEffect, useState} from "react";
-import { getMaterials } from "../../../faunadb/api/materialsAPIs";
+import { getMaterials } from "./materialsAPIs";
 
 export const useMaterials = () => {
     const [availableMaterials, setAvailableMaterials] = useState<Material[]>([]);

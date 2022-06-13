@@ -12,6 +12,8 @@ import { useCollisions } from './components/contexts/useCollisions';
 import { KeyboardEventMapper } from "./utils/keyboardEventMapper/keyboardEventMapper";
 import 'react-statusbar/dist/statusbar.css';
 import * as Statusbar from 'react-statusbar';
+import { SaveModelWithNameModal } from './components/navBar/components/modals/saveModelWithNameModal';
+import { ImportModelFromDBModal } from './components/navBar/components/modals/importModelFromDBModal';
 
 function App() {
 
@@ -19,6 +21,8 @@ function App() {
     const { collisions } = useCollisions()
     const [sideBarChecked, setSideBarChecked] = useState(false)
     const [unit, setUnit] = useState("cm");
+    const [modalSave, setModalSave] = useState(false)
+    const [modalLoad, setModalLoad] = useState(false)
 
 
     const showViewElementVisibility = (element: string, visibility: boolean) => {
@@ -28,16 +32,18 @@ function App() {
                 break
         }
     }
-
+    
     return (
         <>
             <div style={{ margin: "0px", height: "100vh" }}>
-                <MyNavBar setViewElementVisibility={showViewElementVisibility} sideBarChecked={sideBarChecked} setSideBarChecked={setSideBarChecked} />
+                <MyNavBar setViewElementVisibility={showViewElementVisibility} sideBarChecked={sideBarChecked} setSideBarChecked={setSideBarChecked} showModalSave={setModalSave} showModalLoading={setModalLoad}/>
                 <KeyboardEventMapper setViewElementVisibility={showViewElementVisibility} sideBarChecked={sideBarChecked} setSideBarChecked={setSideBarChecked} />
                 <div className="canvas-width-100">
                     <MyCanvas />
                     <ToolBar />
                     {collisions.length > 0 && <MakeBinaryOp />}
+                    {modalSave && <SaveModelWithNameModal showModalSave={setModalSave}/>}
+                    {modalLoad && <ImportModelFromDBModal showModalLoad={setModalLoad} />}
                     <DraggableComponent hidden={!sideBar}>
                         <div className="sidebar-width-25" >
                             <SideBar />

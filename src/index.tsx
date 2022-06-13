@@ -8,6 +8,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { MeshesAndCollisionsProvider } from './components/contexts/meshesAndCollisionsProvider';
 import { Auth0Provider } from '@auth0/auth0-react';
 import React from 'react';
+import { Toaster } from 'react-hot-toast';
 
 
 ReactDOM.render(
@@ -19,6 +20,7 @@ ReactDOM.render(
             <Provider store={store}>
                 <MeshesAndCollisionsProvider>
                     <PersistGate persistor={persistor}>
+                        <div><Toaster position='top-center'/></div>
                         <App />
                     </PersistGate>
                 </MeshesAndCollisionsProvider>

@@ -23,7 +23,9 @@ import { useAuth0 } from '@auth0/auth0-react';
 interface NavBarProps {
     setViewElementVisibility: Function,
     sideBarChecked: boolean,
-    setSideBarChecked: Function
+    setSideBarChecked: Function,
+    showModalSave: Function,
+    showModalLoading: Function
 }
 
 export const exportJSONProject = (canvas: CanvasState) => {
@@ -49,7 +51,7 @@ export const exportToSTLFormat = (meshes: Mesh[]) => {
 }
 
 
-export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, sideBarChecked, setSideBarChecked }) => {
+export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, sideBarChecked, setSideBarChecked, showModalSave, showModalLoading}) => {
     const { meshes } = useMeshes()
     const [navBarOpen, setNavBarOpen] = useState(false);
 
@@ -67,7 +69,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, side
         }
 
     };
-    const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
+    const { loginWithRedirect, isAuthenticated, logout, user } = useAuth0();
 
     if (!navBarOpen) {
         return (
@@ -89,6 +91,106 @@ export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, side
                     </div>
                     <Container>
                         <Nav className="me-auto">
+                            <NavDropdown
+                                id="nav-dropdown-dark-example"
+                                title="File"
+                                menuVariant="dark"
+                            >
+                                {isAuthenticated ?
+                                    <Nav.Link
+                                        id="saveProjectToDB"
+                                        onClick={() => showModalSave(true)}
+                                    >
+                                        <div className="row">
+                                            <div className="col-6 dropdownItem">
+                                                <span>Save to DB</span>
+                                            </div>
+                                        </div>
+                                    </Nav.Link>
+                                    :
+                                    <Nav.Link
+                                        id="saveProjectToDB"
+                                    >
+                                        <div className="row">
+                                            <div className="col-6 dropdownItemDisabled">
+                                                <span>Save to DB</span>
+                                            </div>
+                                        </div>
+                                    </Nav.Link>
+                                }
+                                <hr />
+                                {isAuthenticated ?
+                                    <Nav.Link
+                                        id="loadProjectFromDB"
+                                        onClick={() => showModalLoading(true)}
+                                    >
+                                        <div className="row">
+                                            <div className="col-6 dropdownItem">
+                                                <span>Load from DB</span>
+                                            </div>
+                                        </div>
+                                    </Nav.Link>
+                                    :
+                                    <Nav.Link
+                                        id="loadProjectFromDB"
+                                    >
+                                        <div className="row">
+                                            <div className="col-6 dropdownItemDisabled">
+                                                <span>Load from DB</span>
+                                            </div>
+                                        </div>
+                                    </Nav.Link>
+                                }
+                                <hr />
+                                <ImportCadProjectButton className='btn-export' actionParams={{} as ImportActionParamsObject} importAction={importStateCanvas}>
+                                    <span className="dropdownItem">Import Project</span>
+                                </ImportCadProjectButton>
+                                <hr />
+                                <button className="btn-export" onClick={onImportSTLClick}>
+                                    <span className="dropdownItem">Import STL file</span>
+                                    <input
+                                        type="file"
+                                        ref={inputRefSTL}
+                                        style={{ display: "none" }}
+                                        accept=".stl"
+                                        onChange={(e) => {
+                                            let STLFiles = e.target.files;
+                                            (STLFiles) && importFromCadSTL(STLFiles[0], numberOfGeneratedKey, dispatch)
+                                        }} />
+                                </button>
+                                <hr />
+                                <Nav.Link
+                                    onClick={() => {
+                                        exportJSONProject(canvasState)
+                                    }}>
+                                    <div id="exportDropdown">
+                                        <div className="row">
+                                            <div className="col-6 dropdownItem">
+                                                <span>Export Project</span>
+                                            </div>
+                                            <div className="col-6 keyboardShortcut">
+                                                <span>Ctrl + s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Nav.Link>
+                                <hr />
+                                <Nav.Link
+                                    id="exportSTL"
+                                    onClick={() => {
+                                        exportToSTLFormat(meshes)
+                                    }}
+                                >
+                                    <div className="row">
+                                        <div className="col-6 dropdownItem">
+                                            <span>Export STL Format</span>
+                                        </div>
+                                        <div className="col-6 keyboardShortcut">
+                                            <span>Ctrl + Alt + s</span>
+                                        </div>
+                                    </div>
+                                </Nav.Link>
+                            </NavDropdown>
                             {/*Start View Dropdown*/}
                             <NavDropdown
                                 id="nav-dropdown-dark-example"
@@ -205,82 +307,17 @@ export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, side
                                     </div>
 
                                 </Nav.Link>
-                            </NavDropdown>
-                            {/*End Components Dropdown*/}
-
-                            {/*Start Import Dropdown*/}
+                            </NavDropdown>                              
                             <NavDropdown
                                 id="nav-dropdown-dark-example"
-                                title="Import"
-                                menuVariant="dark"
-                            >
-                                <ImportCadProjectButton className='btn-export' actionParams={{} as ImportActionParamsObject} importAction={importStateCanvas}>
-                                    <span className="dropdownItem">Project</span>
-                                </ImportCadProjectButton>
-                                <hr />
-                                <button className="btn-export" onClick={onImportSTLClick}>
-                                    <span className="dropdownItem">STL file</span>
-                                    <input
-                                        type="file"
-                                        ref={inputRefSTL}
-                                        style={{ display: "none" }}
-                                        accept=".stl"
-                                        onChange={(e) => {
-                                            let STLFiles = e.target.files;
-                                            (STLFiles) && importFromCadSTL(STLFiles[0], numberOfGeneratedKey, dispatch)
-                                        }} />
-                                </button>
-                            </NavDropdown>
-                            {/*End Import Dropdown*/}
-
-                            {/*Start Export Dropdown*/}
-                            <NavDropdown
-                                id="nav-dropdown-dark-example"
-                                title="Export"
+                                title={isAuthenticated ? user?.name : "Authentication"}
                                 menuVariant="dark"
                             >
                                 <Nav.Link
                                     onClick={() => {
-                                        exportJSONProject(canvasState)
-                                    }}>
-                                    <div id="exportDropdown">
-                                        <div className="row">
-                                            <div className="col-6 dropdownItem">
-                                                <span>Project</span>
-                                            </div>
-                                            <div className="col-6 keyboardShortcut">
-                                                <span>Ctrl + s</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Nav.Link>
-                                <hr />
-                                <Nav.Link
-                                    id="exportSTL"
-                                    onClick={() => {
-                                        exportToSTLFormat(meshes)
-                                    }}
-                                >
-                                    <div className="row">
-                                        <div className="col-6 dropdownItem">
-                                            <span>STL Format</span>
-                                        </div>
-                                        <div className="col-6 keyboardShortcut">
-                                            <span>Ctrl + Alt + s</span>
-                                        </div>
-                                    </div>
-                                </Nav.Link>
-                            </NavDropdown>
-                            {/*End Export Dropdown*/}
-                            <NavDropdown
-                                id="nav-dropdown-dark-example"
-                                title="Authentication"
-                                menuVariant="dark"
-                            >
-                                <Nav.Link
-                                    onClick={() => {
-                                        isAuthenticated ? logout({ returnTo: window.location.origin }) : loginWithRedirect()
-                                    }}>
+                                        (isAuthenticated) ? logout({ returnTo: window.location.origin }) : loginWithRedirect()
+                                    }
+                                    }>
                                     <div id="exportDropdown">
                                         <div className="row">
                                             <div className="dropdownItem">
@@ -289,6 +326,17 @@ export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, side
                                         </div>
                                     </div>
                                 </Nav.Link>
+                                {isAuthenticated &&
+                                    <Nav.Link onClick={() => { console.log(user) }}>
+                                        <div id="exportDropdown">
+                                            <div className="row">
+                                                <div className="dropdownItem">
+                                                    <span>Profile</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Nav.Link>
+                                }
                             </NavDropdown>
                         </Nav>
                     </Container>
