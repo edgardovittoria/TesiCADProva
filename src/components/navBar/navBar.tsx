@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Container, Form, Nav, Navbar, NavDropdown, Tooltip } from "react-bootstrap";
 import {
     faBars,
@@ -17,7 +17,7 @@ import { UndoRedo } from "./components/undoRedo";
 import { ActionCreators } from 'redux-undo';
 import { useMeshes } from '../contexts/useMeshes';
 import { Mesh } from "three";
-import { addComponent, CanvasState, canvasStateSelector, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, ImportActionParamsObject, ImportCadProjectButton, importFromCadSTL, importStateCanvas, numberOfGeneratedKeySelector, resetState, setUser, unsetUser, useSetUserInfo } from 'cad-library';
+import { addComponent, CanvasState, canvasStateSelector, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, ImportActionParamsObject, ImportCadProjectButton, importFromCadSTL, importStateCanvas, numberOfGeneratedKeySelector, resetState } from 'cad-library';
 import { useAuth0 } from '@auth0/auth0-react';
 
 interface NavBarProps {
@@ -71,15 +71,12 @@ export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, side
     };
     const { loginWithRedirect, isAuthenticated, logout, user } = useAuth0();
 
-   const setUser = useSetUserInfo()
-
     if (!navBarOpen) {
         return (
 
             <Tooltip title="Open Navbar" className="burgerMenu" onClick={() => setNavBarOpen(!navBarOpen)}>
                 <FontAwesomeIcon className="navbarBeforeOpenIcon" icon={faBars} size="2x" />
             </Tooltip>
-
 
         )
     } else {

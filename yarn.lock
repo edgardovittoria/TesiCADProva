@@ -3588,10 +3588,10 @@
     "union-value" "^1.0.0"
     "unset-value" "^1.0.0"
 
-"cad-library@^0.1.26":
-  "integrity" "sha512-U9e4QY3uS8YfOeWlYypYwktlXjC9yzEH04tKF9PKtIuS6BeNCUH3/OrB6JRVo5NvM02dbhE7lqXsJ4bBteEUMw=="
-  "resolved" "https://registry.npmjs.org/cad-library/-/cad-library-0.1.26.tgz"
-  "version" "0.1.26"
+"cad-library@^0.1.27":
+  "integrity" "sha512-SoevLdqSh6Jt+/kTKJPGfWM/f8NTf63hxFrLbh30zcqeNWcLUrZanrN0K1IpvRLyE1m+QQ7bsU15vzmhYytlCg=="
+  "resolved" "https://registry.npmjs.org/cad-library/-/cad-library-0.1.27.tgz"
+  "version" "0.1.27"
 
 "call-bind@^1.0.0", "call-bind@^1.0.2":
   "integrity" "sha512-7O+FbCihrB5WGbFYesctwmTKae6rOiIzmz1icreWJ+0aA7LJfuqhEso2T9ncpcFtzMQtzXf2QGGueWJGTYsqrA=="

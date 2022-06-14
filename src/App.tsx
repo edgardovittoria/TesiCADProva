@@ -15,6 +15,7 @@ import * as Statusbar from 'react-statusbar';
 import { SaveModelWithNameModal } from './components/navBar/components/modals/saveModelWithNameModal';
 import { ImportModelFromDBModal } from './components/navBar/components/modals/importModelFromDBModal';
 import { useAuth0 } from '@auth0/auth0-react';
+import { SetUserInfo } from 'cad-library';
 
 
 
@@ -27,8 +28,6 @@ function App() {
     const [modalSave, setModalSave] = useState(false)
     const [modalLoad, setModalLoad] = useState(false)
 
-
-
     const showViewElementVisibility = (element: string, visibility: boolean) => {
         switch (element) {
             case "SIDEBAR":
@@ -40,13 +39,14 @@ function App() {
     return (
         <>
             <div style={{ margin: "0px", height: "100vh" }}>
-                <MyNavBar setViewElementVisibility={showViewElementVisibility} sideBarChecked={sideBarChecked} setSideBarChecked={setSideBarChecked} showModalSave={setModalSave} showModalLoading={setModalLoad}/>
+                <SetUserInfo />
+                <MyNavBar setViewElementVisibility={showViewElementVisibility} sideBarChecked={sideBarChecked} setSideBarChecked={setSideBarChecked} showModalSave={setModalSave} showModalLoading={setModalLoad} />
                 <KeyboardEventMapper setViewElementVisibility={showViewElementVisibility} sideBarChecked={sideBarChecked} setSideBarChecked={setSideBarChecked} />
                 <div className="canvas-width-100">
                     <MyCanvas />
                     <ToolBar />
                     {collisions.length > 0 && <MakeBinaryOp />}
-                    {modalSave && <SaveModelWithNameModal showModalSave={setModalSave}/>}
+                    {modalSave && <SaveModelWithNameModal showModalSave={setModalSave} />}
                     {modalLoad && <ImportModelFromDBModal showModalLoad={setModalLoad} />}
                     <DraggableComponent hidden={!sideBar}>
                         <div className="sidebar-width-25" >
