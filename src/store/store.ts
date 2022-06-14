@@ -9,7 +9,7 @@ import undoable, {excludeAction} from 'redux-undo';
 import { persistReducer } from 'redux-persist'
 import persistStore from "redux-persist/es/persistStore";
 import localforage from 'localforage';
-import { CanvasSlice } from 'cad-library';
+import { CanvasSlice, UsersSlice } from 'cad-library';
 
 
 const persistConfig = {
@@ -23,6 +23,7 @@ const rootReducer = combineReducers({
         filter: excludeAction(CanvasSlice.actions.incrementNumberOfGeneratedKey.type),
     }),
     toolbarTransformation: ToolbarTransformationSlice.reducer,
+    user: UsersSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

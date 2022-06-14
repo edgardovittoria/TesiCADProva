@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Container, Form, Nav, Navbar, NavDropdown, Tooltip } from "react-bootstrap";
 import {
     faBars,
@@ -17,7 +17,7 @@ import { UndoRedo } from "./components/undoRedo";
 import { ActionCreators } from 'redux-undo';
 import { useMeshes } from '../contexts/useMeshes';
 import { Mesh } from "three";
-import { addComponent, CanvasState, canvasStateSelector, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, ImportActionParamsObject, ImportCadProjectButton, importFromCadSTL, importStateCanvas, numberOfGeneratedKeySelector, resetState } from 'cad-library';
+import { addComponent, CanvasState, canvasStateSelector, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, ImportActionParamsObject, ImportCadProjectButton, importFromCadSTL, importStateCanvas, numberOfGeneratedKeySelector, resetState, setUser, unsetUser, useSetUserInfo } from 'cad-library';
 import { useAuth0 } from '@auth0/auth0-react';
 
 interface NavBarProps {
@@ -51,7 +51,7 @@ export const exportToSTLFormat = (meshes: Mesh[]) => {
 }
 
 
-export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, sideBarChecked, setSideBarChecked, showModalSave, showModalLoading}) => {
+export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, sideBarChecked, setSideBarChecked, showModalSave, showModalLoading }) => {
     const { meshes } = useMeshes()
     const [navBarOpen, setNavBarOpen] = useState(false);
 
@@ -70,6 +70,8 @@ export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, side
 
     };
     const { loginWithRedirect, isAuthenticated, logout, user } = useAuth0();
+
+   const setUser = useSetUserInfo()
 
     if (!navBarOpen) {
         return (
@@ -307,17 +309,17 @@ export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, side
                                     </div>
 
                                 </Nav.Link>
-                            </NavDropdown>                              
+                            </NavDropdown>
                             <NavDropdown
                                 id="nav-dropdown-dark-example"
                                 title={isAuthenticated ? user?.name : "Authentication"}
                                 menuVariant="dark"
                             >
                                 <Nav.Link
-                                    onClick={() => {
+                                    onClick={() =>
                                         (isAuthenticated) ? logout({ returnTo: window.location.origin }) : loginWithRedirect()
                                     }
-                                    }>
+                                >
                                     <div id="exportDropdown">
                                         <div className="row">
                                             <div className="dropdownItem">
