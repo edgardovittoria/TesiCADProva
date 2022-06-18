@@ -14,7 +14,6 @@ import 'react-statusbar/dist/statusbar.css';
 import * as Statusbar from 'react-statusbar';
 import { SaveModelWithNameModal } from './components/navBar/components/modals/saveModelWithNameModal';
 import { ImportModelFromDBModal } from './components/navBar/components/modals/importModelFromDBModal';
-import { useAuth0 } from '@auth0/auth0-react';
 import { SetUserInfo } from 'cad-library';
 
 

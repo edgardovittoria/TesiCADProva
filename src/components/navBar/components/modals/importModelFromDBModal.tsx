@@ -1,10 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react"
-import { ImportActionParamsObject, importStateCanvas } from "cad-library"
+import { FaunaCadModel, getModelsByOwner, ImportActionParamsObject, importStateCanvas } from "cad-library"
 import { FC, useEffect, useState } from "react"
 import { Col, Row, Modal, Table } from "react-bootstrap"
 import toast from "react-hot-toast"
 import { useDispatch } from "react-redux"
-import { FaunaCadModel, getModelsByOwner } from "../../../../faunadb/api/modelsAPIs"
 
 export const ImportModelFromDBModal: FC<{ showModalLoad: Function }> = ({ showModalLoad }) => {
 

@@ -3588,10 +3588,10 @@
     "union-value" "^1.0.0"
     "unset-value" "^1.0.0"
 
-"cad-library@^0.1.27":
-  "integrity" "sha512-SoevLdqSh6Jt+/kTKJPGfWM/f8NTf63hxFrLbh30zcqeNWcLUrZanrN0K1IpvRLyE1m+QQ7bsU15vzmhYytlCg=="
-  "resolved" "https://registry.npmjs.org/cad-library/-/cad-library-0.1.27.tgz"
-  "version" "0.1.27"
+"cad-library@^0.1.28":
+  "integrity" "sha512-G4MF7Q2zhxOCDa9DLummnP9zJKyjPBwGBzcYT7ZC1+AfVeW9Q1M/hcU2/KLuxsLpX9qmSNUXxOnR/l2KAFvoOw=="
+  "resolved" "https://registry.npmjs.org/cad-library/-/cad-library-0.1.28.tgz"
+  "version" "0.1.28"
 
 "call-bind@^1.0.0", "call-bind@^1.0.2":
   "integrity" "sha512-7O+FbCihrB5WGbFYesctwmTKae6rOiIzmz1icreWJ+0aA7LJfuqhEso2T9ncpcFtzMQtzXf2QGGueWJGTYsqrA=="
@@ -5644,10 +5644,10 @@
   dependencies:
     "reusify" "^1.0.4"
 
-"faunadb@^4.5.4":
-  "integrity" "sha512-v0e1aXPhitIGMtuC7NFtp//hyr0d2NtHFcGqsEJgWx49rRJoonZQl6hLQ3lBjhA/LPg26U4R/BAlmDFE2pzsUA=="
-  "resolved" "https://registry.npmjs.org/faunadb/-/faunadb-4.5.4.tgz"
-  "version" "4.5.4"
+"faunadb@^4.5.4", "faunadb@^4.6.0":
+  "integrity" "sha512-lBCS9wOLIdoeQmhzFvNAXM9B4T3Ptv2HUf0RrPsC2LA1zPtTQFBtdhH7fvTlwRyUawIKDjs1wn5pk2o8g0Cylg=="
+  "resolved" "https://registry.npmjs.org/faunadb/-/faunadb-4.6.0.tgz"
+  "version" "4.6.0"
   dependencies:
     "base64-js" "^1.2.0"
     "boxen" "^5.0.1"

@@ -1,13 +1,12 @@
-import { Material } from "cad-library";
-import { client, q } from "../client";
+import { faunaClient, faunaQuery, Material } from "cad-library";
 
 export async function getMaterials() {
     try {
-        const response = await client.query(
-            q.Select("data",
-                q.Map(
-                    q.Paginate(q.Match(q.Index("materials_all"))),
-                    q.Lambda("material", q.Select("data", q.Get(q.Var("material"))))
+        const response = await faunaClient.query(
+            faunaQuery.Select("data",
+                faunaQuery.Map(
+                    faunaQuery.Paginate(faunaQuery.Match(faunaQuery.Index("materials_all"))),
+                    faunaQuery.Lambda("material", faunaQuery.Select("data", faunaQuery.Get(faunaQuery.Var("material"))))
                 )
             )
         )
@@ -26,9 +25,9 @@ export async function getMaterials() {
 
 export async function saveNewMaterial(newMaterial: Material) {
     try {
-        await client.query((
-            q.Create(
-                q.Collection('Materials'),
+        await faunaClient.query((
+            faunaQuery.Create(
+                faunaQuery.Collection('Materials'),
                 {
                     data: {
                         ...newMaterial

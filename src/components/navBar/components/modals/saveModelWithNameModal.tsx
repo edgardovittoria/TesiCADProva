@@ -1,10 +1,9 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { canvasStateSelector } from 'cad-library'
+import { canvasStateSelector, FaunaCadModel, saveNewModel } from 'cad-library'
 import { FC, useState } from 'react'
 import { Col, Modal, Row } from 'react-bootstrap'
 import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
-import { FaunaCadModel, saveNewModel } from '../../../../faunadb/api/modelsAPIs'
 
 export const SaveModelWithNameModal: FC<{ showModalSave: Function }> = ({ showModalSave }) => {
     const [name, setName] = useState("")
