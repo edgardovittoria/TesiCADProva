@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { canvasStateSelector, FaunaCadModel, saveNewModel } from 'cad-library'
+import { canvasStateSelector, FaunaCadModel, saveNewModel, useFaunaQuery } from 'cad-library'
 import { FC, useState } from 'react'
 import { Col, Modal, Row } from 'react-bootstrap'
 import toast from 'react-hot-toast'
@@ -9,6 +9,7 @@ export const SaveModelWithNameModal: FC<{ showModalSave: Function }> = ({ showMo
     const [name, setName] = useState("")
     const { user } = useAuth0()
     const canvas = useSelector(canvasStateSelector)
+    const {execQuery} = useFaunaQuery()
 
     const saveModel = async () => {
         let newModel = {
@@ -17,7 +18,7 @@ export const SaveModelWithNameModal: FC<{ showModalSave: Function }> = ({ showMo
             owner_id: user?.sub,
             owner: user?.name
         } as FaunaCadModel
-        await saveNewModel(newModel)
+        await execQuery(saveNewModel,newModel)
     }
 
     return (

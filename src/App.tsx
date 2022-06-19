@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import './GlobalColors.css'
 import { SideBar } from "./components/sideBar/sideBar";
@@ -13,10 +13,10 @@ import { KeyboardEventMapper } from "./utils/keyboardEventMapper/keyboardEventMa
 import 'react-statusbar/dist/statusbar.css';
 import * as Statusbar from 'react-statusbar';
 import { SaveModelWithNameModal } from './components/navBar/components/modals/saveModelWithNameModal';
-import { ImportModelFromDBModal } from './components/navBar/components/modals/importModelFromDBModal';
-import { SetUserInfo } from 'cad-library';
+import { CanvasState, ImportActionParamsObject, ImportModelFromDBModal, importStateCanvas, SetUserInfo } from 'cad-library';
+import { useAuth0 } from '@auth0/auth0-react';
 
-
+export let token = ""
 
 function App() {
 
@@ -35,6 +35,18 @@ function App() {
         }
     }
 
+    const { user, getAccessTokenSilently } = useAuth0()
+
+    useEffect(() => {
+        const getToken = async () => {
+            const tok = await getAccessTokenSilently()
+            return tok
+        }
+        (user) && getToken().then(tok => {
+            token = tok
+        })
+    }, [user])
+
     return (
         <>
             <div style={{ margin: "0px", height: "100vh" }}>
@@ -46,7 +58,17 @@ function App() {
                     <ToolBar />
                     {collisions.length > 0 && <MakeBinaryOp />}
                     {modalSave && <SaveModelWithNameModal showModalSave={setModalSave} />}
-                    {modalLoad && <ImportModelFromDBModal showModalLoad={setModalLoad} />}
+                    {modalLoad && <ImportModelFromDBModal showModalLoad={setModalLoad} importAction={importStateCanvas}
+                        importActionParams={
+                            {
+                                canvas: {
+                                    numberOfGeneratedKey: 0,
+                                    components: [],
+                                    lastActionType: "",
+                                    selectedComponentKey: 0
+                                } as CanvasState
+                            } as ImportActionParamsObject}
+                    />}
                     <DraggableComponent hidden={!sideBar}>
                         <div className="sidebar-width-25" >
                             <SideBar />
