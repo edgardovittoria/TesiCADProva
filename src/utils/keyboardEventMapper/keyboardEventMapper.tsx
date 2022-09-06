@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {redoFunction, undoFunction} from "../../components/navBar/components/undoRedo";
-import {exportJSONProject, exportToSTLFormat} from "../../components/navBar/navBar";
-import {useMeshes} from "../../components/contexts/useMeshes";
-import { canvasStateSelector, keySelectedComponenteSelector, lastActionTypeSelector, lengthFutureStateSelector, lengthPastStateSelector, removeComponent, resetState } from 'cad-library';
+import {exportJSONProject} from "../../components/navBar/navBar";
+import { canvasStateSelector, componentseSelector, exportToSTL, keySelectedComponenteSelector, lastActionTypeSelector, lengthFutureStateSelector, lengthPastStateSelector, removeComponent, resetState } from 'cad-library';
 
 interface KeyboardEventMapperProps {
     sideBarChecked: boolean,
@@ -22,7 +21,7 @@ export const KeyboardEventMapper: React.FC<KeyboardEventMapperProps> = ({setSide
     const selectedComponentKey = useSelector(keySelectedComponenteSelector)
     const canvasState = useSelector(canvasStateSelector)
 
-    const {meshes} = useMeshes()
+    const components = useSelector(componentseSelector)
 
     function KeyPress(e: KeyboardEvent) {
         // undo last action
@@ -62,7 +61,7 @@ export const KeyboardEventMapper: React.FC<KeyboardEventMapperProps> = ({setSide
         if(e.ctrlKey && e.altKey && e.key === 's'){
             e.preventDefault()
             if(window.confirm('Do you want to export the project in STL format?')){
-                exportToSTLFormat(meshes)
+                exportToSTL(components)
             }
         }
     }

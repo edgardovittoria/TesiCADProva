@@ -12,12 +12,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import './style/navBar.css';
-import { exportProjectFrom, exportToSTLFormatFrom } from "../../auxiliaryFunctionsForImportAndExport/exportFunctions";
+import { exportProjectFrom } from "../../auxiliaryFunctionsForImportAndExport/exportFunctions";
 import { UndoRedo } from "./components/undoRedo";
 import { ActionCreators } from 'redux-undo';
-import { useMeshes } from '../contexts/useMeshes';
-import { Mesh } from "three";
-import { addComponent, CanvasState, canvasStateSelector, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, ImportActionParamsObject, ImportCadProjectButton, importFromCadSTL, importStateCanvas, numberOfGeneratedKeySelector, resetState } from 'cad-library';
+import { addComponent, CanvasState, canvasStateSelector, ComponentEntity, componentseSelector, exportToSTL, getDefaultCone, getDefaultCube, getDefaultCylinder, getDefaultSphere, getDefaultTorus, ImportActionParamsObject, ImportCadProjectButton, importFromCadSTL, importStateCanvas, numberOfGeneratedKeySelector, resetState } from 'cad-library';
 import { useAuth0 } from '@auth0/auth0-react';
 
 interface NavBarProps {
@@ -39,10 +37,10 @@ export const exportJSONProject = (canvas: CanvasState) => {
     document.body.removeChild(link);
 }
 
-export const exportToSTLFormat = (meshes: Mesh[]) => {
+export const exportToSTLFormat = (components: ComponentEntity[]) => {
     const link = document.createElement('a');
     link.href = `data:model/stl;charset=utf-8,${encodeURIComponent(
-        exportToSTLFormatFrom(meshes)
+        exportToSTL(components)
     )}`
     link.download = "model.stl"
     document.body.appendChild(link);
@@ -52,7 +50,8 @@ export const exportToSTLFormat = (meshes: Mesh[]) => {
 
 
 export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, sideBarChecked, setSideBarChecked, showModalSave, showModalLoading }) => {
-    const { meshes } = useMeshes()
+    // const { meshes } = useMeshes()
+    const entities = useSelector(componentseSelector)
     const [navBarOpen, setNavBarOpen] = useState(false);
 
     const dispatch = useDispatch();
@@ -177,7 +176,7 @@ export const MyNavBar: React.FC<NavBarProps> = ({ setViewElementVisibility, side
                                 <Nav.Link
                                     id="exportSTL"
                                     onClick={() => {
-                                        exportToSTLFormat(meshes)
+                                        exportToSTLFormat(entities)
                                     }}
                                 >
                                     <div className="row">
