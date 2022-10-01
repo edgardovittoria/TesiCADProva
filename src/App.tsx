@@ -7,25 +7,43 @@ import { MyNavBar } from "./components/navBar/navBar"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ToolBar } from "./components/toolBar/toolBar";
 import { DraggableComponent } from "./components/utility/draggableComponent";
-import { MakeBinaryOp } from './components/modal/makeBinaryOperation';
-import { useCollisions } from './components/contexts/useCollisions';
 import { KeyboardEventMapper } from "./utils/keyboardEventMapper/keyboardEventMapper";
 import 'react-statusbar/dist/statusbar.css';
 import * as Statusbar from 'react-statusbar';
 import { SaveModelWithNameModal } from './components/navBar/components/modals/saveModelWithNameModal';
 import { CanvasState, ImportActionParamsObject, ImportModelFromDBModal, importStateCanvas, SetUserInfo } from 'cad-library';
 import { useAuth0 } from '@auth0/auth0-react';
+import { CadmiaModality } from './models/cadmiaModality';
+import { useDispatch } from 'react-redux';
+import { unsetBinaryOp } from './components/binaryOperationsToolbar/binaryOperationsToolbarSlice';
+import { BinaryOpsToolbar } from './components/binaryOperationsToolbar/binaryOpsToolbar';
+import { MiscToolbar } from './components/miscToolbar/miscToolbar';
 
 export let token = ""
 
 function App() {
 
     const [sideBar, setSideBar] = useState(false);
-    const { collisions } = useCollisions()
     const [sideBarChecked, setSideBarChecked] = useState(false)
     const [unit, setUnit] = useState("cm");
     const [modalSave, setModalSave] = useState(false)
     const [modalLoad, setModalLoad] = useState(false)
+    const [modality, setModality] = useState(CadmiaModality.NormalSelection)
+    const dispatch = useDispatch()
+
+    const setCadmiaModality = (modality: CadmiaModality) => {
+        switch (modality) {
+            case CadmiaModality.NormalSelection:
+                setModality(CadmiaModality.NormalSelection)
+                dispatch(unsetBinaryOp())
+                break;
+            case CadmiaModality.BinaryOperation:
+                setModality(CadmiaModality.BinaryOperation)
+                break;
+            default:
+                break;
+        }
+    }
 
     const showViewElementVisibility = (element: string, visibility: boolean) => {
         switch (element) {
@@ -54,9 +72,10 @@ function App() {
                 <MyNavBar setViewElementVisibility={showViewElementVisibility} sideBarChecked={sideBarChecked} setSideBarChecked={setSideBarChecked} showModalSave={setModalSave} showModalLoading={setModalLoad} />
                 <KeyboardEventMapper setViewElementVisibility={showViewElementVisibility} sideBarChecked={sideBarChecked} setSideBarChecked={setSideBarChecked} />
                 <div className="canvas-width-100">
-                    <MyCanvas />
+                    <MyCanvas modality={modality}/>
                     <ToolBar />
-                    {collisions.length > 0 && <MakeBinaryOp />}
+                    <BinaryOpsToolbar setModality={setCadmiaModality} modality={modality}/>
+                    <MiscToolbar />
                     {modalSave && <SaveModelWithNameModal showModalSave={setModalSave} />}
                     {modalLoad && <ImportModelFromDBModal showModalLoad={setModalLoad} importAction={importStateCanvas}
                         importActionParams={

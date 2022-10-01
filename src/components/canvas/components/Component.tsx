@@ -7,13 +7,16 @@ import {
     toolbarTransformationStateSelector
 } from "../../../store/toolbarTransformationSlice";
 import { keySelectedComponenteSelector, selectComponent, TransformationParams } from 'cad-library';
+import { CadmiaModality } from '../../../models/cadmiaModality';
+import { toggleEntitySelectionForBinaryOp } from '../../binaryOperationsToolbar/binaryOperationsToolbarSlice';
 
 export interface ComponentProps {
     transformationParams: TransformationParams
     keyComponent: number,
+    modality: CadmiaModality
 }
 
-export const Component: React.FC<ComponentProps> = ({children, transformationParams, keyComponent}) => {
+export const Component: React.FC<ComponentProps> = ({children, transformationParams, keyComponent, modality}) => {
     const dispatch = useDispatch();
     const activeTransformation = useSelector(activeTransformationSelector)
     const toolbarTransformation = useSelector(toolbarTransformationStateSelector)
@@ -25,7 +28,12 @@ export const Component: React.FC<ComponentProps> = ({children, transformationPar
             <mesh name={keyComponent.toString()} position={transformationParams.position} rotation={transformationParams.rotation} scale={transformationParams.scale}
                   onClick={(e) => {
                       e.stopPropagation();
-                      (selectedComponentKey !== keyComponent) && dispatch(selectComponent(keyComponent))
+                      if(modality === CadmiaModality.NormalSelection){
+                        (selectedComponentKey !== keyComponent) && dispatch(selectComponent(keyComponent))
+                      }
+                      else if(modality === CadmiaModality.BinaryOperation){
+                        dispatch(toggleEntitySelectionForBinaryOp(keyComponent))
+                      }
                   }}
                   onContextMenu={(e) => {
                       e.stopPropagation()

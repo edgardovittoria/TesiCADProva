@@ -4,17 +4,18 @@ import { Canvas, Object3DNode, useThree } from "@react-three/fiber";
 import { GizmoHelper, GizmoViewport, OrbitControls, TransformControls } from "@react-three/drei";
 import * as THREE from 'three'
 import { ToolbarTransformationState, toolbarTransformationStateSelector } from '../../store/toolbarTransformationSlice';
-import { DetectCollision } from './components/detectCollision';
 import './style/canvas.css'
 import { MeshesAndCollisionsContext } from '../contexts/meshesAndCollisionsProvider';
 import { useMeshes } from '../contexts/useMeshes';
-import { ComponentEntity, componentseSelector, FactoryShapes, findComponentByKey, getObjectsFromSceneByType, keySelectedComponenteSelector, TransformationParams, updateTransformationParams } from "cad-library";
+import { ComponentEntity, componentseSelector, FactoryShapes, getObjectsFromSceneByType, keySelectedComponenteSelector, TransformationParams, updateTransformationParams } from "cad-library";
 import { Component } from './components/Component';
+import { CadmiaModality } from '../../models/cadmiaModality';
 
 interface MyCanvasProps {
+    modality: CadmiaModality
 }
 
-export const MyCanvas: React.FC<MyCanvasProps> = () => {
+export const MyCanvas: React.FC<MyCanvasProps> = ({modality}) => {
 
     const components = useSelector(componentseSelector);
     const keySelectedComponent = useSelector(keySelectedComponenteSelector)
@@ -37,14 +38,14 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                                             <SetMeshes components={components} />
                                             {components.map((component) => {
                                                 return (
-                                                    <Component key={component.keyComponent} keyComponent={component.keyComponent} transformationParams={component.transformationParams}>
+                                                    <Component modality={modality} key={component.keyComponent} keyComponent={component.keyComponent} transformationParams={component.transformationParams}>
                                                         <FactoryShapes entity={component} />
                                                     </Component>
                                                 )
                                             })}
-                                            {keySelectedComponent !== 0 &&
+                                            {/* {keySelectedComponent !== 0 &&
                                                 <DetectCollision entity={findComponentByKey(components, keySelectedComponent)} />
-                                            }
+                                            } */}
                                             <Controls keySelectedComponent={keySelectedComponent} />
                                             <gridHelper args={[40, 20, "#434141", "#434141"]} scale={[1, 1, 1]} />
                                         </MeshesAndCollisionsContext.Provider>

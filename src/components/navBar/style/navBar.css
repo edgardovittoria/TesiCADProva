@@ -1,16 +1,16 @@
 .navbar{
-    background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
+    background: var(--navSecondaryColor);
 }
 
 .navbarBeforeOpen{
-    background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
+    background: var(--navSecondaryColor);
     padding-left: 0;
     padding-top: 13px;
     padding-bottom: 13px;
 }
 
 .navbarBeforeOpenIcon{
-    background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
+    background: var(--navSecondaryColor);
     color: #ffffff;
     margin-top: 9px;
 }
@@ -36,7 +36,7 @@
 }
 
 .burgerMenu{
-    background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
+    background: var(--navSecondaryColor);
     width: 50px;
     position: absolute !important;
     top: 0;
@@ -53,7 +53,7 @@
 }
 
 .dropdown-menu{
-    background: linear-gradient(var(--navPrimaryColor), var(--navSecondaryColor));
+    background: var(--navSecondaryColor);
 }
 
 .dropdownItem{

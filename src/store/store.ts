@@ -10,6 +10,7 @@ import { persistReducer } from 'redux-persist'
 import persistStore from "redux-persist/es/persistStore";
 import localforage from 'localforage';
 import { CanvasSlice, UsersSlice } from 'cad-library';
+import { BinaryOperationsToolbarSlice } from '../components/binaryOperationsToolbar/binaryOperationsToolbarSlice';
 
 
 const persistConfig = {
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
         filter: excludeAction(CanvasSlice.actions.incrementNumberOfGeneratedKey.type),
     }),
     toolbarTransformation: ToolbarTransformationSlice.reducer,
+    toolbarBinaryOperations: BinaryOperationsToolbarSlice.reducer,
     user: UsersSlice.reducer,
 });
 
