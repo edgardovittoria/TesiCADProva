@@ -6,6 +6,7 @@ import {
   binaryOpEntitiesKeysSelector,
   binaryOpSelector,
   setBinaryOp,
+  unsetBinaryOp,
 } from "./binaryOperationsToolbarSlice";
 import { CadmiaModality } from "../../models/cadmiaModality";
 import unionIcon from "./style/unionIcon.png";
@@ -29,23 +30,20 @@ import {
   setComponentsOpacity,
 } from "cad-library";
 import { Dispatch } from "@reduxjs/toolkit";
+import { useCadmiaModality } from "../contexts/useCadmiaModality";
 
-interface BinaryOpsToolbarProps {
-  modality: CadmiaModality;
-  setModality: Function;
-}
+interface BinaryOpsToolbarProps {}
 
-export const BinaryOpsToolbar: React.FC<BinaryOpsToolbarProps> = ({
-  setModality,
-  modality,
-}) => {
+export const BinaryOpsToolbar: React.FC<BinaryOpsToolbarProps> = ({}) => {
   const dispatch = useDispatch();
+  const { modality, setModality } = useCadmiaModality();
   const binaryOp = useSelector(binaryOpSelector);
   const entityKeysForBinaryOperations = useSelector(
     binaryOpEntitiesKeysSelector
   );
   const canvasState = useSelector(canvasStateSelector);
-  const [temporaryEntitiesForBinaryOp, setTemporaryEntitiesForBinaryOp] = useState(entityKeysForBinaryOperations)
+  const [temporaryEntitiesForBinaryOp, setTemporaryEntitiesForBinaryOp] =
+    useState(entityKeysForBinaryOperations);
 
   const makeBinaryOperation = (
     operation: BinaryOperationType,
@@ -106,30 +104,34 @@ export const BinaryOpsToolbar: React.FC<BinaryOpsToolbarProps> = ({
   };
 
   useEffect(() => {
-    if(temporaryEntitiesForBinaryOp.length > entityKeysForBinaryOperations.length){
-      let elements = temporaryEntitiesForBinaryOp.filter(el => !entityKeysForBinaryOperations.includes(el))
-      dispatch(setComponentsOpacity({ keys: elements, opacity: 0.3}))
+    if (
+      temporaryEntitiesForBinaryOp.length > entityKeysForBinaryOperations.length
+    ) {
+      let elements = temporaryEntitiesForBinaryOp.filter(
+        (el) => !entityKeysForBinaryOperations.includes(el)
+      );
+      dispatch(setComponentsOpacity({ keys: elements, opacity: 0.3 }));
+    } else {
+      let elements = entityKeysForBinaryOperations.filter(
+        (el) => !temporaryEntitiesForBinaryOp.includes(el)
+      );
+      dispatch(setComponentsOpacity({ keys: elements, opacity: 1 }));
     }
-    else{
-      let elements = entityKeysForBinaryOperations.filter(el => !temporaryEntitiesForBinaryOp.includes(el))
-      dispatch(setComponentsOpacity({ keys: elements, opacity: 1}))
-    }
-    setTemporaryEntitiesForBinaryOp(entityKeysForBinaryOperations)
+    setTemporaryEntitiesForBinaryOp(entityKeysForBinaryOperations);
   }, [entityKeysForBinaryOperations]);
 
   useEffect(() => {
-    let componentKeys = canvasState.components.reduce((keys: number[], component) =>{
-      keys.push(component.keyComponent)
-      return keys
-    },[]);
+    let componentKeys = canvasState.components.reduce(
+      (keys: number[], component) => {
+        keys.push(component.keyComponent);
+        return keys;
+      },
+      []
+    );
     if (modality === CadmiaModality.BinaryOperation) {
-      dispatch(
-        setComponentsOpacity({ keys: componentKeys, opacity: 0.3 })
-      )
+      dispatch(setComponentsOpacity({ keys: componentKeys, opacity: 0.3 }));
     } else if (modality === CadmiaModality.NormalSelection) {
-        dispatch(
-          setComponentsOpacity({ keys: componentKeys, opacity: 1 })
-        )
+      dispatch(setComponentsOpacity({ keys: componentKeys, opacity: 1 }));
     }
   }, [modality]);
 
@@ -212,6 +214,7 @@ export const BinaryOpsToolbar: React.FC<BinaryOpsToolbarProps> = ({
               className="btn-toolbar"
               onClick={() => {
                 setModality(CadmiaModality.NormalSelection);
+                dispatch(unsetBinaryOp());
               }}
             >
               <Image
@@ -236,6 +239,7 @@ export const BinaryOpsToolbar: React.FC<BinaryOpsToolbarProps> = ({
                     dispatch
                   );
                 setModality(CadmiaModality.NormalSelection);
+                dispatch(unsetBinaryOp());
               }}
             >
               <Image
