@@ -21,6 +21,7 @@ export const MaterialSelection: FC<MaterialSelectionProps> = ({ defaultMaterial,
                     onChange={(event) => (event.currentTarget.value !== "UNDEFINED") ? setMaterial(availableMaterials.filter(mat => mat.name === event.currentTarget.value)[0]) : unsetMaterial()}
                     defaultValue={(defaultMaterial !== undefined) ? defaultMaterial.name : "UNDEFINED"}
                     className="selectOperation"
+                    value={(defaultMaterial !== undefined) ? defaultMaterial.name : "UNDEFINED"}
                 >
                     <option value="UNDEFINED">UNDEFINED</option>
                     {availableMaterials.map(mat => <option key={mat.name} value={mat.name}>{mat.name}</option>)}
