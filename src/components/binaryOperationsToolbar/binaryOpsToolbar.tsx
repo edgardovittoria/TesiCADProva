@@ -34,7 +34,7 @@ import { useCadmiaModality } from "../contexts/useCadmiaModality";
 
 interface BinaryOpsToolbarProps {}
 
-export const BinaryOpsToolbar: React.FC<BinaryOpsToolbarProps> = ({}) => {
+export const BinaryOpsToolbar: React.FC<BinaryOpsToolbarProps> = () => {
   const dispatch = useDispatch();
   const { modality, setModality } = useCadmiaModality();
   const binaryOp = useSelector(binaryOpSelector);
