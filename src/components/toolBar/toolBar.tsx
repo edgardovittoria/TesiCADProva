@@ -1,10 +1,6 @@
 import React from 'react';
-import "./style/toolbar.css";
 import {useDispatch, useSelector} from "react-redux";
 import {setTransformationActive, toolbarTransformationStateSelector} from "../../store/toolbarTransformationSlice";
-import {Image, Tooltip} from "react-bootstrap";
-import {DocumentDuplicateIcon} from "@heroicons/react/20/solid";
-import {addComponent, ComponentEntity, getNewKeys} from "cad-library";
 
 interface ToolBarProps {
 }
@@ -17,11 +13,6 @@ export const ToolBar: React.FC<ToolBarProps> = () => {
             <div className="absolute left-[15px] top-[40px] w-[50px] text-center shadow">
                 {toolbarTransformationState.transformation.map((transformation, index) => {
                     return(
-                        /*<Tooltip title={transformation.type} key={index}>
-                            <button  className={(transformation.active) ? "btn-toolbar-selected" : "btn-toolbar"} onClick={() => dispatch(setTransformationActive(transformation.type))}>
-                                <Image src={transformation.icon} alt={transformation.type} width={30} height={30}/>
-                            </button>
-                        </Tooltip>*/
                         <div className={`relative flex flex-col items-center justify-center h-[50px] w-[50px] p-1 group hover:bg-gray-300 hover:cursor-pointer
                              ${transformation.active ? 'bg-gray-300' : 'bg-white'}`}
                              onClick={() => dispatch(setTransformationActive(transformation.type))}

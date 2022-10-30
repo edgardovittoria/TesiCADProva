@@ -1,7 +1,6 @@
 import {Listbox, Transition} from "@headlessui/react";
 import {Material} from "cad-library";
 import React, {FC, Fragment} from "react";
-import {Col, FormSelect} from "react-bootstrap";
 import {useMaterials} from "../../../faunadb/api/useMaterials";
 import {CheckIcon, ChevronUpDownIcon} from "@heroicons/react/20/solid";
 

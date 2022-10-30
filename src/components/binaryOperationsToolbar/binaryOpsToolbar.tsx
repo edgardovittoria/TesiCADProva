@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import "./style/binaryOps.css";
 import {useDispatch, useSelector} from "react-redux";
 import {Image, Tooltip} from "react-bootstrap";
 import {
@@ -12,10 +11,6 @@ import {CadmiaModality} from "../../models/cadmiaModality";
 import unionIcon from "./style/unionIcon.png";
 import intersectionIcon from "./style/intersectionIcon.png";
 import subtractionIcon from "./style/subtractionIcon.png";
-import closeIcon from "./style/closeRedCircleIcon.png";
-import closeIconDisabled from "./style/closeRedCircleDisabledIcon.png";
-import okIcon from "./style/greenCheckOkIcon.png";
-import okIconDisabled from "./style/greenCheckOkDisabledIcon.png";
 import {
     binaryOperation,
     BinaryOperationType,

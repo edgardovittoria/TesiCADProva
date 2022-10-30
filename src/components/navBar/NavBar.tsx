@@ -89,7 +89,7 @@ export const Navbar: React.FC<NavbarProps> = (
                 <div className="flex items-center justify-between border-b-2 border-gray-100 py-4">
                     <div className="flex justify-start w-0 flex-1">
                         <span className="text-2xl">
-                            ESymIA
+                            CADmIA
                         </span>
                     </div>
                     <Popover.Group as="nav" className="hidden space-x-10 md:flex">

@@ -1,9 +1,5 @@
-import {Dialog, Transition} from '@headlessui/react';
-import React, {Fragment, useState} from 'react';
+import React from 'react';
 import {AdjustmentsHorizontalIcon, XMarkIcon} from "@heroicons/react/20/solid";
-import {Outliner} from "./components/outliner";
-import {Container} from "react-bootstrap";
-import {SidebarFooter, SidebarHeader} from "react-pro-sidebar";
 import {Transformations} from "./components/transformations";
 import {GeometryParams} from "./components/geometryParams/geometryParams";
 import {MaterialSelection} from "./components/materialSelection";
