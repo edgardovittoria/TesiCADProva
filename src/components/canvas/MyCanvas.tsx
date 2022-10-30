@@ -49,6 +49,7 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                   <>
                     <Canvas
                       id="myCanvas"
+                      style={{backgroundColor: 'whitesmoke'}}
                       camera={{
                         position: [0, 50, 0],
                         fov: 20,
