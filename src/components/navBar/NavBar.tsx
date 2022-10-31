@@ -84,9 +84,9 @@ export const Navbar: React.FC<NavbarProps> = (
 
 
     return (
-        <Popover className="relative bg-white">
-            <div className="mx-auto max-w-7xl px-6">
-                <div className="flex items-center justify-between border-b-2 border-gray-100 py-4">
+        <Popover className="relative bg-white max-h-[100px]">
+            <div className="mx-auto w-full px-6">
+                <div className="flex items-center justify-between border-b-2 border-gray-100 py-2">
                     <div className="flex justify-start w-0 flex-1">
                         <span className="text-2xl">
                             CADmIA
@@ -481,7 +481,7 @@ export const Navbar: React.FC<NavbarProps> = (
 
 
                             : <div
-                                className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-gray-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-gray-400 hover:cursor-pointer"
+                                className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-gray-500 px-3 py-1 text-base font-medium text-white shadow-sm hover:bg-gray-400 hover:cursor-pointer"
                                 onClick={() => loginWithRedirect()}
                             >
                                Sign in
