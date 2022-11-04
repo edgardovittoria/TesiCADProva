@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import "./App.css";
 import "./GlobalColors.css";
 import {MyCanvas} from "./components/canvas/MyCanvas";
-import "bootstrap/dist/css/bootstrap.min.css";
 import {ToolBar} from "./components/toolBar/toolBar";
 import {KeyboardEventMapper} from "./utils/keyboardEventMapper/keyboardEventMapper";
 import "react-statusbar/dist/statusbar.css";
@@ -25,7 +24,6 @@ export let token = "";
 
 function App() {
     const [sideBar, setSideBar] = useState(false);
-    const [sideBarChecked, setSideBarChecked] = useState(false);
     const [unit, setUnit] = useState("cm");
     const [modalSave, setModalSave] = useState(false);
     const [modalLoad, setModalLoad] = useState(false);
@@ -53,21 +51,21 @@ function App() {
 
     return (
         <>
-            <div style={{margin: "0px", height: "100vh"}}>
+            <div className="m-0 h-full">
                 <SetUserInfo/>
                 <Navbar
                     setViewElementVisibility={showViewElementVisibility}
-                    sideBarChecked={sideBarChecked}
-                    setSideBarChecked={setSideBarChecked}
+                    sideBarChecked={sideBar}
+                    setSideBarChecked={setSideBar}
                     showModalSave={setModalSave}
                     showModalLoading={setModalLoad}
                 />
                 <KeyboardEventMapper
                     setViewElementVisibility={showViewElementVisibility}
-                    sideBarChecked={sideBarChecked}
-                    setSideBarChecked={setSideBarChecked}
+                    sideBarChecked={sideBar}
+                    setSideBarChecked={setSideBar}
                 />
-                <div className="canvas-width-100">
+                <div className="w-full p-0 relative">
                     <MyCanvas/>
                     <ToolBar/>
                     <BinaryOpsToolbar/>

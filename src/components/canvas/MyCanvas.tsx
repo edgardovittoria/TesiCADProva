@@ -17,14 +17,9 @@ import {
   ToolbarTransformationState,
   toolbarTransformationStateSelector,
 } from "../../store/toolbarTransformationSlice";
-import "./style/canvas.css";
-import { MeshesAndCollisionsContext } from "../contexts/meshesAndCollisionsProvider";
-import { useMeshes } from "../contexts/useMeshes";
 import {
-  ComponentEntity,
   componentseSelector,
   FactoryShapes,
-  getObjectsFromSceneByType,
   keySelectedComponenteSelector,
   TransformationParams,
   updateTransformationParams,
@@ -39,7 +34,7 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
   const keySelectedComponent = useSelector(keySelectedComponenteSelector);
 
   return (
-    <div id="canvas-container">
+    <div className="h-[92vh]">
       <ReactReduxContext.Consumer>
         {({ store }) => (
           // <MeshesAndCollisionsContext.Consumer>
@@ -48,7 +43,7 @@ export const MyCanvas: React.FC<MyCanvasProps> = () => {
                 {(ModalityManagerContextType) => (
                   <>
                     <Canvas
-                      id="myCanvas"
+                      className="w-full h-full"
                       style={{backgroundColor: 'whitesmoke'}}
                       camera={{
                         position: [0, 50, 0],

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Image, Tooltip} from "react-bootstrap";
 import {
     binaryOpEntitiesKeysSelector,
     binaryOpSelector,
@@ -156,7 +155,7 @@ export const BinaryOpsToolbar: React.FC<BinaryOpsToolbarProps> = () => {
                          dispatch(setBinaryOp("INTERSECTION"));
                      }}
                 >
-                    <Image src={intersectionIcon} alt="Intersection operation"/>
+                    <img src={intersectionIcon} alt="Intersection operation"/>
                     <div className="absolute left-10 bottom-0 flex flex-col items-center hidden mb-10 group-hover:flex">
                         <span className="relative z-10 p-2 text-xl leading-none text-white whitespace-no-wrap bg-gray-600 shadow-lg rounded-md">INTERSECTION</span>
                     </div>
